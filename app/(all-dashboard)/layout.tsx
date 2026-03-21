@@ -28,7 +28,12 @@ export default function DashboardLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col" suppressHydrationWarning>{children}</body>
+      <body className="flex h-screen" suppressHydrationWarning>
+        <div className="h-screen w-[14%] bg-red-200 md:w-[8%] lg:w-[14%]"></div>
+        <div className="h-screen w-[86%] bg-green-200 md:w-[92%] lg:w-[86%]">
+          right
+        </div>
+      </body>
     </html>
   );
 }
