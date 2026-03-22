@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
+import MenuBarWidget from "@/shared/widgets/dashboard/MenuBarWidget";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,10 @@ export default function DashboardLayout({
       suppressHydrationWarning
     >
       <body className="flex h-screen" suppressHydrationWarning>
-        <div className="h-screen w-[14%] bg-red-200 md:w-[8%] lg:w-[14%]"></div>
+        <div className="h-screen w-[14%] bg-red-200 md:w-[8%] lg:w-[14%]">
+          <MenuBarWidget />
+          hi there
+        </div>
         <div className="h-screen w-[86%] bg-green-200 md:w-[92%] lg:w-[86%]">
           right
         </div>
