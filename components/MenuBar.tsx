@@ -5,11 +5,15 @@ import Link from "next/link";
 export default function MenuBar() {
   return (
     <>
-      {menuItems.map((category, index) => (
-        <div key={index}>
+      {menuItems.map((category) => (
+        <div className="flex flex-col gap-2" key={category.title}>
           <span>{category.title}</span>
-          {category.items.map((item, index) => (
-            <Link href={item.href || "/"} key={index}>
+          {category.items.map((item) => (
+            <Link
+              className="flex items-center gap-2"
+              href={item.href || "/"}
+              key={item.label}
+            >
               <Image
                 src={item.icon}
                 alt={item.label}

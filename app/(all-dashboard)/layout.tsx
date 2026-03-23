@@ -30,9 +30,9 @@ export default function DashboardLayout({
       suppressHydrationWarning
     >
       <body className="flex h-screen" suppressHydrationWarning>
-        <div className="h-screen w-[14%] bg-red-200 md:w-[8%] lg:w-[14%]">
+        <div className="h-screen w-[14%] md:w-[8%] lg:w-[14%]">
           <MenuBarWidget />
-          hi there
+          {children}
         </div>
         <div className="h-screen w-[86%] bg-green-200 md:w-[92%] lg:w-[86%]">
           right
