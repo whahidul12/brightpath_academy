@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fira_Sans } from "next/font/google";
 import "../globals.css";
 import MenuBarWidget from "@/shared/widgets/dashboard/MenuBarWidget";
+import { Button } from "@/components/ui/button";
+import { ThemeProvider } from "@/provider/theme-provider/theme-provider";
+import { ModeToggle } from "@/components/ModeToggle";
+import Navbar from "@/components/Navbar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const firaSans = Fira_Sans({
+  variable: "--font-fira-sans",
+  weight: "400",
   subsets: ["latin"],
 });
 
@@ -26,17 +26,28 @@ export default function DashboardLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${firaSans.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="flex h-screen" suppressHydrationWarning>
-        <div className="h-screen w-[14%] md:w-[8%] lg:w-[14%]">
-          <MenuBarWidget />
-          {children}
-        </div>
-        <div className="h-screen w-[86%] bg-green-200 md:w-[92%] lg:w-[86%]">
-          right
-        </div>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {/*left menuBar*/}
+          <div className="h-screen w-[14%] md:w-[8%] lg:w-[14%]">
+            <MenuBarWidget />
+          </div>
+          {/*right dashboard*/}
+          <div className="h-screen w-[86%] md:w-[92%] lg:w-[86%]">
+            <Navbar />
+            <Button>button</Button>
+            <ModeToggle />
+            {children}
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
