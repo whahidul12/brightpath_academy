@@ -6,16 +6,19 @@ export default function MenuBar() {
   return (
     <>
       {menuItems.map((category) => (
-        <div className="flex flex-col gap-2 pl-4" key={category.title}>
+        <div
+          className="flex flex-col items-center gap-2 lg:items-start lg:pl-4"
+          key={category.title}
+        >
           <span className="mt-4 font-bold">{category.title}</span>
           {category.items.map((item) =>
             item.label !== "Logout" ? (
               <Link
-                className="flex items-center gap-2"
+                className="flex w-fit items-center gap-2 lg:w-full"
                 href={item.href || "/"}
                 key={item.label}
               >
-                <div className="flex items-center justify-center rounded-lg bg-white p-1">
+                <div className="flex items-center justify-center rounded-lg border border-gray-600 bg-white p-1 lg:border-none">
                   <Image
                     src={item.icon}
                     alt={item.label}
@@ -23,15 +26,15 @@ export default function MenuBar() {
                     width={20}
                   ></Image>
                 </div>
-                <span>{item.label}</span>
+                <span className="hidden lg:block">{item.label}</span>
               </Link>
             ) : (
               <Link
-                className="flex w-full items-center gap-2 rounded-lg bg-red-400 p-2"
+                className="flex w-fit items-center gap-2 rounded-lg lg:w-full lg:bg-red-400 lg:p-2"
                 href={item.href || "/"}
                 key={item.label}
               >
-                <div className="flex items-center justify-center rounded-lg bg-red-300 p-1">
+                <div className="flex items-center justify-center rounded-lg bg-red-300 p-1.5 lg:p-1">
                   <Image
                     src={item.icon}
                     alt={item.label}
@@ -39,7 +42,7 @@ export default function MenuBar() {
                     width={20}
                   ></Image>
                 </div>
-                <span>{item.label}</span>
+                <span className="hidden lg:block">{item.label}</span>
               </Link>
             ),
           )}

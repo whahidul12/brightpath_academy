@@ -2,9 +2,9 @@ import Image from "next/image";
 
 export default function Navbar() {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex h-16 items-center justify-end px-6 lg:justify-between">
       {/*Search Bar */}
-      <div className="hidden lg:flex">
+      <div className="hidden gap-3 rounded-full border border-gray-500 bg-transparent p-2 lg:flex">
         <Image
           src="/icons/search.png"
           alt="search-icon"
@@ -12,10 +12,14 @@ export default function Navbar() {
           height={20}
           className="w-7"
         />
-        <input type="text" placeholder="Search..." />
+        <input
+          type="text"
+          placeholder="Search..."
+          className="w-3xs border-none outline-none"
+        />
       </div>
       {/*ICONS and USER */}
-      <div className="flex items-center justify-end gap-2">
+      <div className="flex items-center justify-end gap-6">
         <div className="flex items-center justify-center rounded-lg bg-white p-1">
           <Image
             src="/icons/message.png"
@@ -25,7 +29,7 @@ export default function Navbar() {
             className="w-7 cursor-pointer"
           />
         </div>
-        <div className="flex items-center justify-center rounded-lg bg-white p-1">
+        <div className="relative flex items-center justify-center rounded-lg bg-white p-1">
           <Image
             src="/icons/announcement.png"
             alt="announcement-icon"
@@ -33,10 +37,23 @@ export default function Navbar() {
             height={20}
             className="w-7 cursor-pointer"
           />
+          <div className="bg-primary text-primary-foreground absolute -top-3 -right-3 flex h-6 w-6 items-center justify-center rounded-full text-sm">
+            22
+          </div>
         </div>
+
         <div className="flex flex-col">
-          <span>Name</span>
-          <span>Name</span>
+          <span className="">Jhon Doe</span>
+          <span className="text-right text-xs text-gray-600">Admin</span>
+        </div>
+        <div>
+          <Image
+            src="/icons/avatar.png"
+            alt="user-avatar"
+            width={40}
+            height={40}
+            className="w-10 rounded-full"
+          />
         </div>
       </div>
     </div>
