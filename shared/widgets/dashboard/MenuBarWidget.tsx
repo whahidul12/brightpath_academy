@@ -1,4 +1,4 @@
-import MenuBar from "@/components/MenuBar";
+import MenuBar from "@/components/allDashboardComp/MenuBar";
 import Image from "next/image";
 
 export default function MenuBarWidget() {

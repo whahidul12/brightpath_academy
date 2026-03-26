@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import { Fira_Sans } from "next/font/google";
 import "../globals.css";
 import MenuBarWidget from "@/shared/widgets/dashboard/MenuBarWidget";
-import { Button } from "@/components/ui/button";
 import { ThemeProvider } from "@/provider/theme-provider/theme-provider";
-import { ModeToggle } from "@/components/ModeToggle";
 import Navbar from "@/components/Navbar";
+import DashboardPanelWidgets from "@/shared/widgets/dashboard/dashboardPanelWidgets";
 
 const firaSans = Fira_Sans({
   variable: "--font-fira-sans",
@@ -43,8 +42,7 @@ export default function DashboardLayout({
           {/*right dashboard*/}
           <div className="h-screen w-[86%] md:w-[92%] lg:w-[86%]">
             <Navbar />
-            <Button>button</Button>
-            <ModeToggle />
+            <DashboardPanelWidgets />
             {children}
           </div>
         </ThemeProvider>

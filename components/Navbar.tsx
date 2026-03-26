@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ModeToggle } from "./ModeToggle";
 
 export default function Navbar() {
   return (
@@ -20,6 +21,7 @@ export default function Navbar() {
       </div>
       {/*ICONS and USER */}
       <div className="flex items-center justify-end gap-6">
+        <ModeToggle />
         <div className="flex items-center justify-center rounded-lg bg-white p-1">
           <Image
             src="/icons/message.png"
@@ -44,7 +46,9 @@ export default function Navbar() {
 
         <div className="flex flex-col">
           <span className="">Jhon Doe</span>
-          <span className="text-right text-xs text-gray-600">Admin</span>
+          <span className="text-shadow-card-foreground text-right text-xs">
+            Admin
+          </span>
         </div>
         <div>
           <Image
