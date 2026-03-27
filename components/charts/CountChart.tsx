@@ -24,7 +24,7 @@ const CountChart = () => {
       <div className="flex items-center justify-between">
         <span className="text-lg font-semibold">Students</span>
         <Image
-          src="/icons/more.png"
+          src="/icons/moreDark.png"
           alt="more-icon"
           width={30}
           height={10}

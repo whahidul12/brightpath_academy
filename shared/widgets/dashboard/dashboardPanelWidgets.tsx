@@ -1,4 +1,5 @@
 import UserCard from "@/components/allDashboardComp/UserCard";
+import AttendenceChart from "@/components/charts/AttendenceChart";
 import CountChart from "@/components/charts/CountChart";
 
 export default function DashboardPanelWidgets() {
@@ -14,13 +15,15 @@ export default function DashboardPanelWidgets() {
           <UserCard userType="stuff"></UserCard>
         </div>
         {/*Middle Chart*/}
-        <div className="flex flex-col lg:flex-row">
+        <div className="flex flex-col gap-4 lg:flex-row">
           {/*Count Chart*/}
           <div className="bg-card h-112.5 w-full rounded-lg lg:w-1/3">
             <CountChart />
           </div>
           {/*Attendance Chart*/}
-          <div className="w-full lg:w-2/3">{/*<CountChart />*/}</div>
+          <div className="bg-card h-112 w-full rounded-lg lg:w-2/3">
+            <AttendenceChart />
+          </div>
         </div>
         {/*Bottom chart*/}
         <div>bottom cgart</div>
