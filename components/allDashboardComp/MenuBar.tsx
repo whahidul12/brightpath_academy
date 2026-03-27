@@ -30,11 +30,11 @@ export default function MenuBar() {
               </Link>
             ) : (
               <Link
-                className="flex w-fit items-center gap-2 rounded-lg lg:w-full lg:bg-red-400 lg:p-2"
+                className="flex w-fit items-center gap-2 rounded-lg text-white duration-200 hover:bg-red-500 lg:w-full lg:bg-red-400 lg:p-2"
                 href={item.href || "/"}
                 key={item.label}
               >
-                <div className="flex items-center justify-center rounded-lg bg-red-300 p-1.5 lg:p-1">
+                <div className="flex items-center justify-center rounded-lg bg-red-200 p-1.5 lg:p-1">
                   <Image
                     src={item.icon}
                     alt={item.label}
