@@ -1,0 +1,27 @@
+.react-calendar {
+  width: 100% !important;
+  background: var(--card) !important;
+  color: var(--card-foreground) !important;
+  border: none !important;
+}
+.react-calendar__tile--now {
+  background: var(--secondary) !important;
+  color: var(--secondary-foreground) !important;
+  border-radius: 8px !important;
+}
+.react-calendar__tile--active {
+  background-color: var(--primary) !important;
+  color: var(--secondary-foreground) !important;
+  border-radius: 8px !important;
+}
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background: var(--background);
+  transition: background 0.3s ease;
+  border-radius: 8px;
+}
+
+.react-calendar__navigation__label__labelText {
+  font-weight: 700;
+  font-size: 16px;
+}

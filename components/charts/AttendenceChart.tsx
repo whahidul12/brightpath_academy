@@ -14,6 +14,11 @@ import Image from "next/image";
 
 const data = [
   {
+    name: "Sun",
+    Present: 1890,
+    Absent: 4800,
+  },
+  {
     name: "Mon",
     Present: 4000,
     Absent: 2400,
@@ -33,11 +38,6 @@ const data = [
     Present: 2780,
     Absent: 3908,
   },
-  {
-    name: "Fri",
-    Present: 1890,
-    Absent: 4800,
-  },
 ];
 
 export default function AttendenceChart() {
@@ -56,7 +56,9 @@ export default function AttendenceChart() {
         <BarChart
           style={{
             width: "100%",
+            maxWidth: "700px",
             height: "100%",
+            maxHeight: "70vh",
             aspectRatio: 1.4,
           }}
           responsive
@@ -69,8 +71,18 @@ export default function AttendenceChart() {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="name" axisLine={false} tickLine={false} />
-          <YAxis width="auto" axisLine={false} tickLine={false} />
+          <XAxis
+            dataKey="name"
+            axisLine={false}
+            tickLine={false}
+            stroke="var(--card-foreground)"
+          />
+          <YAxis
+            width="auto"
+            axisLine={false}
+            tickLine={false}
+            stroke="var(--card-foreground)"
+          />
           <Tooltip
             contentStyle={{
               borderRadius: "12px",
@@ -84,13 +96,13 @@ export default function AttendenceChart() {
           />
           <Bar
             dataKey="Present"
-            fill="oklch(0.65 0.19 254)"
+            fill="var(--primary)"
             radius={[25, 25, 0, 0]}
             legendType="circle"
           />
           <Bar
             dataKey="Absent"
-            fill="oklch(0.73 0.18 49)"
+            fill="var(--secondary)"
             radius={[25, 25, 0, 0]}
             legendType="circle"
           />

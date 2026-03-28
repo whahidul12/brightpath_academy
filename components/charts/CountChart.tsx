@@ -8,12 +8,12 @@ const data = [
   {
     name: "Girls",
     count: 55,
-    fill: "oklch(0.78 0.15 49)",
+    fill: "var(--secondary)",
   },
   {
     name: "Boys",
     count: 78,
-    fill: "oklch(0.7 0.18 254)",
+    fill: "var(--primary)",
   },
 ];
 
@@ -35,6 +35,7 @@ const CountChart = () => {
       <div className="h-fit w-full">
         <RadialBarChart
           width="100%"
+          style={{ maxWidth: "250px", marginInline: "auto" }}
           height="100%"
           cx="50%"
           cy="50%"
