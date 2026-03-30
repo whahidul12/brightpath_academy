@@ -42,7 +42,6 @@ export default function DashboardLayout({
           {/*right dashboard*/}
           <div className="h-screen w-[86%] md:w-[92%] lg:w-[86%]">
             <Navbar />
-            <DashboardPanelWidgets />
             {children}
           </div>
         </ThemeProvider>

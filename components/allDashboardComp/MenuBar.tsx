@@ -1,3 +1,4 @@
+import { role } from "@/constants/data";
 import menuItems from "@/constants/menuItems";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,40 +12,29 @@ export default function MenuBar() {
           key={category.title}
         >
           <span className="mt-4 font-bold">{category.title}</span>
-          {category.items.map((item) =>
-            item.label !== "Logout" ? (
-              <Link
-                className="flex w-fit items-center gap-2 lg:w-full"
-                href={item.href || "/"}
-                key={item.label}
-              >
-                <div className="flex items-center justify-center rounded-lg border border-gray-600 bg-white p-1 lg:border-none">
-                  <Image
-                    src={item.icon}
-                    alt={item.label}
-                    height={20}
-                    width={20}
-                  ></Image>
-                </div>
-                <span className="hidden lg:block">{item.label}</span>
-              </Link>
-            ) : (
-              <Link
-                className="flex w-fit items-center gap-2 rounded-lg text-white duration-200 hover:bg-red-500 lg:w-full lg:bg-red-400 lg:p-2"
-                href={item.href || "/"}
-                key={item.label}
-              >
-                <div className="flex items-center justify-center rounded-lg bg-red-200 p-1.5 lg:p-1">
-                  <Image
-                    src={item.icon}
-                    alt={item.label}
-                    height={20}
-                    width={20}
-                  ></Image>
-                </div>
-                <span className="hidden lg:block">{item.label}</span>
-              </Link>
-            ),
+          {category.items.map(
+            (item) =>
+              // 1. Check visibility condition first
+              item.visible.includes(role) && (
+                <Link
+                  key={item.label}
+                  href={item.href || "/"}
+                  className={`hover:bg-primary/10 flex w-fit items-center gap-2 rounded-lg py-2 md:px-2 lg:w-full ${
+                    item.label === "Logout" &&
+                    "text-white duration-200 hover:bg-red-500 lg:bg-red-400"
+                  }`}
+                >
+                  <div className="flex items-center justify-center rounded-lg border border-gray-600 bg-white p-1 lg:border-none">
+                    <Image
+                      src={item.icon}
+                      alt={item.label}
+                      height={20}
+                      width={20}
+                    />
+                  </div>
+                  <span className="hidden lg:block">{item.label}</span>
+                </Link>
+              ),
           )}
         </div>
       ))}
