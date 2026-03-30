@@ -1,0 +1,19 @@
+/* Hide Friday (6th column) and Saturday (7th column) headers */
+.rbc-header:nth-child(6),
+.rbc-header:nth-child(7),
+.rbc-month-view .rbc-date-cell:nth-child(6),
+.rbc-month-view .rbc-date-cell:nth-child(7),
+.rbc-day-bg:nth-child(6),
+.rbc-day-bg:nth-child(7) {
+  display: none !important;
+}
+.rbc-row {
+  /*display: none;*/
+}
+/* Ensure the remaining 5 days fill the 100% width */
+/*.rbc-month-row,
+.rbc-time-header,
+.rbc-time-content {
+  display: flex !important;
+  flex: 1 0 0% !important;
+}*/
