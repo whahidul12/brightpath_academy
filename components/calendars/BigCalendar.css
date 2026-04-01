@@ -7,9 +7,6 @@
 .rbc-day-bg:nth-child(7) {
   display: none !important;
 }
-.rbc-row {
-  /*display: none;*/
-}
 /* Ensure the remaining 5 days fill the 100% width */
 /*.rbc-month-row,
 .rbc-time-header,
@@ -17,3 +14,67 @@
   display: flex !important;
   flex: 1 0 0% !important;
 }*/
+
+.rbc-btn-group {
+  font-size: 13px !important;
+}
+
+.rbc-btn-group button {
+  border: none !important;
+  background-color: var(--background) !important;
+  color: var(--background-foreground) !important;
+  margin-left: 2px !important;
+}
+
+.rbc-toolbar button.rbc-active {
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  box-shadow: none !important;
+}
+
+.rbc-off-range-bg {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+.rbc-today {
+  background-color: oklch(from var(--primary) l c h / 0.2) !important;
+  color: var(--foreground) !important;
+}
+
+.rbc-event {
+  background-color: oklch(from var(--primary) l c h / 0.2) !important;
+  color: var(--foreground) !important;
+  border: none !important;
+  outline: none !important;
+  border-radius: 8px !important;
+}
+
+.rbc-time-view {
+  border-color: #eee !important;
+}
+
+.rbc-time-content {
+  border: none !important;
+}
+
+.rbc-time-gutter.rbc-time-column {
+  font-size: 12px !important;
+}
+
+.rbc-time-gutter.rbc-time-column .rbc-timeslot-group {
+  padding: 0px 20px !important;
+}
+
+.rbc-timeslot-group {
+  background-color: var(--card) !important;
+}
+
+.rbc-day-slot {
+  font-size: 14px !important;
+}
+
+.rbc-event-label {
+  color: gray !important;
+  margin-bottom: 5px;
+}

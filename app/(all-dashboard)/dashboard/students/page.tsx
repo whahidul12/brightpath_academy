@@ -4,11 +4,11 @@ import { DashboardAnnouncementContainer } from "@/components/eventComp/Dashboard
 import { DashboardEventContainer } from "@/components/eventComp/dashbooardEventContainer ";
 import Image from "next/image";
 
-export default function AdminPage() {
+export default function StudentsPage() {
   return (
     <div className="flex flex-col justify-between gap-4 p-4 xl:flex-row">
       {/*Left Side DashBoard Panel*/}
-      <div className="md:1/2 bg-card text-card-foreground flex w-full flex-col gap-4 rounded-lg p-4 pt-0 lg:w-2/3">
+      <div className="bg-card text-card-foreground flex w-full flex-col gap-4 rounded-lg p-4 pt-0 xl:w-2/3">
         <div className="mt-4 flex items-center justify-between">
           <h1 className="text-2xl font-bold">Schedule</h1>
           <Image
@@ -21,7 +21,7 @@ export default function AdminPage() {
         <BigCalendar />
       </div>
       {/*Right Side DashBoard Panel*/}
-      <div className="md:1/2 flex w-full flex-col gap-4 lg:w-1/3">
+      <div className="md:1/2 flex w-full flex-col gap-4 xl:w-1/3">
         <EventCalendar />
         <DashboardEventContainer />
         <DashboardAnnouncementContainer />

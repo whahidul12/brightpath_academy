@@ -3,7 +3,7 @@ import { ModeToggle } from "./ModeToggle";
 
 export default function Navbar() {
   return (
-    <div className="flex h-16 items-center justify-end px-6 lg:justify-between">
+    <div className="flex h-16 items-center justify-end px-4 sm:px-6 lg:justify-between">
       {/*Search Bar */}
       <div className="hidden gap-3 rounded-full border border-gray-500 bg-transparent p-2 lg:flex">
         <Image

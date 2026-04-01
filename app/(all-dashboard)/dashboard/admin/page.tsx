@@ -10,7 +10,7 @@ export default function AdminPage() {
   return (
     <div className="flex flex-col justify-between gap-4 p-4 md:flex-row">
       {/*Left Side DashBoard Panel*/}
-      <div className="md:1/2 flex w-full flex-col gap-4 pt-0 lg:w-2/3">
+      <div className="flex w-full flex-col gap-4 pt-0 lg:w-2/3">
         {/*User Card*/}
         <div className="flex flex-wrap justify-between gap-4">
           <UserCard userType="students"></UserCard>
@@ -34,7 +34,7 @@ export default function AdminPage() {
         </div>
       </div>
       {/*Right Side DashBoard Panel*/}
-      <div className="md:1/2 flex w-full flex-col gap-4 lg:w-1/3">
+      <div className="flex w-full flex-col gap-4 lg:w-1/3">
         <EventCalendar />
         <DashboardEventContainer />
         <DashboardAnnouncementContainer />
