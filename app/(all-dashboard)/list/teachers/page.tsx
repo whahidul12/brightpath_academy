@@ -1,7 +1,45 @@
 import Pagination from "@/components/Pagination";
+import Table from "@/components/tableComp/Table";
+import TableRow from "@/components/tableComp/TableRow";
 import TableSearch from "@/components/tableComp/TableSearch";
-import { Table } from "lucide-react";
+import { teachersData } from "@/constants/data";
 import Image from "next/image";
+
+const columns = [
+  {
+    header: "Info",
+    accessor: "info",
+  },
+  {
+    header: "Teacher ID",
+    accessor: "teacherId",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Subjects",
+    accessor: "subjects",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Classes",
+    accessor: "classes",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Phone",
+    accessor: "phone",
+    className: "hidden lg:table-cell",
+  },
+  {
+    header: "Address",
+    accessor: "address",
+    className: "hidden lg:table-cell",
+  },
+  {
+    header: "Actions",
+    accessor: "action",
+  },
+];
 
 export default function TeachersListPage() {
   return (
@@ -41,7 +79,11 @@ export default function TeachersListPage() {
       </div>
       {/*List Section*/}
       <div>
-        <Table />
+        <Table
+          columns={columns}
+          data={teachersData}
+          renderRow={(item) => <TableRow key={item.id} {...item} />}
+        />
       </div>
       {/*Pagination*/}
       <div>
