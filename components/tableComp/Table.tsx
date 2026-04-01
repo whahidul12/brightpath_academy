@@ -1,30 +1,26 @@
-// 1. Update your Table component
-interface TableProps<T> {
-  columns: { header: string; accessor: string; className?: string }[];
-  data: T[];
-  renderRow: (item: T) => React.ReactNode; // Add this!
-}
-
-export default function Table<T extends { id: string | number }>({
+const Table = ({
   columns,
+  renderRow,
   data,
-  renderRow, // Receive it here
-}: TableProps<T>) {
+}: {
+  columns: { header: string; accessor: string; className?: string }[];
+  renderRow: (item: any) => React.ReactNode;
+  data: any[];
+}) => {
   return (
-    <table className="w-full">
+    <table className="mt-4 w-full">
       <thead>
-        <tr className="text-muted-foreground bg-[oklch(from_var(--primary)_l_c_h/0.2)] text-left text-sm">
-          {columns.map((column) => (
-            <th key={column.accessor} className={`${column.className} p-4`}>
-              {column.header}
+        <tr className="text-card-foreground bg-[oklch(from_var(--primary)_l_c_h/0.05)] text-left text-sm">
+          {columns.map((col) => (
+            <th key={col.accessor} className={`${col.className} py-4`}>
+              {col.header}
             </th>
           ))}
         </tr>
       </thead>
-      <tbody>
-        {/* Call the function here instead of hardcoding TableRow */}
-        {data.map((item) => renderRow(item))}
-      </tbody>
+      <tbody>{data.map((item) => renderRow(item))}</tbody>
     </table>
   );
-}
+};
+
+export default Table;

@@ -4,7 +4,6 @@ import "../globals.css";
 import MenuBarWidget from "@/shared/widgets/dashboard/MenuBarWidget";
 import { ThemeProvider } from "@/provider/theme-provider/theme-provider";
 import Navbar from "@/components/Navbar";
-import DashboardPanelWidgets from "@/shared/widgets/dashboard/dashboardPanelWidgets";
 
 const firaSans = Fira_Sans({
   variable: "--font-fira-sans",
