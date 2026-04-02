@@ -10,7 +10,7 @@ const Table = ({
   return (
     <table className="mt-4 w-full">
       <thead>
-        <tr className="text-card-foreground bg-[oklch(from_var(--primary)_l_c_h/0.05)] text-left text-sm">
+        <tr className="text-card-foreground border-b border-gray-200 bg-[oklch(from_var(--primary)_l_c_h/0.05)] text-left text-sm">
           {columns.map((col) => (
             <th key={col.accessor} className={`${col.className} py-4`}>
               {col.header}

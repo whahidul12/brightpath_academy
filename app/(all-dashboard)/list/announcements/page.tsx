@@ -29,7 +29,7 @@ const AnnouncementsListPage = () => {
   const renderRow = (item: Announcement) => (
     <tr
       key={item.id}
-      className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
+      className="border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)] hover:bg-[oklch(from_var(--secondary)_l_c_h/0.1)]"
     >
       <td className="gap-4 p-4 font-semibold">{item.title}</td>
       <td className="hidden gap-4 p-4 font-semibold sm:table-cell">
