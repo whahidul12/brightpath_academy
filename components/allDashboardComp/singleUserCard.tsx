@@ -1,4 +1,5 @@
 import Image from "next/image";
+import FormModal from "../microComponents/FormModal";
 
 export default function SingleUserCard() {
   return (
@@ -15,8 +16,15 @@ export default function SingleUserCard() {
           className="h-36 w-36 rounded-lg object-cover"
         />
         <div className="space-y-2">
-          <h1 className="text-2xl font-semibold">Name Of Mine</h1>
-          <p className="text-gray-600">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-semibold">Name Of Mine</h1>
+            <FormModal
+              table="teacher"
+              type="update"
+              data={{ username: "myname", email: "myname@gmail.com" }}
+            />
+          </div>
+          <p className="text-gray-500">
             Lorem one two thre sgjo sjops sjgs gspjs gspg psg spgsg spg spggspgg
             psg spgsg spgs gspg sp
           </p>

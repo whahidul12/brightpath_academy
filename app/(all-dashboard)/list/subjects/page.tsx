@@ -1,10 +1,10 @@
+import FormModal from "@/components/microComponents/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
 import { role, subjectsData } from "@/constants/data";
 import { Subject } from "@/shared/types/types";
 import Image from "next/image";
-import Link from "next/link";
 
 const columns = [
   {
@@ -32,16 +32,21 @@ const SubjectsListPage = () => {
       <td className="hidden md:table-cell">{item.teachers.join(",")}</td>
       <td>
         <div className="flex items-center gap-2">
-          <Link href={`/list/teachers/${item.id}`}>
-            <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg p-2">
-              <Image src="/icons/edit.png" alt="" width={20} height={20} />
-            </button>
-          </Link>
           {role === "admin" && (
-            <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
-              <Image src="/icons/bin.png" alt="" width={20} height={20} />
-            </button>
-            // <FormModal table="student" type="delete" id={item.id}/>
+            <>
+              {/*<Link href={`/list/student/${item.id}`}>
+              <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
+                <Image src="/icons/delete.png" alt="" width={20} height={20} />
+              </button>
+            </Link>
+            <Link href={`/list/student/${item.id}`}>
+              <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
+                <Image src="/icons/delete.png" alt="" width={20} height={20} />
+              </button>
+              </Link>*/}
+              <FormModal table="student" type="update" id={item.id} />
+              <FormModal table="student" type="delete" id={item.id} />
+            </>
           )}
         </div>
       </td>
@@ -63,10 +68,10 @@ const SubjectsListPage = () => {
               <Image src="/icons/sort.png" alt="" width={20} height={20} />
             </button>
             {role === "admin" && (
-              <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
-                <Image src="/icons/add.png" alt="" width={20} height={20} />
-              </button>
-              // <FormModal table="teacher" type="create"/>
+              // <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
+              //   <Image src="/icons/add.png" alt="" width={20} height={20} />
+              // </button>
+              <FormModal table="subject" type="create" />
             )}
           </div>
         </div>

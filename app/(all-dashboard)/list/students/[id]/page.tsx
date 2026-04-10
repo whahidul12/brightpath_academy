@@ -5,7 +5,7 @@ import Link from "next/link";
 import Performance from "@/components/charts/Performance";
 import { DashboardAnnouncementContainer } from "@/components/eventComp/DashboardAnnouncementContainer";
 
-export default function SingleTeacherPage() {
+export default function SingleStudentPage() {
   return (
     <div className="flex flex-col justify-between gap-4 p-4 md:flex-row">
       {/*Left Side DashBoard Panel*/}
@@ -19,18 +19,18 @@ export default function SingleTeacherPage() {
           {/*Small card*/}
           <div className="flex flex-wrap justify-between gap-4 xl:w-1/2">
             <SingleUserStates
-              type="teacher"
+              type="student"
               data="90%"
               image="singleAttendance"
             />
-            <SingleUserStates type="teacher" data="90%" image="singleBranch" />
+            <SingleUserStates type="student" data="90%" image="singleBranch" />
             <SingleUserStates
-              type="teacher"
+              type="student"
               data="90%"
               image="singleAttendance"
             />
             <SingleUserStates
-              type="teacher"
+              type="student"
               data="90%"
               image="singleAttendance"
             />
@@ -45,7 +45,7 @@ export default function SingleTeacherPage() {
       {/*Right Side DashBoard Panel*/}
       {/*<div className="flex w-full flex-col gap-4 lg:w-1/3">right</div>*/}
       <div className="flex w-full flex-col gap-4 xl:w-1/3">
-        <div className="rounded-md bg-white p-4">
+        <div className="bg-card rounded-md p-4">
           <h1 className="text-xl font-semibold">Shortcuts</h1>
           <div className="mt-4 flex flex-wrap gap-4 text-xs text-gray-500">
             <Link
