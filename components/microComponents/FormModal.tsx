@@ -4,9 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { DeleteConfirmation } from "../modals/DeleteConfirmation";
 import dynamic from "next/dynamic";
-import ClassForm from "../forms/ClassForm";
-import ExamForm from "../forms/ExamForm";
-import SubjectForm from "../forms/SubjectForm";
 
 const TeacherForm = dynamic(
   () => import("../forms/TeacherForm").then((mod) => mod.TeacherForm),
@@ -24,9 +21,6 @@ const forms: {
 } = {
   teacher: (type, data) => <TeacherForm type={type} data={data} />,
   student: (type, data) => <StudentForm type={type} data={data} />,
-  class: (type, data) => <ClassForm type={type} data={data} />,
-  exam: (type, data) => <ExamForm type={type} data={data} />,
-  subject: (type, data) => <SubjectForm type={type} data={data} />,
 };
 
 export default function FormModal({

@@ -147,7 +147,10 @@ export const StudentForm = ({
           )}
         </div>
       </div>
-      <button type="submit" className="">
+      <button
+        type="submit"
+        className="bg-primary text-primary-foreground mx-auto w-fit rounded-lg px-4 py-2 hover:cursor-pointer active:translate-y-1"
+      >
         {type === "create" ? "Create" : "Update"}
       </button>
     </form>

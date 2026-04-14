@@ -3,7 +3,8 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
 import { role, teachersData } from "@/constants/data";
-import { Teacher } from "@/shared/types/types";
+import { TeacherList } from "@/shared/types/types";
+import { prisma } from "@/src";
 import Image from "next/image";
 
 const columns = [
@@ -42,15 +43,15 @@ const columns = [
   },
 ];
 
-const TeacherListPage = () => {
-  const renderRow = (item: Teacher) => (
+const renderRow = (item: TeacherList) => {
+  return (
     <tr
       key={item.id}
       className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
     >
       <td className="flex items-center gap-4 p-4">
         <Image
-          src={item.photo}
+          src={item.img || "/icons/noAvatar.png"}
           alt=""
           width={40}
           height={40}
@@ -61,7 +62,7 @@ const TeacherListPage = () => {
           <p className="text-xs text-gray-500">{item?.email}</p>
         </div>
       </td>
-      <td className="hidden md:table-cell">{item.teacherId}</td>
+      <td className="hidden md:table-cell">{item.username}</td>
       <td className="hidden md:table-cell">{item.subjects.join(",")}</td>
       <td className="hidden md:table-cell">{item.classes.join(",")}</td>
       <td className="hidden lg:table-cell">{item.phone}</td>
@@ -88,7 +89,11 @@ const TeacherListPage = () => {
       </td>
     </tr>
   );
+};
 
+const TeacherListPage = async () => {
+  const Teacher = await prisma.teacher.findMany();
+  console.log(Teacher);
   return (
     <div className="bg-card m-4 mt-0 flex-1 rounded-md p-4">
       {/* TOP */}

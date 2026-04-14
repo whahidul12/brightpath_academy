@@ -1,13 +1,7 @@
-export type Teacher = {
-  id: number;
-  teacherId: string;
-  name: string;
-  email?: string;
-  photo: string;
-  phone: string;
-  subjects: string[];
-  classes: string[];
-  address: string;
+import { Subject, Teacher, Lesson, Class } from "@/src/generated/prisma/client";
+
+export type TeacherList = Teacher & { subjects: Subject[] } & {
+  classes: Class[];
 };
 
 export type Student = {
@@ -31,26 +25,26 @@ export type Parent = {
   address: string;
 };
 
-export type Subject = {
-  id: number;
-  name: string;
-  teachers: string[];
-};
+// export type Subject = {
+//   id: number;
+//   name: string;
+//   teachers: string[];
+// };
 
-export type Class = {
-  id: number;
-  name: string;
-  capacity: number;
-  grade: number;
-  supervisor: string;
-};
+// export type Class = {
+//   id: number;
+//   name: string;
+//   capacity: number;
+//   grade: number;
+//   supervisor: string;
+// };
 
-export type Lesson = {
-  id: number;
-  subject: string;
-  class: string;
-  teacher: string;
-};
+// export type Lesson = {
+//   id: number;
+//   subject: string;
+//   class: string;
+//   teacher: string;
+// };
 
 export type Exam = {
   id: number;
