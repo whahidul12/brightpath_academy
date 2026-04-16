@@ -5,6 +5,7 @@ import TableSearch from "@/components/tableComp/TableSearch";
 import { role, studentsData } from "@/constants/data";
 import { Student } from "@/shared/types/types";
 import Image from "next/image";
+import Link from "next/link";
 
 const columns = [
   {
@@ -64,17 +65,17 @@ const StudentListPage = () => {
         <div className="flex items-center gap-2">
           {role === "admin" && (
             <>
+              <Link href={`/list/students/${item.id}`}>
+                <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg p-2">
+                  <Image src="/icons/info.png" alt="" width={20} height={20} />
+                </button>
+              </Link>
               {/*<Link href={`/list/student/${item.id}`}>
               <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
-            </Link>
-            <Link href={`/list/student/${item.id}`}>
-              <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
-                <Image src="/icons/delete.png" alt="" width={20} height={20} />
-              </button>
               </Link>*/}
-              <FormModal table="student" type="update" id={item.id} />
+              {/*<FormModal table="student" type="update" id={item.id} />*/}
               <FormModal table="student" type="delete" id={item.id} />
             </>
           )}

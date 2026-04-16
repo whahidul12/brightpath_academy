@@ -1,7 +1,7 @@
 "use client";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const Pagination = ({
   currentPage,
@@ -11,14 +11,16 @@ const Pagination = ({
   count: number;
 }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const isPreviousDisabled = currentPage <= 1;
   const isNextDisabled = currentPage >= Math.ceil(count / ITEM_PER_PAGE);
 
   const handlePageChange = (pageNo: number) => {
-    const parems = new URLSearchParams(window.location.search);
-    parems.set("page", pageNo.toString());
-    router.push(`${window.location.pathname}?${parems.toString()}`);
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", pageNo.toString());
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   return (

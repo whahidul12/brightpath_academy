@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { DeleteConfirmation } from "../modals/DeleteConfirmation";
 import dynamic from "next/dynamic";
+import { CardType } from "@/shared/types/types";
 
 const TeacherForm = dynamic(
   () => import("../forms/TeacherForm").then((mod) => mod.TeacherForm),
@@ -29,19 +30,7 @@ export default function FormModal({
   data,
   id,
 }: {
-  table:
-    | "student"
-    | "teacher"
-    | "parent"
-    | "subject"
-    | "class"
-    | "lesson"
-    | "assignment"
-    | "exam"
-    | "result"
-    | "attendance"
-    | "event"
-    | "announcement";
+  table: CardType;
   type: "create" | "update" | "delete";
   data?: any;
   id?: number;

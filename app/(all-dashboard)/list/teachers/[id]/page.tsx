@@ -14,7 +14,7 @@ export default function SingleTeacherPage() {
         <div className="flex flex-col gap-4 xl:flex-row">
           {/*Single User card*/}
           <div className="bg-primary/20 text-card-foreground rounded-lg p-4 xl:w-1/2">
-            <SingleUserCard />
+            <SingleUserCard type={"teacher"} />
           </div>
           {/*Small card*/}
           <div className="flex flex-wrap justify-between gap-4 xl:w-1/2">
@@ -45,7 +45,7 @@ export default function SingleTeacherPage() {
       {/*Right Side DashBoard Panel*/}
       {/*<div className="flex w-full flex-col gap-4 lg:w-1/3">right</div>*/}
       <div className="flex w-full flex-col gap-4 xl:w-1/3">
-        <div className="rounded-md bg-white p-4">
+        <div className="bg-card text-card-foreground rounded-md p-4">
           <h1 className="text-xl font-semibold">Shortcuts</h1>
           <div className="mt-4 flex flex-wrap gap-4 text-xs text-gray-500">
             <Link

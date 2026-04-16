@@ -35,3 +35,17 @@ export type ResultList = Result;
 export type EventList = Event;
 
 export type AnnouncementList = Announcement;
+
+export type CardType =
+  | "student"
+  | "teacher"
+  | "parent"
+  | "subject"
+  | "class"
+  | "lesson"
+  | "assignment"
+  | "exam"
+  | "result"
+  | "attendance"
+  | "event"
+  | "announcement";

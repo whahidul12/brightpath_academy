@@ -14,7 +14,7 @@ export default function SingleStudentPage() {
         <div className="flex flex-col gap-4 xl:flex-row">
           {/*Single User card*/}
           <div className="bg-primary/20 text-card-foreground rounded-lg p-4 xl:w-1/2">
-            <SingleUserCard />
+            <SingleUserCard type={"student"} />
           </div>
           {/*Small card*/}
           <div className="flex flex-wrap justify-between gap-4 xl:w-1/2">
@@ -52,31 +52,31 @@ export default function SingleStudentPage() {
               className="bg-primary/20 text-card-foreground rounded-md p-3"
               href={`#`}
             >
-              Teacher&apos;s Classes
+              Student&apos;s Classes
+            </Link>
+            <Link
+              className="bg-primary/20 text-card-foreground rounded-md p-3"
+              href={`/list/teachers?classId=2`}
+            >
+              Student&apos;s Teachers
             </Link>
             <Link
               className="bg-primary/20 text-card-foreground rounded-md p-3"
               href={`#`}
             >
-              Teacher&apos;s Students
+              Student&apos;s Lessons
             </Link>
             <Link
               className="bg-primary/20 text-card-foreground rounded-md p-3"
               href={`#`}
             >
-              Teacher&apos;s Lessons
+              Student&apos;s Exams
             </Link>
             <Link
               className="bg-primary/20 text-card-foreground rounded-md p-3"
               href={`#`}
             >
-              Teacher&apos;s Exams
-            </Link>
-            <Link
-              className="bg-primary/20 text-card-foreground rounded-md p-3"
-              href={`#`}
-            >
-              Teacher&apos;s Assignments
+              Student&apos;s Assignments
             </Link>
           </div>
         </div>

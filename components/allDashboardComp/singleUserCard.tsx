@@ -1,7 +1,8 @@
 import Image from "next/image";
 import FormModal from "../microComponents/FormModal";
+import { CardType } from "@/shared/types/types";
 
-export default function SingleUserCard() {
+export default function SingleUserCard({ type }: { type: CardType }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-4">
@@ -19,7 +20,7 @@ export default function SingleUserCard() {
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold">Name Of Mine</h1>
             <FormModal
-              table="teacher"
+              table={type}
               type="update"
               data={{ username: "myname", email: "myname@gmail.com" }}
             />
