@@ -16,6 +16,7 @@ export default function TableSearch() {
 
     const params = new URLSearchParams(searchParams.toString());
     params.set("search", value);
+    params.set("page", "1");
 
     router.push(`${pathname}?${params.toString()}`);
   };

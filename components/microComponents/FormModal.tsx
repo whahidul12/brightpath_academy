@@ -33,7 +33,7 @@ export default function FormModal({
   table: CardType;
   type: "create" | "update" | "delete";
   data?: any;
-  id?: number;
+  id?: number | string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const renderContent = () => {

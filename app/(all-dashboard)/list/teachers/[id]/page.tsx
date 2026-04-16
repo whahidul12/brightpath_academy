@@ -56,7 +56,7 @@ export default function SingleTeacherPage() {
             </Link>
             <Link
               className="bg-primary/20 text-card-foreground rounded-md p-3"
-              href={`#`}
+              href={`/list/students?teacherId=${"teacher2"}`}
             >
               Teacher&apos;s Students
             </Link>

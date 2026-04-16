@@ -16,9 +16,9 @@ export type TeacherList = Teacher & { subjects: Subject[] } & {
   classes: Class[];
 };
 
-export type StudentList = Student;
+export type StudentList = Student & { class: Class };
 
-export type ParentList = Parent;
+export type ParentList = Parent & { students: Student[] };
 
 export type SubjectList = Subject;
 
