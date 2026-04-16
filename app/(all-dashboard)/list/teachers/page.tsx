@@ -2,7 +2,8 @@ import FormModal from "@/components/microComponents/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
-import { role, teachersData } from "@/constants/data";
+import { role } from "@/constants/data";
+import { ITEM_PER_PAGE } from "@/lib/settings";
 import { TeacherList } from "@/shared/types/types";
 import { prisma } from "@/src";
 import Image from "next/image";
@@ -63,8 +64,12 @@ const renderRow = (item: TeacherList) => {
         </div>
       </td>
       <td className="hidden md:table-cell">{item.username}</td>
-      <td className="hidden md:table-cell">{item.subjects.join(",")}</td>
-      <td className="hidden md:table-cell">{item.classes.join(",")}</td>
+      <td className="hidden md:table-cell">
+        {item.subjects.map((subject) => subject.name).join(",")}
+      </td>
+      <td className="hidden md:table-cell">
+        {item.classes.map((cls) => cls.name).join(",")}
+      </td>
       <td className="hidden lg:table-cell">{item.phone}</td>
       <td className="hidden lg:table-cell">{item.address}</td>
       <td>
@@ -91,9 +96,25 @@ const renderRow = (item: TeacherList) => {
   );
 };
 
-const TeacherListPage = async () => {
-  const Teacher = await prisma.teacher.findMany();
-  console.log(Teacher);
+const TeacherListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...searchQueries } = await searchParams;
+  const currentPage = page ? parseInt(page) : 1;
+  const [TeacherData, count] = await prisma.$transaction([
+    prisma.teacher.findMany({
+      include: {
+        subjects: true,
+        classes: true,
+      },
+      take: ITEM_PER_PAGE,
+      skip: (currentPage - 1) * ITEM_PER_PAGE,
+    }),
+    prisma.teacher.count(),
+  ]);
+
   return (
     <div className="bg-card m-4 mt-0 flex-1 rounded-md p-4">
       {/* TOP */}
@@ -118,9 +139,9 @@ const TeacherListPage = async () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={teachersData} />
+      <Table columns={columns} renderRow={renderRow} data={TeacherData} />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination currentPage={currentPage} count={count} />
     </div>
   );
 };
