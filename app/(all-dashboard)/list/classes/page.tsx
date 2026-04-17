@@ -2,8 +2,11 @@ import FormModal from "@/components/microComponents/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
-import { classesData, role } from "@/constants/data";
-import { Class } from "@/shared/types/types";
+import { role } from "@/constants/data";
+import { ITEM_PER_PAGE } from "@/lib/settings";
+import { ClassList } from "@/shared/types/types";
+import { prisma } from "@/src";
+import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 
 const columns = [
@@ -31,22 +34,22 @@ const columns = [
     accessor: "action",
   },
 ];
-
-const SubjectsListPage = () => {
-  const renderRow = (item: Class) => (
-    <tr
-      key={item.id}
-      className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
-    >
-      <td className="flex items-center gap-4 p-4 font-semibold">{item.name}</td>
-      <td className="hidden md:table-cell">{item.capacity}</td>
-      <td className="table-cell">{item.grade}</td>
-      <td className="hidden sm:table-cell">{item.supervisor}</td>
-      <td>
-        <div className="flex items-center gap-2">
-          {role === "admin" && (
-            <>
-              {/*<Link href={`/list/class/${item.id}`}>
+const renderRow = (item: ClassList) => (
+  <tr
+    key={item.id}
+    className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
+  >
+    <td className="flex items-center gap-4 p-4 font-semibold">{item.name}</td>
+    <td className="hidden md:table-cell">{item.capacity}</td>
+    <td className="table-cell">{item.name[0]}</td>
+    <td className="hidden sm:table-cell">
+      {item.supervisor.name + " " + item.supervisor.surname}
+    </td>
+    <td>
+      <div className="flex items-center gap-2">
+        {role === "admin" && (
+          <>
+            {/*<Link href={`/list/class/${item.id}`}>
               <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
@@ -56,15 +59,55 @@ const SubjectsListPage = () => {
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-              <FormModal table="class" type="update" id={item.id} />
-              <FormModal table="class" type="delete" id={item.id} />
-            </>
-          )}
-        </div>
-      </td>
-    </tr>
-  );
+            <FormModal table="class" type="update" id={item.id} />
+            <FormModal table="class" type="delete" id={item.id} />
+          </>
+        )}
+      </div>
+    </td>
+  </tr>
+);
 
+const SubjectsListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...searchQueries } = await searchParams;
+  const currentPage = page ? parseInt(page) : 1;
+
+  // URL param Rules=============================
+  const queryParams: Prisma.ClassWhereInput = {};
+  if (searchQueries) {
+    for (const [key, value] of Object.entries(searchQueries)) {
+      if (value != undefined) {
+        switch (key) {
+          case "search":
+            queryParams.name = { contains: value, mode: "insensitive" };
+            break;
+          case "supervisorId":
+            queryParams.supervisorId = value;
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+
+  const [ClassData, count] = await prisma.$transaction([
+    prisma.class.findMany({
+      where: queryParams,
+      include: {
+        supervisor: true,
+      },
+      take: ITEM_PER_PAGE,
+      skip: (currentPage - 1) * ITEM_PER_PAGE,
+    }),
+    prisma.class.count({
+      where: queryParams,
+    }),
+  ]);
   return (
     <div className="bg-card m-4 mt-0 flex-1 rounded-md p-4">
       {/* TOP */}
@@ -89,9 +132,17 @@ const SubjectsListPage = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={classesData} />
+      {ClassData.length === 0 ? (
+        <div className="p-10 text-center text-gray-500">
+          No parents found matching &quot;{searchQueries.search}&quot;
+        </div>
+      ) : (
+        <Table columns={columns} renderRow={renderRow} data={ClassData} />
+      )}
       {/* PAGINATION */}
-      <Pagination />
+      {count >= ITEM_PER_PAGE && (
+        <Pagination currentPage={currentPage} count={count} />
+      )}
     </div>
   );
 };

@@ -50,7 +50,7 @@ export default function SingleTeacherPage() {
           <div className="mt-4 flex flex-wrap gap-4 text-xs text-gray-500">
             <Link
               className="bg-primary/20 text-card-foreground rounded-md p-3"
-              href={`#`}
+              href={`/list/classes?supervisorId=${"teacher2"}`}
             >
               Teacher&apos;s Classes
             </Link>
@@ -62,19 +62,19 @@ export default function SingleTeacherPage() {
             </Link>
             <Link
               className="bg-primary/20 text-card-foreground rounded-md p-3"
-              href={`#`}
+              href={`/list/lessons?teacherId=${"teacher2"}`}
             >
               Teacher&apos;s Lessons
             </Link>
             <Link
               className="bg-primary/20 text-card-foreground rounded-md p-3"
-              href={`#`}
+              href={`/list/exams?teacherId=${"teacher2"}`}
             >
               Teacher&apos;s Exams
             </Link>
             <Link
               className="bg-primary/20 text-card-foreground rounded-md p-3"
-              href={`#`}
+              href={`/list/assignments?teacherId=${"teacher2"}`}
             >
               Teacher&apos;s Assignments
             </Link>

@@ -2,8 +2,11 @@ import FormModal from "@/components/microComponents/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
-import { lessonsData, role } from "@/constants/data";
-import { Lesson } from "@/shared/types/types";
+import { role } from "@/constants/data";
+import { ITEM_PER_PAGE } from "@/lib/settings";
+import { LessonList } from "@/shared/types/types";
+import { prisma } from "@/src";
+import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 
 const columns = [
@@ -25,21 +28,21 @@ const columns = [
     accessor: "action",
   },
 ];
-
-const LessonsListPage = () => {
-  const renderRow = (item: Lesson) => (
-    <tr
-      key={item.id}
-      className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
-    >
-      <td className="gap-4 p-4 font-semibold">{item.subject}</td>
-      <td className="gap-4 p-4 font-semibold">{item.class}</td>
-      <td className="gap-4 p-4 font-semibold md:table-cell">{item.teacher}</td>
-      <td>
-        <div className="flex items-center gap-2">
-          {role === "admin" && (
-            <>
-              {/*<Link href={`/list/lesson/${item.id}`}>
+const renderRow = (item: LessonList) => (
+  <tr
+    key={item.id}
+    className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
+  >
+    <td className="gap-4 p-4 font-semibold">{item.subject.name}</td>
+    <td className="gap-4 p-4 font-semibold">{item.class.name}</td>
+    <td className="gap-4 p-4 font-semibold md:table-cell">
+      {item.teacher.name + " " + item.teacher.surname}
+    </td>
+    <td>
+      <div className="flex items-center gap-2">
+        {role === "admin" && (
+          <>
+            {/*<Link href={`/list/lesson/${item.id}`}>
               <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
@@ -49,15 +52,65 @@ const LessonsListPage = () => {
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-              <FormModal table="lesson" type="update" id={item.id} />
-              <FormModal table="lesson" type="delete" id={item.id} />
-            </>
-          )}
-        </div>
-      </td>
-    </tr>
-  );
+            <FormModal table="lesson" type="update" id={item.id} />
+            <FormModal table="lesson" type="delete" id={item.id} />
+          </>
+        )}
+      </div>
+    </td>
+  </tr>
+);
 
+const LessonsListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...searchQueries } = await searchParams;
+  const currentPage = page ? parseInt(page) : 1;
+
+  // URL param Rules=============================
+  const queryParams: Prisma.LessonWhereInput = {};
+  if (searchQueries) {
+    for (const [key, value] of Object.entries(searchQueries)) {
+      if (value != undefined) {
+        switch (key) {
+          case "classId":
+            queryParams.classId = parseInt(value);
+            break;
+          case "teacherId":
+            queryParams.teacherId = value;
+            break;
+          case "search":
+            queryParams.OR = [
+              { subject: { name: { contains: value, mode: "insensitive" } } },
+              {
+                teacher: { surname: { contains: value, mode: "insensitive" } },
+              },
+            ];
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+
+  const [LessonData, count] = await prisma.$transaction([
+    prisma.lesson.findMany({
+      where: queryParams,
+      include: {
+        subject: { select: { name: true } },
+        class: { select: { name: true } },
+        teacher: { select: { name: true, surname: true } },
+      },
+      take: ITEM_PER_PAGE,
+      skip: (currentPage - 1) * ITEM_PER_PAGE,
+    }),
+    prisma.lesson.count({
+      where: queryParams,
+    }),
+  ]);
   return (
     <div className="bg-card m-4 mt-0 flex-1 rounded-md p-4">
       {/* TOP */}
@@ -82,9 +135,17 @@ const LessonsListPage = () => {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={lessonsData} />
+      {LessonData.length === 0 ? (
+        <div className="p-10 text-center text-gray-500">
+          No parents found matching &quot;{searchQueries.search}&quot;
+        </div>
+      ) : (
+        <Table columns={columns} renderRow={renderRow} data={LessonData} />
+      )}
       {/* PAGINATION */}
-      <Pagination />
+      {count >= ITEM_PER_PAGE && (
+        <Pagination currentPage={currentPage} count={count} />
+      )}
     </div>
   );
 };

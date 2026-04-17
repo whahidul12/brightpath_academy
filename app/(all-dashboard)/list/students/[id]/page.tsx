@@ -50,9 +50,9 @@ export default function SingleStudentPage() {
           <div className="mt-4 flex flex-wrap gap-4 text-xs text-gray-500">
             <Link
               className="bg-primary/20 text-card-foreground rounded-md p-3"
-              href={`#`}
+              href={`/list/lessons?classId=${2}`}
             >
-              Student&apos;s Classes
+              Student&apos;s Lessons
             </Link>
             <Link
               className="bg-primary/20 text-card-foreground rounded-md p-3"
@@ -62,21 +62,21 @@ export default function SingleStudentPage() {
             </Link>
             <Link
               className="bg-primary/20 text-card-foreground rounded-md p-3"
-              href={`#`}
-            >
-              Student&apos;s Lessons
-            </Link>
-            <Link
-              className="bg-primary/20 text-card-foreground rounded-md p-3"
-              href={`#`}
+              href={`/list/exams?classId=${2}`}
             >
               Student&apos;s Exams
             </Link>
             <Link
               className="bg-primary/20 text-card-foreground rounded-md p-3"
-              href={`#`}
+              href={`/list/assignments?classId=${2}`}
             >
               Student&apos;s Assignments
+            </Link>
+            <Link
+              className="bg-primary/20 text-card-foreground rounded-md p-3"
+              href={`/list/results?classId=${2}`}
+            >
+              Student&apos;s Results
             </Link>
           </div>
         </div>
