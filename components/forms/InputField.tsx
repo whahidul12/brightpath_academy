@@ -1,4 +1,4 @@
-import { FieldError } from "react-hook-form";
+import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 
 export const InputField = ({
   label,
@@ -11,7 +11,7 @@ export const InputField = ({
   label: string;
   type: string;
   register: any;
-  error?: FieldError;
+  error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
   name: string;
   defaultValue?: string;
 }) => {
@@ -25,7 +25,9 @@ export const InputField = ({
         className="ring-1"
       />
       {error?.message && (
-        <p className="text-red-500">{error.message.toString()}</p>
+        <p className="text-xs text-red-500">
+          {(error.message as any).toString()}
+        </p>
       )}
     </div>
   );

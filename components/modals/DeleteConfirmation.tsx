@@ -2,7 +2,7 @@ export const DeleteConfirmation = ({
   id,
   table,
 }: {
-  id?: number | undefined;
+  id?: number | string;
   table: string;
 }) => {
   return id ? (

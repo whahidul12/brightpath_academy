@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import Image from "next/image";
 import { useState } from "react";
 import { DeleteConfirmation } from "../modals/DeleteConfirmation";
@@ -18,7 +18,7 @@ const StudentForm = dynamic(
 
 // 1. Move this outside or into a separate config file
 const forms: {
-  [key: string]: (type: "create" | "update", data?: any) => JSX.Element;
+  [key: string]: (type: "create" | "update", data?: any) => React.JSX.Element;
 } = {
   teacher: (type, data) => <TeacherForm type={type} data={data} />,
   student: (type, data) => <StudentForm type={type} data={data} />,

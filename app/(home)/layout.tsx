@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Fira_Sans } from "next/font/google";
 import "../globals.css";
-import Navbar from "@/components/Navbar";
+
 import { ThemeProvider } from "@/provider/theme-provider/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 
