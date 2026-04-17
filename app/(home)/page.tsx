@@ -1,3 +1,11 @@
-export default function Home() {
-  return <h1>amin=================hello </h1>;
+import { ModeToggle } from "@/components/ModeToggle";
+import { SignIn } from "@clerk/nextjs";
+
+export default function HomePage() {
+  return (
+    <>
+      <SignIn />
+      <ModeToggle />
+    </>
+  );
 }

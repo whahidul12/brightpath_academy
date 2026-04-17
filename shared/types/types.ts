@@ -56,9 +56,9 @@ export type ResultList = {
   startTime: Date;
 };
 
-export type EventList = Event;
+export type EventList = Event & { class: Class };
 
-export type AnnouncementList = Announcement;
+export type AnnouncementList = Announcement & { class: Class };
 
 export type CardType =
   | "student"

@@ -169,9 +169,17 @@ const TeacherListPage = async ({
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={TeacherData} />
+      {TeacherData.length === 0 ? (
+        <div className="p-10 text-center text-gray-500">
+          No parents found matching &quot;{searchQueries.search}&quot;
+        </div>
+      ) : (
+        <Table columns={columns} renderRow={renderRow} data={TeacherData} />
+      )}
       {/* PAGINATION */}
-      <Pagination currentPage={currentPage} count={count} />
+      {count >= ITEM_PER_PAGE && (
+        <Pagination currentPage={currentPage} count={count} />
+      )}
     </div>
   );
 };

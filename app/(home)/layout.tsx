@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Fira_Sans } from "next/font/google";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
+import { ThemeProvider } from "@/provider/theme-provider/theme-provider";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const firaSans = Fira_Sans({
   variable: "--font-fira-sans",
@@ -25,10 +27,13 @@ export default function RootLayout({
       className={`${firaSans.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col" suppressHydrationWarning>
-        <Navbar></Navbar>
-        {children}
-        <div className="bg-green-500">footer</div>
+      <body
+        className="flex min-h-full flex-col items-center justify-center"
+        suppressHydrationWarning
+      >
+        <ClerkProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
