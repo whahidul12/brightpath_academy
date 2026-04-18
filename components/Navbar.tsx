@@ -1,8 +1,12 @@
 import Image from "next/image";
 import { ModeToggle } from "./ModeToggle";
 import { UserButton } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
-export default function Navbar() {
+const { sessionClaims } = await auth();
+const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+export default async function Navbar() {
   return (
     <div className="flex h-16 items-center justify-end px-4 sm:px-6 lg:justify-between">
       {/*Search Bar */}
@@ -48,7 +52,7 @@ export default function Navbar() {
         <div className="flex flex-col">
           <span className="">Jhon Doe</span>
           <span className="text-shadow-card-foreground text-right text-xs">
-            Admin
+            {role}
           </span>
         </div>
         <div>

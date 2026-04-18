@@ -1,9 +1,12 @@
-import { role } from "@/constants/data";
 import menuItems from "@/constants/menuItems";
+import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function MenuBar() {
+export default async function MenuBar() {
+  const user = await currentUser();
+  const role = user?.publicMetadata.role;
+
   return (
     <>
       {menuItems.map((category) => (
@@ -14,7 +17,6 @@ export default function MenuBar() {
           <span className="mt-4 font-bold">{category.title}</span>
           {category.items.map(
             (item) =>
-              // 1. Check visibility condition first
               item.visible.includes(role) && (
                 <Link
                   key={item.label}

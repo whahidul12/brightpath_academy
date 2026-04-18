@@ -66,13 +66,21 @@ const LoginPage = () => {
 
   return (
     <div className="bg-background flex h-screen items-center justify-center">
-      <div className="flex flex-col gap-2 rounded-md bg-white p-12 shadow-2xl">
+      <div className="bg-card text-card-foreground flex flex-col gap-2 rounded-md p-12 shadow-2xl">
         {/* Brand header */}
-        <h1 className="flex items-center gap-2 text-xl font-bold">
-          <Image src="/icons/logo.png" alt="logo" width={24} height={24} />
-          SchooLama
-        </h1>
-        <h2 className="text-gray-400">Sign in to your account</h2>
+        <div className="flex flex-col items-center gap-2">
+          <Image
+            src={"/branding/brand-logo.png"}
+            alt={"brand-logo"}
+            width={32}
+            height={32}
+            className="w-8 sm:w-10"
+          ></Image>
+          <h1 className="text-card-foreground flex items-center gap-2 text-xl font-bold">
+            BrightPath Academy
+          </h1>
+        </div>
+        <h2 className="text-center text-gray-400">Sign in to your account</h2>
 
         <form onSubmit={handleSubmit} className="mt-1 flex flex-col gap-2">
           {/* Username */}
@@ -86,7 +94,7 @@ const LoginPage = () => {
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
               className="rounded-md p-2 ring-1 ring-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              placeholder="admin"
+              placeholder="username123"
               autoComplete="username"
               required
               disabled={loading}
@@ -104,7 +112,7 @@ const LoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="rounded-md p-2 ring-1 ring-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              placeholder="••••••••"
+              placeholder="••••••••••••"
               autoComplete="current-password"
               required
               disabled={loading}

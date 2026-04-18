@@ -2,12 +2,15 @@ import FormModal from "@/components/microComponents/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
-import { role } from "@/constants/data";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { AnnouncementList } from "@/shared/types/types";
 import { prisma } from "@/src";
 import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
+import { auth } from "@clerk/nextjs/server";
+
+const { sessionClaims } = await auth();
+const role = (sessionClaims?.metadata as { role?: string })?.role;
 
 const columns = [
   {
@@ -23,11 +26,16 @@ const columns = [
     header: "Date",
     accessor: "date",
   },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
+  ...(role === "admin"
+    ? [
+        {
+          header: "Actions",
+          accessor: "action",
+        },
+      ]
+    : []),
 ];
+
 const renderRow = (item: AnnouncementList) => (
   <tr
     key={item.id}
@@ -54,8 +62,9 @@ const renderRow = (item: AnnouncementList) => (
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-            <FormModal table="announcement" type="update" id={item.id} />
+
             <FormModal table="announcement" type="delete" id={item.id} />
+            <FormModal table="announcement" type="update" id={item.id} />
           </>
         )}
       </div>
