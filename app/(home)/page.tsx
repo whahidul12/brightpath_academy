@@ -1,11 +1,11 @@
-import { ModeToggle } from "@/components/ModeToggle";
-import { SignIn } from "@clerk/nextjs";
+"use client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
-  return (
-    <>
-      <SignIn />
-      <ModeToggle />
-    </>
-  );
+  const router = useRouter();
+  useEffect(() => {
+    router.push("/sign-in");
+  }, [router]);
+  return null;
 }

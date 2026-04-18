@@ -27,10 +27,7 @@ export default function RootLayout({
       className={`${firaSans.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body
-        className="flex min-h-full flex-col items-center justify-center"
-        suppressHydrationWarning
-      >
+      <body className="bg-background min-h-full" suppressHydrationWarning>
         <ClerkProvider>
           <ThemeProvider>{children}</ThemeProvider>
         </ClerkProvider>

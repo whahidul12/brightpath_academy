@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { ModeToggle } from "./ModeToggle";
+import { UserButton } from "@clerk/nextjs";
 
 export default function Navbar() {
   return (
@@ -51,13 +52,14 @@ export default function Navbar() {
           </span>
         </div>
         <div>
-          <Image
+          {/*<Image
             src="/icons/avatar.png"
             alt="user-avatar"
             width={40}
             height={40}
             className="w-10 rounded-full"
-          />
+          />*/}
+          <UserButton />
         </div>
       </div>
     </div>
