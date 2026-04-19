@@ -7,10 +7,12 @@ import { ResultList } from "@/shared/types/types";
 import { prisma } from "@/src";
 import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
-import { getRole, getCurrentUserId } from "@/lib/helper";
+import { auth } from "@clerk/nextjs/server";
 
-const role = await getRole();
-const CurrentUserId = await getCurrentUserId();
+const { sessionClaims } = await auth();
+const { userId } = await auth();
+const role = (sessionClaims?.metadata as { role?: string })?.role;
+const CurrentUserId = userId;
 
 const columns = [
   {

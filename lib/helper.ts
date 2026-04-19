@@ -1,3 +1,4 @@
+// /lib/helper.ts
 import { auth } from "@clerk/nextjs/server";
 
 export const getRole = async (): Promise<string | undefined> => {

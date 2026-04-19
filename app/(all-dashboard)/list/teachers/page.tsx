@@ -2,12 +2,15 @@ import FormModal from "@/components/microComponents/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
-import { role } from "@/constants/data";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { TeacherList } from "@/shared/types/types";
 import { prisma } from "@/src";
 import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
+import { auth } from "@clerk/nextjs/server";
+
+const { sessionClaims } = await auth();
+const role = (sessionClaims?.metadata as { role?: string })?.role;
 
 const columns = [
   {
