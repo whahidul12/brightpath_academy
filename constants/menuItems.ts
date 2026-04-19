@@ -1,4 +1,6 @@
-import { role } from "@/lib/helper";
+import { getRole } from "@/lib/helper";
+
+const role = await getRole();
 
 const menuItems = [
   {
