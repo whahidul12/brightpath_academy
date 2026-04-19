@@ -1,11 +1,11 @@
-import menuItems from "@/constants/menuItems";
 import Image from "next/image";
 import Link from "next/link";
 import { getRole } from "@/lib/helper";
-
-const role = await getRole();
+import getMenuItems from "@/constants/menuItems";
 
 export default async function MenuBar() {
+  const role = await getRole();
+  const menuItems = getMenuItems(role);
   return (
     <>
       {menuItems.map((category) => (
