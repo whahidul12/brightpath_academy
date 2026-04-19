@@ -9,59 +9,67 @@ import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 
-const { sessionClaims } = await auth();
-const { userId } = await auth();
-const role = (sessionClaims?.metadata as { role?: string })?.role;
-const CurrentUserId = userId;
+const ExamsListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...searchQueries } = await searchParams;
+  const currentPage = page ? parseInt(page) : 1;
 
-const columns = [
-  {
-    header: "Subject Name",
-    accessor: "name",
-  },
-  {
-    header: "Class",
-    accessor: "class",
-  },
-  {
-    header: "Teacher",
-    accessor: "teacher",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Date",
-    accessor: "date",
-    className: "hidden sm:table-cell",
-  },
-  ...(role === "admin" || role === "teacher"
-    ? [
-        {
-          header: "Actions",
-          accessor: "action",
-        },
-      ]
-    : []),
-];
-const renderRow = (item: ExamList) => (
-  <tr
-    key={item.id}
-    className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
-  >
-    <td className="gap-4 p-4 font-semibold">{item.lesson.subject.name}</td>
-    <td className="gap-4 p-4 font-semibold">{item.lesson.class.name}</td>
-    <td className="hidden gap-4 p-4 font-semibold md:table-cell">
-      {item.lesson.teacher.name + " " + item.lesson.teacher.surname}
-    </td>
-    <td className="hidden gap-4 p-4 font-semibold sm:table-cell">
-      {new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(
-        new Date(item.startTime),
-      )}
-    </td>
-    <td>
-      <div className="flex items-center gap-2">
-        {(role === "admin" || role === "teacher") && (
-          <>
-            {/*<Link href={`/list/exam/${item.id}`}>
+  const { sessionClaims } = await auth();
+  const { userId } = await auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const CurrentUserId = userId;
+
+  const columns = [
+    {
+      header: "Subject Name",
+      accessor: "name",
+    },
+    {
+      header: "Class",
+      accessor: "class",
+    },
+    {
+      header: "Teacher",
+      accessor: "teacher",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Date",
+      accessor: "date",
+      className: "hidden sm:table-cell",
+    },
+    ...(role === "admin" || role === "teacher"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
+  const renderRow = (item: ExamList) => (
+    <tr
+      key={item.id}
+      className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
+    >
+      <td className="gap-4 p-4 font-semibold">{item.lesson.subject.name}</td>
+      <td className="gap-4 p-4 font-semibold">{item.lesson.class.name}</td>
+      <td className="hidden gap-4 p-4 font-semibold md:table-cell">
+        {item.lesson.teacher.name + " " + item.lesson.teacher.surname}
+      </td>
+      <td className="hidden gap-4 p-4 font-semibold sm:table-cell">
+        {new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(
+          new Date(item.startTime),
+        )}
+      </td>
+      <td>
+        <div className="flex items-center gap-2">
+          {(role === "admin" || role === "teacher") && (
+            <>
+              {/*<Link href={`/list/exam/${item.id}`}>
               <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
@@ -71,22 +79,14 @@ const renderRow = (item: ExamList) => (
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-            <FormModal table="exam" type="update" id={item.id} />
-            <FormModal table="exam" type="delete" id={item.id} />
-          </>
-        )}
-      </div>
-    </td>
-  </tr>
-);
-
-const ExamsListPage = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | undefined }>;
-}) => {
-  const { page, ...searchQueries } = await searchParams;
-  const currentPage = page ? parseInt(page) : 1;
+              <FormModal table="exam" type="update" id={item.id} />
+              <FormModal table="exam" type="delete" id={item.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
 
   // URL param Rules=============================
   const queryParams: Prisma.ExamWhereInput = {};

@@ -9,41 +9,49 @@ import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 
-const { sessionClaims } = await auth();
-const role = (sessionClaims?.metadata as { role?: string })?.role;
-const columns = [
-  {
-    header: "Subject Name",
-    accessor: "name",
-  },
-  {
-    header: "Teachers",
-    accessor: "teachers",
-    className: "hidden md:table-cell",
-  },
-  ...(role === "admin"
-    ? [
-        {
-          header: "Actions",
-          accessor: "action",
-        },
-      ]
-    : []),
-];
-const renderRow = (item: SubjectList) => (
-  <tr
-    key={item.id}
-    className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
-  >
-    <td className="flex items-center gap-4 p-4 font-semibold">{item.name}</td>
-    <td className="hidden md:table-cell">
-      {item.teachers.map((teacher) => teacher.name).join(",")}
-    </td>
-    <td>
-      <div className="flex items-center gap-2">
-        {role === "admin" && (
-          <>
-            {/*<Link href={`/list/student/${item.id}`}>
+const SubjectsListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...searchQueries } = await searchParams;
+  const currentPage = page ? parseInt(page) : 1;
+
+  const { sessionClaims } = await auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const columns = [
+    {
+      header: "Subject Name",
+      accessor: "name",
+    },
+    {
+      header: "Teachers",
+      accessor: "teachers",
+      className: "hidden md:table-cell",
+    },
+    ...(role === "admin"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
+  const renderRow = (item: SubjectList) => (
+    <tr
+      key={item.id}
+      className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
+    >
+      <td className="flex items-center gap-4 p-4 font-semibold">{item.name}</td>
+      <td className="hidden md:table-cell">
+        {item.teachers.map((teacher) => teacher.name).join(",")}
+      </td>
+      <td>
+        <div className="flex items-center gap-2">
+          {role === "admin" && (
+            <>
+              {/*<Link href={`/list/student/${item.id}`}>
               <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
@@ -53,22 +61,14 @@ const renderRow = (item: SubjectList) => (
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-            <FormModal table="student" type="update" id={item.id} />
-            <FormModal table="student" type="delete" id={item.id} />
-          </>
-        )}
-      </div>
-    </td>
-  </tr>
-);
-
-const SubjectsListPage = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | undefined }>;
-}) => {
-  const { page, ...searchQueries } = await searchParams;
-  const currentPage = page ? parseInt(page) : 1;
+              <FormModal table="student" type="update" id={item.id} />
+              <FormModal table="student" type="delete" id={item.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
 
   // URL param Rules=============================
   const queryParams: Prisma.SubjectWhereInput = {};

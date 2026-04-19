@@ -9,54 +9,62 @@ import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 
-const { sessionClaims } = await auth();
-const role = (sessionClaims?.metadata as { role?: string })?.role;
+const SubjectsListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...searchQueries } = await searchParams;
+  const currentPage = page ? parseInt(page) : 1;
 
-const columns = [
-  {
-    header: "Class Name",
-    accessor: "name",
-  },
-  {
-    header: "Capacity",
-    accessor: "capacity",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Grade",
-    accessor: "grade",
-    className: "table-cell",
-  },
-  {
-    header: "Supervisor",
-    accessor: "supervisor",
-    className: "hidden sm:table-cell",
-  },
-  ...(role === "admin"
-    ? [
-        {
-          header: "Actions",
-          accessor: "action",
-        },
-      ]
-    : []),
-];
-const renderRow = (item: ClassList) => (
-  <tr
-    key={item.id}
-    className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
-  >
-    <td className="flex items-center gap-4 p-4 font-semibold">{item.name}</td>
-    <td className="hidden md:table-cell">{item.capacity}</td>
-    <td className="table-cell">{item.name[0]}</td>
-    <td className="hidden sm:table-cell">
-      {item.supervisor.name + " " + item.supervisor.surname}
-    </td>
-    <td>
-      <div className="flex items-center gap-2">
-        {role === "admin" && (
-          <>
-            {/*<Link href={`/list/class/${item.id}`}>
+  const { sessionClaims } = await auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  const columns = [
+    {
+      header: "Class Name",
+      accessor: "name",
+    },
+    {
+      header: "Capacity",
+      accessor: "capacity",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Grade",
+      accessor: "grade",
+      className: "table-cell",
+    },
+    {
+      header: "Supervisor",
+      accessor: "supervisor",
+      className: "hidden sm:table-cell",
+    },
+    ...(role === "admin"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
+  const renderRow = (item: ClassList) => (
+    <tr
+      key={item.id}
+      className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
+    >
+      <td className="flex items-center gap-4 p-4 font-semibold">{item.name}</td>
+      <td className="hidden md:table-cell">{item.capacity}</td>
+      <td className="table-cell">{item.name[0]}</td>
+      <td className="hidden sm:table-cell">
+        {item.supervisor.name + " " + item.supervisor.surname}
+      </td>
+      <td>
+        <div className="flex items-center gap-2">
+          {role === "admin" && (
+            <>
+              {/*<Link href={`/list/class/${item.id}`}>
               <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
@@ -66,22 +74,14 @@ const renderRow = (item: ClassList) => (
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-            <FormModal table="class" type="update" id={item.id} />
-            <FormModal table="class" type="delete" id={item.id} />
-          </>
-        )}
-      </div>
-    </td>
-  </tr>
-);
-
-const SubjectsListPage = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | undefined }>;
-}) => {
-  const { page, ...searchQueries } = await searchParams;
-  const currentPage = page ? parseInt(page) : 1;
+              <FormModal table="class" type="update" id={item.id} />
+              <FormModal table="class" type="delete" id={item.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
 
   // URL param Rules=============================
   const queryParams: Prisma.ClassWhereInput = {};

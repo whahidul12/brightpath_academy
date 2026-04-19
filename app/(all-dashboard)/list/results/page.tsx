@@ -9,75 +9,83 @@ import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 
-const { sessionClaims } = await auth();
-const { userId } = await auth();
-const role = (sessionClaims?.metadata as { role?: string })?.role;
-const CurrentUserId = userId;
+const ResultListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...searchQueries } = await searchParams;
+  const currentPage = page ? parseInt(page) : 1;
 
-const columns = [
-  {
-    header: "Title",
-    accessor: "title",
-  },
-  {
-    header: "Student",
-    accessor: "student",
-  },
-  {
-    header: "Score",
-    accessor: "score",
-    className: "table-cell",
-  },
-  {
-    header: "Teacher",
-    accessor: "teacher",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Class",
-    accessor: "class",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Date",
-    accessor: "date",
-    className: "hidden sm:table-cell",
-  },
-  ...(role === "admin" || role === "teacher"
-    ? [
-        {
-          header: "Actions",
-          accessor: "action",
-        },
-      ]
-    : []),
-];
-const renderRow = (item: ResultList) => (
-  <tr
-    key={item.id}
-    className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
-  >
-    <td className="gap-4 p-4 font-semibold">{item.title}</td>
-    <td className="gap-4 p-4 font-semibold">
-      {item.studentName + " " + item.studentSurname}
-    </td>
-    <td className="gap-4 p-4 font-semibold">{item.score}</td>
-    <td className="hidden gap-4 p-4 font-semibold md:table-cell">
-      {item.teacherName + " " + item.teacherSurname}
-    </td>
-    <td className="hidden gap-4 p-4 font-semibold md:table-cell">
-      {item.className}
-    </td>
-    <td className="hidden gap-4 p-4 font-semibold sm:table-cell">
-      {new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(
-        item.startTime,
-      )}
-    </td>
-    <td>
-      <div className="flex items-center gap-2">
-        {(role === "admin" || role === "teacher") && (
-          <>
-            {/*<Link href={`/list/result/${item.id}`}>
+  const { sessionClaims } = await auth();
+  const { userId } = await auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const CurrentUserId = userId;
+
+  const columns = [
+    {
+      header: "Title",
+      accessor: "title",
+    },
+    {
+      header: "Student",
+      accessor: "student",
+    },
+    {
+      header: "Score",
+      accessor: "score",
+      className: "table-cell",
+    },
+    {
+      header: "Teacher",
+      accessor: "teacher",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Class",
+      accessor: "class",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Date",
+      accessor: "date",
+      className: "hidden sm:table-cell",
+    },
+    ...(role === "admin" || role === "teacher"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
+  const renderRow = (item: ResultList) => (
+    <tr
+      key={item.id}
+      className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
+    >
+      <td className="gap-4 p-4 font-semibold">{item.title}</td>
+      <td className="gap-4 p-4 font-semibold">
+        {item.studentName + " " + item.studentSurname}
+      </td>
+      <td className="gap-4 p-4 font-semibold">{item.score}</td>
+      <td className="hidden gap-4 p-4 font-semibold md:table-cell">
+        {item.teacherName + " " + item.teacherSurname}
+      </td>
+      <td className="hidden gap-4 p-4 font-semibold md:table-cell">
+        {item.className}
+      </td>
+      <td className="hidden gap-4 p-4 font-semibold sm:table-cell">
+        {new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(
+          item.startTime,
+        )}
+      </td>
+      <td>
+        <div className="flex items-center gap-2">
+          {(role === "admin" || role === "teacher") && (
+            <>
+              {/*<Link href={`/list/result/${item.id}`}>
               <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
@@ -87,22 +95,14 @@ const renderRow = (item: ResultList) => (
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-            <FormModal table="result" type="update" id={item.id} />
-            <FormModal table="result" type="delete" id={item.id} />
-          </>
-        )}
-      </div>
-    </td>
-  </tr>
-);
-
-const ResultListPage = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | undefined }>;
-}) => {
-  const { page, ...searchQueries } = await searchParams;
-  const currentPage = page ? parseInt(page) : 1;
+              <FormModal table="result" type="update" id={item.id} />
+              <FormModal table="result" type="delete" id={item.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
 
   // URL param Rules=============================
   const queryParams: Prisma.ResultWhereInput = {};

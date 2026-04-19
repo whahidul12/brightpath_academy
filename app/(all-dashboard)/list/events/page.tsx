@@ -9,77 +9,85 @@ import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 
-const { sessionClaims } = await auth();
-const { userId } = await auth();
-const role = (sessionClaims?.metadata as { role?: string })?.role;
-const CurrentUserId = userId;
+const EventsListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...searchQueries } = await searchParams;
+  const currentPage = page ? parseInt(page) : 1;
 
-const columns = [
-  {
-    header: "Title",
-    accessor: "title",
-  },
-  {
-    header: "Class",
-    accessor: "class",
-    className: "hidden sm:table-cell",
-  },
-  {
-    header: "Date",
-    accessor: "date",
-  },
-  {
-    header: "Start Time",
-    accessor: "startTime",
-    className: "hidden sm:table-cell",
-  },
-  {
-    header: "End Time",
-    accessor: "endTime",
-    className: "hidden md:table-cell",
-  },
-  ...(role === "admin"
-    ? [
-        {
-          header: "Actions",
-          accessor: "action",
-        },
-      ]
-    : []),
-];
-const renderRow = (item: EventList) => (
-  <tr
-    key={item.id}
-    className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
-  >
-    <td className="gap-4 p-4 font-semibold">{item.title}</td>
-    <td className="hidden gap-4 p-4 font-semibold sm:table-cell">
-      {item.class?.name ?? "Open for All"}
-    </td>
-    <td className="gap-4 p-4 font-semibold">
-      {new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(
-        item.startTime,
-      )}
-    </td>
-    <td className="hidden gap-4 p-4 font-semibold sm:table-cell">
-      {item.startTime.toLocaleString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      })}
-    </td>
-    <td className="hidden gap-4 p-4 font-semibold md:table-cell">
-      {item.endTime.toLocaleString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      })}
-    </td>
-    <td>
-      <div className="flex items-center gap-2">
-        {role === "admin" && (
-          <>
-            {/*<Link href={`/list/event/${item.id}`}>
+  const { sessionClaims } = await auth();
+  const { userId } = await auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const CurrentUserId = userId;
+
+  const columns = [
+    {
+      header: "Title",
+      accessor: "title",
+    },
+    {
+      header: "Class",
+      accessor: "class",
+      className: "hidden sm:table-cell",
+    },
+    {
+      header: "Date",
+      accessor: "date",
+    },
+    {
+      header: "Start Time",
+      accessor: "startTime",
+      className: "hidden sm:table-cell",
+    },
+    {
+      header: "End Time",
+      accessor: "endTime",
+      className: "hidden md:table-cell",
+    },
+    ...(role === "admin"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
+  const renderRow = (item: EventList) => (
+    <tr
+      key={item.id}
+      className="hover:bg-lamaPurpleLight border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)]"
+    >
+      <td className="gap-4 p-4 font-semibold">{item.title}</td>
+      <td className="hidden gap-4 p-4 font-semibold sm:table-cell">
+        {item.class?.name ?? "Open for All"}
+      </td>
+      <td className="gap-4 p-4 font-semibold">
+        {new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(
+          item.startTime,
+        )}
+      </td>
+      <td className="hidden gap-4 p-4 font-semibold sm:table-cell">
+        {item.startTime.toLocaleString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })}
+      </td>
+      <td className="hidden gap-4 p-4 font-semibold md:table-cell">
+        {item.endTime.toLocaleString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })}
+      </td>
+      <td>
+        <div className="flex items-center gap-2">
+          {role === "admin" && (
+            <>
+              {/*<Link href={`/list/event/${item.id}`}>
               <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
@@ -89,21 +97,14 @@ const renderRow = (item: EventList) => (
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-            <FormModal table="event" type="update" id={item.id} />
-            <FormModal table="event" type="delete" id={item.id} />
-          </>
-        )}
-      </div>
-    </td>
-  </tr>
-);
-const EventsListPage = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | undefined }>;
-}) => {
-  const { page, ...searchQueries } = await searchParams;
-  const currentPage = page ? parseInt(page) : 1;
+              <FormModal table="event" type="update" id={item.id} />
+              <FormModal table="event" type="delete" id={item.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
 
   // URL param Rules=============================
   const queryParams: Prisma.EventWhereInput = {};

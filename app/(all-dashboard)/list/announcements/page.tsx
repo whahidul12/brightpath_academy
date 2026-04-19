@@ -9,52 +9,60 @@ import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 
-const { sessionClaims } = await auth();
-const { userId } = await auth();
-const role = (sessionClaims?.metadata as { role?: string })?.role;
-const CurrentUserId = userId;
+const AnnouncementsListPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+  const { page, ...searchQueries } = await searchParams;
+  const currentPage = page ? parseInt(page) : 1;
 
-const columns = [
-  {
-    header: "Title",
-    accessor: "title",
-  },
-  {
-    header: "Class",
-    accessor: "class",
-    className: "hidden sm:table-cell",
-  },
-  {
-    header: "Date",
-    accessor: "date",
-  },
-  ...(role === "admin"
-    ? [
-        {
-          header: "Actions",
-          accessor: "action",
-        },
-      ]
-    : []),
-];
+  const { sessionClaims } = await auth();
+  const { userId } = await auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const CurrentUserId = userId;
 
-const renderRow = (item: AnnouncementList) => (
-  <tr
-    key={item.id}
-    className="border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)] hover:bg-[oklch(from_var(--secondary)_l_c_h/0.1)]"
-  >
-    <td className="gap-4 p-4 font-semibold">{item.title}</td>
-    <td className="hidden gap-4 p-4 font-semibold sm:table-cell">
-      {item.class?.name ?? "Open for All"}
-    </td>
-    <td className="gap-4 p-4 font-semibold">
-      {item.date.toLocaleDateString()}
-    </td>
-    <td>
-      <div className="flex items-center gap-2">
-        {role === "admin" && (
-          <>
-            {/*<Link href={`/list/announcement/${item.id}`}>
+  const columns = [
+    {
+      header: "Title",
+      accessor: "title",
+    },
+    {
+      header: "Class",
+      accessor: "class",
+      className: "hidden sm:table-cell",
+    },
+    {
+      header: "Date",
+      accessor: "date",
+    },
+    ...(role === "admin"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
+
+  const renderRow = (item: AnnouncementList) => (
+    <tr
+      key={item.id}
+      className="border-b border-gray-200 text-sm even:bg-[oklch(from_var(--primary)_l_c_h/0.05)] hover:bg-[oklch(from_var(--secondary)_l_c_h/0.1)]"
+    >
+      <td className="gap-4 p-4 font-semibold">{item.title}</td>
+      <td className="hidden gap-4 p-4 font-semibold sm:table-cell">
+        {item.class?.name ?? "Open for All"}
+      </td>
+      <td className="gap-4 p-4 font-semibold">
+        {item.date.toLocaleDateString()}
+      </td>
+      <td>
+        <div className="flex items-center gap-2">
+          {role === "admin" && (
+            <>
+              {/*<Link href={`/list/announcement/${item.id}`}>
               <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
@@ -65,21 +73,14 @@ const renderRow = (item: AnnouncementList) => (
               </button>
               </Link>*/}
 
-            <FormModal table="announcement" type="delete" id={item.id} />
-            <FormModal table="announcement" type="update" id={item.id} />
-          </>
-        )}
-      </div>
-    </td>
-  </tr>
-);
-const AnnouncementsListPage = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | undefined }>;
-}) => {
-  const { page, ...searchQueries } = await searchParams;
-  const currentPage = page ? parseInt(page) : 1;
+              <FormModal table="announcement" type="delete" id={item.id} />
+              <FormModal table="announcement" type="update" id={item.id} />
+            </>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
 
   // URL param Rules=============================
   const queryParams: Prisma.AnnouncementWhereInput = {};
