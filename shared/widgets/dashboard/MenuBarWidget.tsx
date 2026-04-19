@@ -1,7 +1,7 @@
 import MenuBar from "@/components/allDashboardComp/MenuBar";
 import Image from "next/image";
 
-export default function MenuBarWidget() {
+export default function MenuBarWidget({ role }: { role?: string | undefined }) {
   return (
     <div className="border-r border-r-gray-500 lg:border-none">
       <div className="flex items-center justify-center gap-2 p-3 lg:justify-start">
@@ -14,7 +14,7 @@ export default function MenuBarWidget() {
         ></Image>
         <span className="hidden lg:block lg:text-2xl">BrightPath</span>
       </div>
-      <MenuBar></MenuBar>
+      <MenuBar role={role}></MenuBar>
     </div>
   );
 }

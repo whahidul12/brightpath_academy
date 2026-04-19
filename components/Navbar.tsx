@@ -1,10 +1,8 @@
 import Image from "next/image";
 import { ModeToggle } from "./ModeToggle";
 import { UserButton } from "@clerk/nextjs";
-import { getRole } from "@/lib/helper";
 
-export default async function Navbar() {
-  const role = await getRole();
+export default async function Navbar({ role }: { role: string | undefined }) {
   return (
     <div className="flex h-16 items-center justify-end px-4 sm:px-6 lg:justify-between">
       {/*Search Bar */}

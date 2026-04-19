@@ -5,6 +5,10 @@ import MenuBarWidget from "@/shared/widgets/dashboard/MenuBarWidget";
 import { ThemeProvider } from "@/provider/theme-provider/theme-provider";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
+
+const { sessionClaims } = await auth();
+const role = (sessionClaims?.metadata as { role?: string })?.role;
 
 const firaSans = Fira_Sans({
   variable: "--font-fira-sans",
@@ -38,11 +42,11 @@ export default function DashboardLayout({
           >
             {/*left menuBar*/}
             <div className="h-screen w-[14%] md:w-[8%] lg:w-[14%]">
-              <MenuBarWidget />
+              <MenuBarWidget role={role} />
             </div>
             {/*right dashboard*/}
             <div className="h-screen w-[86%] md:w-[92%] lg:w-[86%]">
-              <Navbar />
+              <Navbar role={role} />
               {children}
             </div>
           </ThemeProvider>

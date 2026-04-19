@@ -1,10 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getRole } from "@/lib/helper";
 import getMenuItems from "@/constants/menuItems";
 
-export default async function MenuBar() {
-  const role = await getRole();
+export default async function MenuBar({ role }: { role?: string | undefined }) {
   const menuItems = getMenuItems(role);
   return (
     <>
