@@ -2,12 +2,15 @@ import FormModal from "@/components/microComponents/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
-import { CurrentUserId, role } from "@/lib/helper";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { EventList } from "@/shared/types/types";
 import { prisma } from "@/src";
 import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
+import { getRole, getCurrentUserId } from "@/lib/helper";
+
+const role = await getRole();
+const CurrentUserId = await getCurrentUserId();
 
 const columns = [
   {
