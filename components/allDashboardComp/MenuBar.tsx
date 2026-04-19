@@ -1,7 +1,9 @@
 import menuItems from "@/constants/menuItems";
-import { role } from "@/lib/helper";
 import Image from "next/image";
 import Link from "next/link";
+import { getRole } from "@/lib/helper";
+
+const role = await getRole();
 
 export default async function MenuBar() {
   return (
