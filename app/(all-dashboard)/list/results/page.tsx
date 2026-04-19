@@ -2,7 +2,7 @@ import FormModal from "@/components/microComponents/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
-import { role } from "@/constants/data";
+import { CurrentUserId, role } from "@/lib/helper";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { ResultList } from "@/shared/types/types";
 import { prisma } from "@/src";
@@ -38,10 +38,14 @@ const columns = [
     accessor: "date",
     className: "hidden sm:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
+  ...(role === "admin" || role === "teacher"
+    ? [
+        {
+          header: "Actions",
+          accessor: "action",
+        },
+      ]
+    : []),
 ];
 const renderRow = (item: ResultList) => (
   <tr
@@ -66,7 +70,7 @@ const renderRow = (item: ResultList) => (
     </td>
     <td>
       <div className="flex items-center gap-2">
-        {role === "admin" && (
+        {(role === "admin" || role === "teacher") && (
           <>
             {/*<Link href={`/list/result/${item.id}`}>
               <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
@@ -123,6 +127,28 @@ const ResultListPage = async ({
         }
       }
     }
+  }
+
+  //Role-Based Rules==============================
+  switch (role) {
+    case "admin":
+      break;
+    case "teacher":
+      queryParams.OR = [
+        { exam: { lesson: { teacherId: CurrentUserId! } } },
+        { assignment: { lesson: { teacherId: CurrentUserId! } } },
+      ];
+      break;
+    case "student":
+      queryParams.studentId = CurrentUserId!;
+      break;
+    case "parent":
+      queryParams.student = {
+        parentId: CurrentUserId!,
+      };
+      break;
+    default:
+      break;
   }
 
   const [ResultData, count] = await prisma.$transaction([
@@ -187,7 +213,7 @@ const ResultListPage = async ({
             <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
               <Image src="/icons/sort.png" alt="" width={20} height={20} />
             </button>
-            {role === "admin" && (
+            {(role === "admin" || role === "teacher") && (
               // <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
               //   <Image src="/icons/add.png" alt="" width={20} height={20} />
               // </button>

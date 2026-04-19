@@ -2,7 +2,7 @@ import FormModal from "@/components/microComponents/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
-import { role } from "@/constants/data";
+import { role } from "@/lib/helper";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { SubjectList } from "@/shared/types/types";
 import { prisma } from "@/src";
@@ -19,10 +19,14 @@ const columns = [
     accessor: "teachers",
     className: "hidden md:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
+  ...(role === "admin"
+    ? [
+        {
+          header: "Actions",
+          accessor: "action",
+        },
+      ]
+    : []),
 ];
 const renderRow = (item: SubjectList) => (
   <tr

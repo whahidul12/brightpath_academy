@@ -8,7 +8,6 @@ import { TeacherList } from "@/shared/types/types";
 import { prisma } from "@/src";
 import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
-import Link from "next/link";
 
 const columns = [
   {
@@ -40,10 +39,14 @@ const columns = [
     accessor: "address",
     className: "hidden lg:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
+  ...(role === "admin"
+    ? [
+        {
+          header: "Actions",
+          accessor: "action",
+        },
+      ]
+    : []),
 ];
 
 const renderRow = (item: TeacherList) => {
@@ -78,17 +81,17 @@ const renderRow = (item: TeacherList) => {
         <div className="flex items-center gap-2">
           {role === "admin" && (
             <>
-              <Link href={`/list/teachers/${item.id}`}>
+              {/*<Link href={`/list/teachers/${item.id}`}>
                 <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg p-2">
                   <Image src="/icons/info.png" alt="" width={20} height={20} />
                 </button>
-              </Link>
+              </Link>*/}
               {/*<Link href={`/list/teacher/${item.id}`}>
               <button className="bg-secondary flex h-8 w-8 items-center justify-center rounded-lg p-2">
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-              {/*<FormModal table="teacher" type="update" id={item.id} />*/}
+              <FormModal table="teacher" type="update" id={item.id} />
               <FormModal table="teacher" type="delete" id={item.id} />
             </>
           )}

@@ -7,10 +7,7 @@ import { AnnouncementList } from "@/shared/types/types";
 import { prisma } from "@/src";
 import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
-import { auth } from "@clerk/nextjs/server";
-
-const { sessionClaims } = await auth();
-const role = (sessionClaims?.metadata as { role?: string })?.role;
+import { CurrentUserId, role } from "@/lib/helper";
 
 const columns = [
   {
@@ -43,7 +40,7 @@ const renderRow = (item: AnnouncementList) => (
   >
     <td className="gap-4 p-4 font-semibold">{item.title}</td>
     <td className="hidden gap-4 p-4 font-semibold sm:table-cell">
-      {item.class.name}
+      {item.class?.name ?? "Open for All"}
     </td>
     <td className="gap-4 p-4 font-semibold">
       {item.date.toLocaleDateString()}
@@ -96,6 +93,32 @@ const AnnouncementsListPage = async ({
         }
       }
     }
+  }
+
+  //Role-Based Rules==============================
+  switch (role) {
+    case "admin":
+      break;
+    case "teacher":
+      queryParams.OR = [
+        { classId: null },
+        { class: { lessons: { some: { teacherId: CurrentUserId! } } } },
+      ];
+      break;
+    case "student":
+      queryParams.OR = [
+        { classId: null },
+        { class: { students: { some: { id: CurrentUserId! } } } },
+      ];
+      break;
+    case "parent":
+      queryParams.OR = [
+        { classId: null },
+        { class: { students: { some: { parentId: CurrentUserId! } } } },
+      ];
+      break;
+    default:
+      break;
   }
 
   const [AnnouncementData, count] = await prisma.$transaction([

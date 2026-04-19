@@ -2,7 +2,7 @@ import FormModal from "@/components/microComponents/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
-import { role } from "@/constants/data";
+import { CurrentUserId, role } from "@/lib/helper";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { EventList } from "@/shared/types/types";
 import { prisma } from "@/src";
@@ -33,10 +33,14 @@ const columns = [
     accessor: "endTime",
     className: "hidden md:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
+  ...(role === "admin"
+    ? [
+        {
+          header: "Actions",
+          accessor: "action",
+        },
+      ]
+    : []),
 ];
 const renderRow = (item: EventList) => (
   <tr
@@ -45,7 +49,7 @@ const renderRow = (item: EventList) => (
   >
     <td className="gap-4 p-4 font-semibold">{item.title}</td>
     <td className="hidden gap-4 p-4 font-semibold sm:table-cell">
-      {item.class.name}
+      {item.class?.name ?? "Open for All"}
     </td>
     <td className="gap-4 p-4 font-semibold">
       {new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(
@@ -113,6 +117,32 @@ const EventsListPage = async ({
         }
       }
     }
+  }
+
+  //Role-Based Rules==============================
+  switch (role) {
+    case "admin":
+      break;
+    case "teacher":
+      queryParams.OR = [
+        { classId: null },
+        { class: { lessons: { some: { teacherId: CurrentUserId! } } } },
+      ];
+      break;
+    case "student":
+      queryParams.OR = [
+        { classId: null },
+        { class: { students: { some: { id: CurrentUserId! } } } },
+      ];
+      break;
+    case "parent":
+      queryParams.OR = [
+        { classId: null },
+        { class: { students: { some: { parentId: CurrentUserId! } } } },
+      ];
+      break;
+    default:
+      break;
   }
 
   const [EventData, count] = await prisma.$transaction([

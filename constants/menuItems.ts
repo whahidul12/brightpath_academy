@@ -1,3 +1,5 @@
+import { role } from "@/lib/helper";
+
 const menuItems = [
   {
     title: "MENU",
@@ -5,7 +7,7 @@ const menuItems = [
       {
         icon: "/icons/home.png",
         label: "Home",
-        href: "/",
+        href: `/dashboard/${role}s`,
         visible: ["admin", "teacher", "student", "parent"],
       },
       {

@@ -1,12 +1,9 @@
 import menuItems from "@/constants/menuItems";
-import { currentUser } from "@clerk/nextjs/server";
+import { role } from "@/lib/helper";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function MenuBar() {
-  const user = await currentUser();
-  const role = user?.publicMetadata.role;
-
   return (
     <>
       {menuItems.map((category) => (
@@ -17,7 +14,7 @@ export default async function MenuBar() {
           <span className="mt-4 font-bold">{category.title}</span>
           {category.items.map(
             (item) =>
-              item.visible.includes(role) && (
+              item.visible.includes(role!) && (
                 <Link
                   key={item.label}
                   href={item.href || "/"}
