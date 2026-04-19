@@ -1,10 +1,9 @@
 import Image from "next/image";
 import { ModeToggle } from "./ModeToggle";
 import { UserButton } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs/server";
+import { getRole } from "@/lib/helper";
 
-const { sessionClaims } = await auth();
-const role = (sessionClaims?.metadata as { role?: string })?.role;
+const role = await getRole();
 
 export default async function Navbar() {
   return (
