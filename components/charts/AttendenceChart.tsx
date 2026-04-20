@@ -8,106 +8,86 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
-import { RechartsDevtools } from "@recharts/devtools";
 import Image from "next/image";
 
 const data = [
-  {
-    name: "Sun",
-    Present: 1890,
-    Absent: 4800,
-  },
-  {
-    name: "Mon",
-    Present: 4000,
-    Absent: 2400,
-  },
-  {
-    name: "Tue",
-    Present: 3000,
-    Absent: 1398,
-  },
-  {
-    name: "Wed",
-    Present: 2000,
-    Absent: 9800,
-  },
-  {
-    name: "Thu",
-    Present: 2780,
-    Absent: 3908,
-  },
+  { name: "Sun", Present: 1890, Absent: 4800 },
+  { name: "Mon", Present: 4000, Absent: 2400 },
+  { name: "Tue", Present: 3000, Absent: 1398 },
+  { name: "Wed", Present: 2000, Absent: 9800 },
+  { name: "Thu", Present: 2780, Absent: 3908 },
 ];
 
 export default function AttendenceChart() {
   return (
-    <div className="p-4">
-      <div className="flex items-center justify-between">
-        <span className="text-lg font-semibold">Attendance</span>
-        <Image
-          src="/icons/moreDark.png"
-          alt="more-icon"
-          width={30}
-          height={10}
-        />
+    <div className="border-border/40 bg-card rounded-2xl border p-5 shadow-sm transition-all">
+      {/* Header */}
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <h2 className="text-base font-semibold tracking-tight">Attendance</h2>
+          <p className="text-muted-foreground text-xs">Weekly overview</p>
+        </div>
+
+        <button className="rounded-md p-1.5 transition hover:bg-black/5 dark:hover:bg-white/10">
+          <Image src="/icons/moreDark.png" alt="more" width={16} height={16} />
+        </button>
       </div>
-      <div className="h-full w-full">
-        <BarChart
-          style={{
-            width: "100%",
-            maxWidth: "700px",
-            height: "100%",
-            maxHeight: "70vh",
-            aspectRatio: 1.4,
-          }}
-          responsive
-          data={data}
-          margin={{
-            top: 5,
-            right: 0,
-            left: 0,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis
-            dataKey="name"
-            axisLine={false}
-            tickLine={false}
-            stroke="var(--card-foreground)"
-          />
-          <YAxis
-            width="auto"
-            axisLine={false}
-            tickLine={false}
-            stroke="var(--card-foreground)"
-          />
-          <Tooltip
-            contentStyle={{
-              borderRadius: "12px",
-              color: "gray",
-            }}
-          />
-          <Legend
-            align="left"
-            verticalAlign="top"
-            wrapperStyle={{ paddingTop: "20px", paddingBottom: "20px" }}
-          />
-          <Bar
-            dataKey="Present"
-            fill="var(--primary)"
-            radius={[25, 25, 0, 0]}
-            legendType="circle"
-          />
-          <Bar
-            dataKey="Absent"
-            fill="var(--secondary)"
-            radius={[25, 25, 0, 0]}
-            legendType="circle"
-          />
-          <RechartsDevtools />
-        </BarChart>
+
+      {/* Chart */}
+      <div className="h-70 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data}>
+            <CartesianGrid
+              horizontal
+              vertical={false}
+              stroke="hsl(var(--chart-border-hsl))"
+              strokeOpacity={0.6}
+              strokeDasharray="4 4"
+            />
+
+            <XAxis
+              dataKey="name"
+              axisLine={false}
+              tickLine={false}
+              fontSize={12}
+            />
+
+            <YAxis axisLine={false} tickLine={false} fontSize={12} />
+
+            <Tooltip
+              contentStyle={{
+                borderRadius: "10px",
+                border: "1px solid hsl(var(--chart-border-hsl))",
+                backgroundColor: "hsl(var(--chart-bg-hsl))",
+                fontSize: "12px",
+              }}
+            />
+
+            <Legend
+              verticalAlign="top"
+              align="left"
+              wrapperStyle={{
+                fontSize: "12px",
+                paddingBottom: "10px",
+              }}
+            />
+
+            <Bar
+              dataKey="Present"
+              radius={[8, 8, 0, 0]}
+              barSize={18}
+              fill="hsl(var(--primary-hsl))"
+            />
+            <Bar
+              dataKey="Absent"
+              radius={[8, 8, 0, 0]}
+              barSize={18}
+              fill="hsl(var(--secondary-hsl))"
+            />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );

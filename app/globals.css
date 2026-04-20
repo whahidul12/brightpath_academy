@@ -45,6 +45,10 @@
   --chart-2: oklch(0.75 0.15 150);
   --chart-3: oklch(0.6 0.15 230);
   --chart-4: oklch(0.85 0.15 85);
+  --primary-hsl: 210.64 100% 56.99999999999999%;
+  --secondary-hsl: 24.03 99% 57.99999999999999%;
+  --chart-border-hsl: 300 0% 30%;
+  --chart-bg-hsl: 300 50% 100%;
 
   --border: oklch(0.2 0 0 / 10%);
   --radius: 0.625rem;
@@ -68,6 +72,9 @@
   /* Data Viz  */
   --chart-1: oklch(0.7 0.15 30);
   --chart-2: oklch(0.75 0.1 150);
+  --primary-hsl: 210.15 100% 63%;
+  --secondary-hsl: 22.34 100% 68%;
+  --chart-bg-hsl: 0 0% 7.000000000000001%;
 
   --border: oklch(1 0 0 / 12%);
 }

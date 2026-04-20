@@ -27,20 +27,30 @@ const events = [
 
 export const DashboardEventContainer = () => {
   return (
-    <div className="bg-card rounded-lg p-4">
+    <div className="border-border/40 bg-card space-y-4 rounded-2xl border p-5 shadow-sm transition-all">
+      {/* Header */}
       <div className="flex items-center justify-between">
-        <span className="text-lg font-semibold">Events</span>
-        <Image
-          src="/icons/moreDark.png"
-          alt="more-icon"
-          width={30}
-          height={10}
-          className="w-fit"
-        />
+        <div>
+          <h2 className="text-base font-semibold tracking-tight">Events</h2>
+          <p className="text-muted-foreground text-xs">Upcoming schedule</p>
+        </div>
+
+        <button className="rounded-md p-1.5 transition hover:bg-black/5 dark:hover:bg-white/10">
+          <Image
+            src="/icons/moreDark.png"
+            alt="more-icon"
+            width={16}
+            height={16}
+          />
+        </button>
       </div>
-      {events.map((event) => (
-        <DashboardEvent key={event._id} {...event} />
-      ))}
+
+      {/* Events */}
+      <div className="space-y-3">
+        {events.map((event) => (
+          <DashboardEvent key={event._id} {...event} />
+        ))}
+      </div>
     </div>
   );
 };

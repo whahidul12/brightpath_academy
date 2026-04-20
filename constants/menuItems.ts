@@ -1,4 +1,5 @@
 export default function getMenuItems(role: string | undefined) {
+  const href = role === "admin" ? "/dashboard/admin" : `/dashboard/${role}s`;
   return [
     {
       title: "MENU",
@@ -6,7 +7,8 @@ export default function getMenuItems(role: string | undefined) {
         {
           icon: "/icons/home.png",
           label: "Home",
-          href: `/dashboard/${role}s`,
+
+          href: { href },
           visible: ["admin", "teacher", "student", "parent"],
         },
         {

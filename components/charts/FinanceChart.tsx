@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import {
   LineChart,
@@ -8,150 +9,98 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
-import { RechartsDevtools } from "@recharts/devtools";
+
 const data = [
-  {
-    name: "Jan",
-    Income: 4000,
-    Expense: 2400,
-  },
-  {
-    name: "Feb",
-    Income: 3000,
-    Expense: 1398,
-  },
-  {
-    name: "Mar  ",
-    Income: 2000,
-    Expense: 9800,
-  },
-  {
-    name: "Apr",
-    Income: 2780,
-    Expense: 3908,
-  },
-  {
-    name: "May",
-    Income: 1890,
-    Expense: 4800,
-  },
-  {
-    name: "Jun",
-    Income: 2390,
-    Expense: 3800,
-  },
-  {
-    name: "Jul",
-    Income: 3490,
-    Expense: 4300,
-  },
-  {
-    name: "Aug",
-    Income: 3490,
-    Expense: 4300,
-  },
-  {
-    name: "Sep",
-    Income: 3490,
-    Expense: 4300,
-  },
-  {
-    name: "Oct",
-    Income: 3490,
-    Expense: 4300,
-  },
-  {
-    name: "Nov",
-    Income: 3490,
-    Expense: 4300,
-  },
-  {
-    name: "Dec",
-    Income: 3490,
-    Expense: 4300,
-  },
+  { name: "Jan", Income: 4000, Expense: 2400 },
+  { name: "Feb", Income: 3000, Expense: 1398 },
+  { name: "Mar", Income: 2000, Expense: 9800 },
+  { name: "Apr", Income: 2780, Expense: 3908 },
+  { name: "May", Income: 1890, Expense: 4800 },
+  { name: "Jun", Income: 2390, Expense: 3800 },
+  { name: "Jul", Income: 3490, Expense: 4300 },
+  { name: "Aug", Income: 3490, Expense: 4300 },
+  { name: "Sep", Income: 3490, Expense: 4300 },
+  { name: "Oct", Income: 3490, Expense: 4300 },
+  { name: "Nov", Income: 3490, Expense: 4300 },
+  { name: "Dec", Income: 3490, Expense: 4300 },
 ];
 
 export const FinanceChart = () => {
   return (
-    <div className="p-4">
+    <div className="border-border/40 bg-card space-y-4 rounded-2xl border p-5 shadow-sm transition-all">
+      {/* Header */}
       <div className="flex items-center justify-between">
-        <span className="text-lg font-semibold">Finance</span>
-        <Image
-          src="/icons/moreDark.png"
-          alt="more-icon"
-          width={30}
-          height={10}
-        />
+        <div>
+          <h2 className="text-base font-semibold tracking-tight">Finance</h2>
+          <p className="text-muted-foreground text-xs">
+            Income vs Expense (Monthly)
+          </p>
+        </div>
+
+        <button className="rounded-md p-1.5 transition hover:bg-black/5 dark:hover:bg-white/10">
+          <Image src="/icons/moreDark.png" alt="more" width={16} height={16} />
+        </button>
       </div>
-      <div className="h-full w-full">
-        <LineChart
-          style={{
-            width: "100%",
-            // maxWidth: "700px",
-            height: "50%",
-            maxHeight: "380px",
-            aspectRatio: 1.8,
-          }}
-          responsive
-          data={data}
-          margin={{
-            top: 5,
-            right: 0,
-            left: 0,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="name"
-            stroke="var(--card-foreground)"
-            axisLine={false}
-            tickLine={false}
-          />
-          <YAxis
-            width="auto"
-            stroke="var(--card-foreground)"
-            axisLine={false}
-            tickLine={false}
-          />
-          <Tooltip
-            cursor={{
-              stroke: "var(--color-border-2)",
-            }}
-            contentStyle={{
-              backgroundColor: "var(--color-surface-raised)",
-              borderColor: "var(--color-border-2)",
-            }}
-          />
-          <Legend
-            align="center"
-            verticalAlign="top"
-            wrapperStyle={{ paddingTop: "10px", paddingBottom: "20px" }}
-          />
-          <Line
-            type="monotone"
-            dataKey="Income"
-            stroke="var(--primary)"
-            strokeWidth="4px"
-            dot={{
-              fill: "var(--primary)",
-            }}
-            activeDot={{ r: 8, stroke: "var(--color-surface-base)" }}
-          />
-          <Line
-            type="monotone"
-            dataKey="Expense"
-            stroke="var(--secondary)"
-            strokeWidth="4px"
-            dot={{
-              fill: "var(--secondary)",
-            }}
-            activeDot={{ r: 8, stroke: "var(--color-surface-base)" }}
-          />
-          <RechartsDevtools />
-        </LineChart>
+
+      {/* Chart */}
+      <div className="h-75 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={data}>
+            <CartesianGrid
+              horizontal
+              vertical={false}
+              stroke="hsl(var(--chart-border-hsl))"
+              strokeOpacity={0.6}
+              strokeDasharray="4 4"
+            />
+
+            <XAxis
+              dataKey="name"
+              axisLine={false}
+              tickLine={false}
+              fontSize={12}
+            />
+            <YAxis axisLine={false} tickLine={false} fontSize={12} />
+
+            <Tooltip
+              contentStyle={{
+                borderRadius: "10px",
+                border: "1px solid hsl(var(--chart-border-hsl))",
+                backgroundColor: "hsl(var(--chart-bg-hsl))",
+                fontSize: "12px",
+              }}
+            />
+
+            <Legend
+              verticalAlign="top"
+              align="left"
+              wrapperStyle={{
+                fontSize: "12px",
+                paddingBottom: "10px",
+              }}
+            />
+
+            <Line
+              type="monotone"
+              dataKey="Income"
+              stroke="hsl(var(--primary-hsl))"
+              strokeWidth={2.5}
+              dot={false}
+              activeDot={{ r: 5 }}
+            />
+
+            <Line
+              type="monotone"
+              dataKey="Expense"
+              stroke="hsl(var(--secondary-hsl))"
+              strokeWidth={2.5}
+              dot={false}
+              activeDot={{ r: 5 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );

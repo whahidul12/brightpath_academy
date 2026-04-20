@@ -10,7 +10,7 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 export const EventCalendar = () => {
   const [value, onChange] = useState<Value>(new Date());
   return (
-    <div className="bg-card text-card-foreground rounded-lg p-4">
+    <div className="bg-card text-card-foreground rounded-lg p-4 shadow-sm">
       <Calendar onChange={onChange} value={value} calendarType="islamic" />
     </div>
   );

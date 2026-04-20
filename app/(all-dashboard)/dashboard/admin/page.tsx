@@ -20,16 +20,16 @@ export default function AdminPage() {
         {/*Middle Chart*/}
         <div className="flex flex-col gap-4 lg:flex-row">
           {/*Attendance Chart*/}
-          <div className="bg-card h-112 w-full rounded-lg lg:w-2/3">
+          <div className="w-full rounded-lg lg:w-2/3">
             <AttendenceChart />
           </div>
           {/*Count Chart*/}
-          <div className="bg-card h-112.5 w-full rounded-lg lg:w-1/3">
+          <div className="w-full rounded-lg lg:w-1/3">
             <CountChart />
           </div>
         </div>
         {/*Bottom chart*/}
-        <div className="bg-card h-full w-full rounded-lg">
+        <div className="bg-card w-full rounded-lg">
           <FinanceChart />
         </div>
       </div>

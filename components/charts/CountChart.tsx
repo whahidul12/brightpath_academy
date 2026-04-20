@@ -1,75 +1,94 @@
 "use client";
 
-import { RadialBarChart, RadialBar, Tooltip, PolarAngleAxis } from "recharts";
-import { RechartsDevtools } from "@recharts/devtools";
+import {
+  RadialBarChart,
+  RadialBar,
+  Tooltip,
+  PolarAngleAxis,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
 import Image from "next/image";
 
 const data = [
-  {
-    name: "Girls",
-    count: 55,
-    fill: "var(--secondary)",
-  },
-  {
-    name: "Boys",
-    count: 78,
-    fill: "var(--primary)",
-  },
+  { name: "Girls", count: 55, fill: "hsl(var(--secondary-hsl))" },
+  { name: "Boys", count: 78, fill: "hsl(var(--primary-hsl))" },
 ];
 
-const CountChart = () => {
+const total = data.reduce((acc, item) => acc + item.count, 0);
+
+export default function CountChart() {
   return (
-    <div className="flex h-full flex-col justify-between p-4">
-      {/*Title*/}
+    <div className="border-border/40 bg-card space-y-5 rounded-2xl border p-5 shadow-sm transition-all">
+      {/* Header */}
       <div className="flex items-center justify-between">
-        <span className="text-lg font-semibold">Students</span>
-        <Image
-          src="/icons/moreDark.png"
-          alt="more-icon"
-          width={30}
-          height={10}
-          className="w-fit"
-        />
-      </div>
-      {/*Chart*/}
-      <div className="h-fit w-full">
-        <RadialBarChart
-          width="100%"
-          style={{ maxWidth: "250px", marginInline: "auto" }}
-          height="100%"
-          cx="50%"
-          cy="50%"
-          innerRadius="40%"
-          outerRadius="100%"
-          barSize={32}
-          data={data}
-        >
-          <PolarAngleAxis
-            type="number"
-            domain={[0, 133]}
-            angleAxisId={0}
-            tick={false}
-          />
-          <RadialBar background dataKey="count" />
-          <Tooltip />
-          <RechartsDevtools />
-        </RadialBarChart>
-      </div>
-      {/*Buttons*/}
-      <div className="flex justify-center gap-16">
-        <div className="flex flex-col gap-1 text-center">
-          <div className="bg-primary mx-auto h-5 w-5 rounded-full"></div>
-          <h1 className="font-bold">1234</h1>
-          <p className="text-xs text-gray-500">Boys(50%)</p>
+        <div>
+          <h2 className="text-base font-semibold tracking-tight">Students</h2>
+          <p className="text-muted-foreground text-xs">Distribution overview</p>
         </div>
-        <div className="flex flex-col gap-1 text-center">
-          <div className="bg-secondary mx-auto h-5 w-5 rounded-full"></div>
-          <h1 className="font-bold">1234</h1>
-          <p className="text-xs text-gray-500">Girls(50%)</p>
+
+        <button className="rounded-md p-1.5 transition hover:bg-black/5 dark:hover:bg-white/10">
+          <Image src="/icons/moreDark.png" alt="more" width={16} height={16} />
+        </button>
+      </div>
+
+      {/* Chart */}
+      <div className="relative h-55 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <RadialBarChart
+            cx="50%"
+            cy="50%"
+            innerRadius="50%"
+            outerRadius="90%"
+            barSize={20}
+            data={data}
+          >
+            <PolarAngleAxis
+              type="number"
+              domain={[0, total]}
+              dataKey="count"
+              tick={false}
+            />
+
+            <RadialBar dataKey="count" cornerRadius={10} background>
+              {data.map((entry, index) => (
+                <Cell key={index} fill={entry.fill} />
+              ))}
+            </RadialBar>
+
+            <Tooltip />
+          </RadialBarChart>
+        </ResponsiveContainer>
+
+        {/* Center Label */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <h1 className="text-xl font-semibold">{total}</h1>
+          <p className="text-muted-foreground text-xs">Total Students</p>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div className="flex justify-center gap-8">
+        <div className="flex items-center gap-2">
+          <div className="bg-primary h-2.5 w-2.5 rounded-full" />
+          <div>
+            <p className="text-sm font-medium">Boys</p>
+            <p className="text-muted-foreground text-xs">
+              78 ({Math.round((78 / total) * 100)}%)
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="bg-secondary h-2.5 w-2.5 rounded-full" />
+          <div>
+            <p className="text-sm font-medium">Girls</p>
+            <p className="text-muted-foreground text-xs">
+              55 ({Math.round((55 / total) * 100)}%)
+            </p>
+          </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default CountChart;
+}
