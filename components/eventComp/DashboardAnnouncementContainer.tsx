@@ -45,30 +45,30 @@ export const DashboardAnnouncementContainer = async ({
   userId: string | null;
   role: string | undefined;
 }) => {
-  let classCondition: any = null;
+  // let classCondition: any = null;
 
-  if (userId && role) {
-    if (role === "teacher") {
-      classCondition = { teacherId: userId };
-    } else if (role === "student") {
-      classCondition = { students: { some: { id: userId } } };
-    } else if (role === "parent") {
-      classCondition = { students: { some: { parentId: userId } } };
-    }
-  }
+  // if (userId && role) {
+  //   if (role === "teacher") {
+  //     classCondition = { teacherId: userId };
+  //   } else if (role === "student") {
+  //     classCondition = { students: { some: { id: userId } } };
+  //   } else if (role === "parent") {
+  //     classCondition = { students: { some: { parentId: userId } } };
+  //   }
+  // }
 
-  const announcements = await prisma.announcement.findMany({
-    take: 3,
-    orderBy: { date: "desc" },
-    where: {
-      ...(role !== "admin" && {
-        OR: [
-          { classId: null },
-          ...(classCondition ? [{ class: classCondition }] : []),
-        ],
-      }),
-    },
-  });
+  // const announcements = await prisma.announcement.findMany({
+  //   take: 3,
+  //   orderBy: { date: "desc" },
+  //   where: {
+  //     ...(role !== "admin" && {
+  //       OR: [
+  //         { classId: null },
+  //         ...(classCondition ? [{ class: classCondition }] : []),
+  //       ],
+  //     }),
+  //   },
+  // });
 
   // console.log("Final Fetch Count:", announcements.length);
 

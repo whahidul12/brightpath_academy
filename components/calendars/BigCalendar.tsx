@@ -2,7 +2,6 @@
 import { Calendar, momentLocalizer, View, Views } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { calendarEvents } from "@/constants/data";
 import { useMemo, useState } from "react";
 import "./BigCalendar.css";
 
@@ -15,7 +14,11 @@ moment.updateLocale("en", {
 
 const localizer = momentLocalizer(moment);
 
-export const BigCalendar = () => {
+export const BigCalendar = ({
+  schedule,
+}: {
+  schedule: { title: string; start: Date; end: Date }[];
+}) => {
   const [view, setView] = useState<View>(Views.MONTH);
 
   const handleViewChange = (newView: View) => {
@@ -25,10 +28,10 @@ export const BigCalendar = () => {
   const viewsList = useMemo(() => ["month", "week", "day"] as View[], []);
 
   return (
-    <div style={{ height: "95vh" }}>
+    <div style={{ height: "100%" }}>
       <Calendar
         localizer={localizer}
-        events={calendarEvents}
+        events={schedule}
         startAccessor="start"
         endAccessor="end"
         views={viewsList}
