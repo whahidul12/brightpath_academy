@@ -45,7 +45,7 @@ export const FinanceChart = () => {
       </div>
 
       {/* Chart */}
-      <div className="h-75 w-full">
+      <div className="h-80 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <CartesianGrid

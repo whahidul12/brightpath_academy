@@ -119,7 +119,7 @@ async function main() {
         name: `SName${i}`,
         surname: `SSurname ${i}`,
         email: `student${i}@example.com`,
-        phone: `987-654-321${i}`,
+        phone: `+88018394398${i}`,
         address: `Address${i}`,
         bloodType: "O-",
         sex: i % 2 === 0 ? UserSex.MALE : UserSex.FEMALE,

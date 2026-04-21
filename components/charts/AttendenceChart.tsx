@@ -1,8 +1,9 @@
 "use client";
-
+import Image from "next/image";
 import {
   BarChart,
   Bar,
+  Rectangle,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -10,33 +11,16 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import Image from "next/image";
 
-const data = [
-  { name: "Sun", Present: 1890, Absent: 4800 },
-  { name: "Mon", Present: 4000, Absent: 2400 },
-  { name: "Tue", Present: 3000, Absent: 1398 },
-  { name: "Wed", Present: 2000, Absent: 9800 },
-  { name: "Thu", Present: 2780, Absent: 3908 },
-];
-
-export default function AttendenceChart() {
+export default function AttendenceChart({
+  data,
+}: {
+  data: { name: string; present: number; absent: number }[];
+}) {
   return (
-    <div className="border-border/40 bg-card rounded-2xl border p-5 shadow-sm transition-all">
-      {/* Header */}
-      <div className="mb-4 flex items-center justify-between">
-        <div>
-          <h2 className="text-base font-semibold tracking-tight">Attendance</h2>
-          <p className="text-muted-foreground text-xs">Weekly overview</p>
-        </div>
-
-        <button className="rounded-md p-1.5 transition hover:bg-black/5 dark:hover:bg-white/10">
-          <Image src="/icons/moreDark.png" alt="more" width={16} height={16} />
-        </button>
-      </div>
-
+    <>
       {/* Chart */}
-      <div className="h-70 w-full">
+      <div className="h-72 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
             <CartesianGrid
@@ -75,13 +59,13 @@ export default function AttendenceChart() {
             />
 
             <Bar
-              dataKey="Present"
+              dataKey="present"
               radius={[8, 8, 0, 0]}
               barSize={18}
               fill="hsl(var(--primary-hsl))"
             />
             <Bar
-              dataKey="Absent"
+              dataKey="absent"
               radius={[8, 8, 0, 0]}
               barSize={18}
               fill="hsl(var(--secondary-hsl))"
@@ -89,6 +73,6 @@ export default function AttendenceChart() {
           </BarChart>
         </ResponsiveContainer>
       </div>
-    </div>
+    </>
   );
 }

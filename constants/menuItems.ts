@@ -7,8 +7,7 @@ export default function getMenuItems(role: string | undefined) {
         {
           icon: "/icons/home.png",
           label: "Home",
-
-          href: { href },
+          href: href,
           visible: ["admin", "teacher", "student", "parent"],
         },
         {
