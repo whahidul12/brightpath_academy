@@ -6,15 +6,16 @@ import { DeleteConfirmation } from "../modals/DeleteConfirmation";
 import dynamic from "next/dynamic";
 import { CardType } from "@/shared/types/types";
 
-const TeacherForm = dynamic(
-  () => import("../forms/TeacherForm").then((mod) => mod.TeacherForm),
-  { ssr: false, loading: () => <span>Loading...</span> },
-);
+const TeacherForm = dynamic(() => import("../forms/TeacherForm"), {
+  loading: () => <span>Loading...</span>,
+});
 
-const StudentForm = dynamic(
-  () => import("../forms/StudentForm").then((mod) => mod.StudentForm),
-  { ssr: false, loading: () => <span>Loading...</span> },
-);
+const StudentForm = dynamic(() => import("../forms/StudentForm"), {
+  loading: () => <span>Loading...</span>,
+});
+const SubjectForm = dynamic(() => import("../forms/SubjectForm"), {
+  loading: () => <span>Loading...</span>,
+});
 
 // 1. Move this outside or into a separate config file
 const forms: {
@@ -22,6 +23,7 @@ const forms: {
 } = {
   teacher: (type, data) => <TeacherForm type={type} data={data} />,
   student: (type, data) => <StudentForm type={type} data={data} />,
+  subject: (type, data) => <SubjectForm type={type} data={data} />,
 };
 
 export default function FormModal({
