@@ -4,7 +4,7 @@ import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { AssignmentList } from "@/shared/types/types";
-import { prisma } from "@/src";
+import { prisma } from "@/lib/prisma";
 import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
@@ -142,8 +142,8 @@ const AssignmentListPage = async ({
       break;
   }
 
-  const [AssignmentData, count] = await prisma.$transaction([
-    prisma.assignment.findMany({
+  const [AssignmentData, count] = await prisma.$transaction(async (tx) => {
+    const data = await tx.assignment.findMany({
       where: queryParams,
       include: {
         lesson: {
@@ -156,11 +156,13 @@ const AssignmentListPage = async ({
       },
       take: ITEM_PER_PAGE,
       skip: (currentPage - 1) * ITEM_PER_PAGE,
-    }),
-    prisma.assignment.count({
+    });
+    const count = await tx.assignment.count({
       where: queryParams,
-    }),
-  ]);
+    });
+    return [data, count];
+  });
+
   return (
     <div className="bg-card m-4 mt-0 flex-1 rounded-md p-4">
       {/* TOP */}

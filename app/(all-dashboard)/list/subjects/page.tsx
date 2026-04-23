@@ -4,10 +4,10 @@ import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { SubjectList } from "@/shared/types/types";
-import { prisma } from "@/src";
 import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
+import { prisma } from "@/lib/prisma";
 
 const SubjectsListPage = async ({
   searchParams,
@@ -61,8 +61,8 @@ const SubjectsListPage = async ({
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-              <FormModal table="student" type="update" id={item.id} />
-              <FormModal table="student" type="delete" id={item.id} />
+              <FormModal table="subject" type="update" id={item.id} />
+              <FormModal table="subject" type="delete" id={item.id} />
             </>
           )}
         </div>
@@ -86,19 +86,16 @@ const SubjectsListPage = async ({
     }
   }
 
-  const [SubjectData, count] = await prisma.$transaction([
-    prisma.subject.findMany({
+  const [SubjectData, count] = await prisma.$transaction(async (tx) => {
+    const data = await tx.subject.findMany({
       where: queryParams,
-      include: {
-        teachers: true,
-      },
+      include: { teachers: true },
       take: ITEM_PER_PAGE,
       skip: (currentPage - 1) * ITEM_PER_PAGE,
-    }),
-    prisma.subject.count({
-      where: queryParams,
-    }),
-  ]);
+    });
+    const total = await tx.subject.count({ where: queryParams });
+    return [data, total];
+  });
   return (
     <div className="bg-card m-4 mt-0 flex-1 rounded-md p-4">
       {/* TOP */}

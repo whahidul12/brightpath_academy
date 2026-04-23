@@ -1,6 +1,6 @@
 import Image from "next/image";
 import CountChart from "../charts/CountChart";
-import { prisma } from "@/src";
+import { prisma } from "@/lib/prisma";
 
 export default async function GenderCount() {
   const data = await prisma.student.groupBy({

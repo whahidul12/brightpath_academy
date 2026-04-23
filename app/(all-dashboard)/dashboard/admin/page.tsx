@@ -25,7 +25,7 @@ export default async function AdminPage({
           <UserCard userType="parent"></UserCard>
         </div>
         {/*Middle Chart*/}
-        <div className="flex flex-col gap-4 lg:flex-row">
+        <div className="flex min-h-0 flex-col gap-4 lg:flex-row">
           {/*Attendance Chart*/}
           <div className="w-full rounded-lg lg:w-2/3">
             <AttendanceCount />

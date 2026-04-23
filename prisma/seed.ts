@@ -1,4 +1,4 @@
-import { prisma } from "@/src";
+import { prisma } from "@/lib/prisma";
 import { Day, UserSex } from "@/src/generated/prisma/enums";
 
 async function main() {

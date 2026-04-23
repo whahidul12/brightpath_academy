@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { DashboardAnnouncement } from "../microComponents/DashboardAnnouncement";
-import { prisma } from "@/src";
+import { prisma } from "@/lib/prisma";
 
 const announcements = [
   {

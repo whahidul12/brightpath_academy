@@ -9,7 +9,7 @@ const data = [
 
 const Performance = () => {
   return (
-    <div className="bg-card relative h-80 rounded-md p-4">
+    <div className="bg-card relative h-80 w-full min-w-0 rounded-md p-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Performance</h1>
         <Image src="/icons/moreDark.png" alt="" width={16} height={16} />

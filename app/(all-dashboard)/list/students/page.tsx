@@ -4,7 +4,7 @@ import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { StudentList } from "@/shared/types/types";
-import { prisma } from "@/src";
+import { prisma } from "@/lib/prisma";
 import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";

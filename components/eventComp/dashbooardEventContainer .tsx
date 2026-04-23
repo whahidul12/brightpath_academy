@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { DashboardEvent } from "../microComponents/DashdoardEvent";
-import { prisma } from "@/src";
+import { prisma } from "@/lib/prisma";
 
 export const DashboardEventContainer = async ({
   dateParam,

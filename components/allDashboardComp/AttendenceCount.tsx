@@ -1,6 +1,6 @@
 import Image from "next/image";
 import AttendenceChart from "../charts/AttendenceChart";
-import { prisma } from "@/src";
+import { prisma } from "@/lib/prisma";
 
 export default async function AttendanceCount() {
   const today = new Date();

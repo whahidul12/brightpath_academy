@@ -4,7 +4,7 @@ import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
 import { ITEM_PER_PAGE } from "@/lib/settings";
 import { AnnouncementList } from "@/shared/types/types";
-import { prisma } from "@/src";
+import { prisma } from "@/lib/prisma";
 import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
@@ -17,8 +17,7 @@ const AnnouncementsListPage = async ({
   const { page, ...searchQueries } = await searchParams;
   const currentPage = page ? parseInt(page) : 1;
 
-  const { sessionClaims } = await auth();
-  const { userId } = await auth();
+  const { userId, sessionClaims } = await auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
   const CurrentUserId = userId;
 
@@ -127,19 +126,16 @@ const AnnouncementsListPage = async ({
       break;
   }
 
-  const [AnnouncementData, count] = await prisma.$transaction([
-    prisma.announcement.findMany({
+  const [AnnouncementData, count] = await prisma.$transaction(async (tx) => {
+    const data = await tx.announcement.findMany({
       where: queryParams,
-      include: {
-        class: true,
-      },
+      include: { class: true },
       take: ITEM_PER_PAGE,
       skip: (currentPage - 1) * ITEM_PER_PAGE,
-    }),
-    prisma.announcement.count({
-      where: queryParams,
-    }),
-  ]);
+    });
+    const total = await tx.announcement.count({ where: queryParams });
+    return [data, total];
+  });
   return (
     <div className="bg-card m-4 mt-0 flex-1 rounded-md p-4">
       {/* TOP */}

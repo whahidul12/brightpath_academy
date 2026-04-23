@@ -1,11 +1,14 @@
 import SingleUserCard from "@/components/allDashboardComp/singleUserCard";
 import SingleUserStates from "@/components/allDashboardComp/SingleUserStates";
-import { BigCalendar } from "@/components/calendars/BigCalendar";
+import BigCalendarContainer from "@/components/allDashboardComp/BigCalendarContainer";
 import Link from "next/link";
 import Performance from "@/components/charts/Performance";
 import { DashboardAnnouncementContainer } from "@/components/eventComp/DashboardAnnouncementContainer";
+import { auth } from "@clerk/nextjs/server";
 
-export default function SingleStudentPage() {
+export default async function SingleStudentPage() {
+  const { userId, sessionClaims } = await auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
   return (
     <div className="flex flex-col justify-between gap-4 p-4 md:flex-row">
       {/*Left Side DashBoard Panel*/}
@@ -39,7 +42,7 @@ export default function SingleStudentPage() {
         {/*Bottom Part*/}
         <div className="bg-card flex h-200 flex-col gap-4 rounded-lg p-4">
           <h1 className="text-2xl font-semibold">Teacher&apos;s Schedule</h1>
-          <BigCalendar />
+          <BigCalendarContainer type="classId" id={userId as string} />
         </div>
       </div>
       {/*Right Side DashBoard Panel*/}
@@ -81,7 +84,7 @@ export default function SingleStudentPage() {
           </div>
         </div>
         <Performance />
-        <DashboardAnnouncementContainer />
+        <DashboardAnnouncementContainer userId={userId} role={role} />
       </div>
     </div>
   );
