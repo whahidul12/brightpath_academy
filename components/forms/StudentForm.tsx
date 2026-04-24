@@ -1,16 +1,16 @@
-import { TeacherFormSchema } from "@/shared/schemas/products";
+import { TeacherFormSchema } from "@/shared/schemas/TeacherFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { InputField } from "./InputField";
 import Image from "next/image";
 
-export const StudentForm = ({
+export default function StudentForm({
   type,
   data,
 }: {
   type: "create" | "update";
   data?: any;
-}) => {
+}) {
   const {
     register,
     handleSubmit,
@@ -19,13 +19,10 @@ export const StudentForm = ({
     resolver: zodResolver(TeacherFormSchema),
   });
 
-  const onSubmit = handleSubmit((values) => {
-    if (type === "create") {
-      console.log(values);
-    } else {
-      console.log(values);
-    }
-  });
+  const onSubmit = handleSubmit(
+    (values) => console.log("Success:", values),
+    (errors) => console.log("Validation Errors:", errors), // Add this second function
+  );
 
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
@@ -155,4 +152,4 @@ export const StudentForm = ({
       </button>
     </form>
   );
-};
+}

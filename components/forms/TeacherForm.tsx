@@ -1,16 +1,16 @@
-import { TeacherFormSchema } from "@/shared/schemas/products";
+import { TeacherFormSchema } from "@/shared/schemas/TeacherFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { InputField } from "./InputField";
 
-export const TeacherForm = ({
+export default function TeacherForm({
   type,
   data,
 }: {
   type: "create" | "update";
   data?: any;
-}) => {
+}) {
   const {
     register,
     handleSubmit,
@@ -20,9 +20,10 @@ export const TeacherForm = ({
     defaultValues: data, // Better way to handle defaults
   });
 
-  const onSubmit = handleSubmit((values) => {
-    console.log(values);
-  });
+  const onSubmit = handleSubmit(
+    (values) => console.log("Success:", values),
+    (errors) => console.log("Validation Errors:", errors), // Add this second function
+  );
 
   return (
     <form className="flex flex-col gap-8" onSubmit={onSubmit}>
@@ -149,4 +150,4 @@ export const TeacherForm = ({
       </button>
     </form>
   );
-};
+}

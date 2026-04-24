@@ -1,15 +1,7 @@
 import * as z from "zod";
+import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from "@/lib/settings";
 
-// Define limits
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
-
-export const TeacherFormSchema = z.object({
+export const StudentFormSchema = z.object({
   image: z
     .instanceof(File, { message: "Image is required" })
     .refine((file) => file.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)

@@ -156,8 +156,8 @@ const ResultListPage = async ({
       break;
   }
 
-  const [ResultData, count] = await prisma.$transaction([
-    prisma.result.findMany({
+  const [ResultData, count] = await prisma.$transaction(async (tx) => {
+    const results = await tx.result.findMany({
       where: queryParams,
       include: {
         student: { select: { name: true, surname: true } },
@@ -184,9 +184,10 @@ const ResultListPage = async ({
       },
       take: ITEM_PER_PAGE,
       skip: ITEM_PER_PAGE * (currentPage - 1),
-    }),
-    prisma.result.count({ where: queryParams }),
-  ]);
+    });
+    const total = await tx.result.count({ where: queryParams });
+    return [results, total];
+  });
 
   const data = ResultData.map((item) => {
     const assessment = item.exam || item.assignment;

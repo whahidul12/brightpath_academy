@@ -136,8 +136,8 @@ const TeacherListPage = async ({
     }
   }
 
-  const [TeacherData, count] = await prisma.$transaction([
-    prisma.teacher.findMany({
+  const [TeacherData, count] = await prisma.$transaction(async (tx) => {
+    const data = await tx.teacher.findMany({
       where: queryParams,
       include: {
         subjects: true,
@@ -145,11 +145,12 @@ const TeacherListPage = async ({
       },
       take: ITEM_PER_PAGE,
       skip: (currentPage - 1) * ITEM_PER_PAGE,
-    }),
-    prisma.teacher.count({
+    });
+    const total = await tx.teacher.count({
       where: queryParams,
-    }),
-  ]);
+    });
+    return [data, total];
+  });
 
   return (
     <div className="bg-card m-4 mt-0 flex-1 rounded-md p-4">

@@ -126,19 +126,20 @@ const StudentListPage = async ({
     }
   }
 
-  const [StudentData, count] = await prisma.$transaction([
-    prisma.student.findMany({
+  const [StudentData, count] = await prisma.$transaction(async (tx) => {
+    const data = await tx.student.findMany({
       where: queryParams,
       include: {
         class: true,
       },
       take: ITEM_PER_PAGE,
       skip: (currentPage - 1) * ITEM_PER_PAGE,
-    }),
-    prisma.student.count({
+    });
+    const total = await tx.student.count({
       where: queryParams,
-    }),
-  ]);
+    });
+    return [data, total];
+  });
   return (
     <div className="bg-card m-4 mt-0 flex-1 rounded-md p-4">
       {/* TOP */}

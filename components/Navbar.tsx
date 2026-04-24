@@ -1,6 +1,9 @@
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { ModeToggle } from "./ModeToggle";
-import { UserButton } from "@clerk/nextjs";
+const UserButton = dynamic(() =>
+  import("@clerk/nextjs").then((mod) => mod.UserButton),
+);
 
 export default async function Navbar({ role }: { role: string | undefined }) {
   return (

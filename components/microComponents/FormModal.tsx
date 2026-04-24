@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
 import { DeleteConfirmation } from "../modals/DeleteConfirmation";
-import dynamic from "next/dynamic";
 import { CardType } from "@/shared/types/types";
 
 const TeacherForm = dynamic(() => import("../forms/TeacherForm"), {
