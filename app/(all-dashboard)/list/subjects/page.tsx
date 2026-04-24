@@ -8,6 +8,7 @@ import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import FormContainer from "@/components/forms/FormContainer";
 
 const SubjectsListPage = async ({
   searchParams,
@@ -61,8 +62,13 @@ const SubjectsListPage = async ({
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-              <FormModal table="subject" type="update" id={item.id} />
-              <FormModal table="subject" type="delete" id={item.id} />
+              <FormContainer
+                table="subject"
+                type="update"
+                id={item.id}
+                data={item}
+              />
+              <FormContainer table="subject" type="delete" id={item.id} />
             </>
           )}
         </div>

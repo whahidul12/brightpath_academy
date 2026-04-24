@@ -3,14 +3,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { InputField } from "./InputField";
+import { FormProps } from "@/shared/types/types";
 
-export default function TeacherForm({
-  type,
-  data,
-}: {
-  type: "create" | "update";
-  data?: any;
-}) {
+export default function TeacherForm({ type, setIsOpen, data }: FormProps) {
   const {
     register,
     handleSubmit,

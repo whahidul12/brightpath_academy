@@ -46,3 +46,5 @@ export const TeacherFormSchema = z.object({
     message: "Please select a valid blood group",
   }),
 });
+
+export type TeacherSchema = z.infer<typeof TeacherFormSchema>;

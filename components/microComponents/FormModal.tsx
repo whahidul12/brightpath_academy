@@ -18,26 +18,56 @@ const SubjectForm = dynamic(() => import("../forms/SubjectForm"), {
 });
 
 // 1. Move this outside or into a separate config file
-const forms: {
-  [key: string]: (type: "create" | "update", data?: any) => React.JSX.Element;
-} = {
-  teacher: (type, data) => <TeacherForm type={type} data={data} />,
-  student: (type, data) => <StudentForm type={type} data={data} />,
-  subject: (type, data) => <SubjectForm type={type} data={data} />,
-};
+// 1. Update the type definition to include the 3rd argument
 
 export default function FormModal({
   table,
   type,
   data,
   id,
+  relatedData,
 }: {
   table: CardType;
   type: "create" | "update" | "delete";
   data?: any;
   id?: number | string;
+  relatedData?: any;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const forms: {
+    [key: string]: (
+      type: "create" | "update",
+      setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, // Add this
+      data?: any,
+      relatedData?: any,
+    ) => React.JSX.Element;
+  } = {
+    // 2. Update the arrow functions to receive and pass the setter
+    teacher: (type, data, setIsOpen, relatedData) => (
+      <TeacherForm
+        type={type}
+        data={data}
+        setIsOpen={setIsOpen}
+        relatedData={relatedData}
+      />
+    ),
+    student: (type, data, setIsOpen, relatedData) => (
+      <StudentForm
+        type={type}
+        data={data}
+        setIsOpen={setIsOpen}
+        relatedData={relatedData}
+      />
+    ),
+    subject: (type, data, setIsOpen, relatedData) => (
+      <SubjectForm
+        type={type}
+        data={data}
+        setIsOpen={setIsOpen}
+        relatedData={relatedData}
+      />
+    ),
+  };
   const renderContent = () => {
     if (type === "delete") {
       return id ? <DeleteConfirmation id={id} table={table} /> : "Missing ID";
@@ -45,7 +75,7 @@ export default function FormModal({
 
     const Form = forms[table];
     return Form ? (
-      Form(type, data)
+      Form(type, data, setIsOpen, relatedData)
     ) : (
       <p>Form for {table} is under construction.</p>
     );

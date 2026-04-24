@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/provider/theme-provider/theme-provider";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
+import { Toaster } from "sonner";
 
 const firaSans = Fira_Sans({
   variable: "--font-fira-sans",
@@ -46,7 +47,7 @@ export default async function DashboardLayout({
             {/*right dashboard*/}
             <div className="h-screen w-[86%] md:w-[92%] lg:w-[86%]">
               <Navbar role={role} />
-              {children}
+              {children} <Toaster position="top-right" richColors />
             </div>
           </ThemeProvider>
         </ClerkProvider>

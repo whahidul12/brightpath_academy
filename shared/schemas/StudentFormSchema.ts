@@ -46,3 +46,4 @@ export const StudentFormSchema = z.object({
     message: "Please select a valid blood group",
   }),
 });
+export type StudentSchema = z.infer<typeof StudentFormSchema>;

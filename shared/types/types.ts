@@ -11,6 +11,7 @@ import {
   Event,
   Announcement,
 } from "@/src/generated/prisma/client";
+import { Dispatch, SetStateAction } from "react";
 
 export type TeacherList = Teacher & { subjects: Subject[] } & {
   classes: Class[];
@@ -73,3 +74,10 @@ export type CardType =
   | "attendance"
   | "event"
   | "announcement";
+
+export interface FormProps {
+  type: "create" | "update";
+  setIsOpen: Dispatch<SetStateAction<boolean>>; // Add this line
+  data?: any;
+  relatedData?: any;
+}

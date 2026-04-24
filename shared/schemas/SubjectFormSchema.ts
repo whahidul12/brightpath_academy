@@ -8,6 +8,8 @@ export const SubjectFormSchema = z.object({
       message: "SubjectName is required",
     })
     .trim(),
+  id: z.coerce.number().optional(),
+  teachers: z.array(z.string()).min(1, "Select at least one teacher"), //this is teachers IDs
 });
 
 export type SubjectSchema = z.infer<typeof SubjectFormSchema>;
