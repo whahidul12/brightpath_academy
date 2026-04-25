@@ -1,6 +1,23 @@
+import { deleteClass } from "@/features/delete/createClass/actions";
 import { deleteSubject } from "@/features/delete/deleteSubjects/actions";
 import { startTransition, useActionState, useEffect } from "react";
 import { toast } from "sonner";
+
+const deleteActionMap = {
+  subject: deleteSubject,
+  class: deleteClass,
+  // teacher: deleteTeacher,
+  // student: deleteStudent,
+  // exam: deleteExam,
+  // // TODO: OTHER DELETE ACTIONS
+  // parent: deleteSubject,
+  // lesson: deleteSubject,
+  // assignment: deleteSubject,
+  // result: deleteSubject,
+  // attendance: deleteSubject,
+  // event: deleteSubject,
+  // announcement: deleteSubject,
+};
 
 export const DeleteConfirmation = ({
   id,
@@ -11,7 +28,7 @@ export const DeleteConfirmation = ({
   table: string;
   setIsOpen?: any;
 }) => {
-  const actionToExecute = table === "subject" ? deleteSubject : null;
+  const actionToExecute = deleteActionMap[table];
   const [state, formAction, isPending] = useActionState(actionToExecute!, {
     success: false,
     error: false,

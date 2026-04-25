@@ -1,4 +1,3 @@
-import FormModal from "@/components/microComponents/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
@@ -8,8 +7,9 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
+import FormContainer from "@/components/forms/FormContainer";
 
-const SubjectsListPage = async ({
+const ClassListPage = async ({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>;
@@ -74,8 +74,8 @@ const SubjectsListPage = async ({
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-              <FormModal table="class" type="update" id={item.id} />
-              <FormModal table="class" type="delete" id={item.id} />
+              <FormContainer table="class" type="update" id={item.id} />
+              <FormContainer table="class" type="delete" id={item.id} />
             </>
           )}
         </div>
@@ -101,20 +101,20 @@ const SubjectsListPage = async ({
       }
     }
   }
-const [ClassData, count] = await prisma.$transaction(async (tx) => {
-  const data = await tx.class.findMany({
-    where: queryParams,
-    include: {
-      supervisor: true,
-    },
-    take: ITEM_PER_PAGE,
-    skip: (currentPage - 1) * ITEM_PER_PAGE,
+  const [ClassData, count] = await prisma.$transaction(async (tx) => {
+    const data = await tx.class.findMany({
+      where: queryParams,
+      include: {
+        supervisor: true,
+      },
+      take: ITEM_PER_PAGE,
+      skip: (currentPage - 1) * ITEM_PER_PAGE,
+    });
+    const total = await tx.class.count({
+      where: queryParams,
+    });
+    return [data, total];
   });
-  const total = await tx.class.count({
-    where: queryParams,
-  });
-  return [data, total];
-});
   return (
     <div className="bg-card m-4 mt-0 flex-1 rounded-md p-4">
       {/* TOP */}
@@ -133,7 +133,7 @@ const [ClassData, count] = await prisma.$transaction(async (tx) => {
               // <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
               //   <Image src="/icons/add.png" alt="" width={20} height={20} />
               // </button>
-              <FormModal table="class" type="create" />
+              <FormContainer table="class" type="create" />
             )}
           </div>
         </div>
@@ -154,4 +154,4 @@ const [ClassData, count] = await prisma.$transaction(async (tx) => {
   );
 };
 
-export default SubjectsListPage;
+export default ClassListPage;

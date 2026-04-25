@@ -1,5 +1,4 @@
 "use server";
-
 import { SubjectSchema } from "@/shared/schemas/SubjectFormSchema";
 import { revalidatePath } from "next/cache";
 import { ActionResponse } from "./types";

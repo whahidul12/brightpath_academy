@@ -1,4 +1,3 @@
-import FormModal from "@/components/microComponents/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
@@ -120,7 +119,7 @@ const SubjectsListPage = async ({
               // <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
               //   <Image src="/icons/add.png" alt="" width={20} height={20} />
               // </button>
-              <FormModal table="subject" type="create" />
+              <FormContainer table="subject" type="create" />
             )}
           </div>
         </div>

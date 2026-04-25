@@ -16,6 +16,9 @@ const StudentForm = dynamic(() => import("../forms/StudentForm"), {
 const SubjectForm = dynamic(() => import("../forms/SubjectForm"), {
   loading: () => <span>Loading...</span>,
 });
+const ClassForm = dynamic(() => import("../forms/ClassForm"), {
+  loading: () => <span>Loading...</span>,
+});
 
 // 1. Move this outside or into a separate config file
 // 1. Update the type definition to include the 3rd argument
@@ -61,6 +64,14 @@ export default function FormModal({
     ),
     subject: (type, data, setIsOpen, relatedData) => (
       <SubjectForm
+        type={type}
+        data={data}
+        setIsOpen={setIsOpen}
+        relatedData={relatedData}
+      />
+    ),
+    class: (type, data, setIsOpen, relatedData) => (
+      <ClassForm
         type={type}
         data={data}
         setIsOpen={setIsOpen}
