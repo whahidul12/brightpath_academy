@@ -6,6 +6,17 @@ export const createStudentService = async (
   userId: string,
 ) => {
   try {
+    // Validate required fields
+    if (!data.parentId) {
+      throw new Error("Parent ID is required");
+    }
+    if (!data.gradeId) {
+      throw new Error("Grade ID is required");
+    }
+    if (!data.classId) {
+      throw new Error("Class ID is required");
+    }
+
     return await prisma.student.create({
       data: {
         id: userId,
@@ -19,9 +30,9 @@ export const createStudentService = async (
         bloodType: data.bloodGroup,
         sex: data.gender === "male" ? "MALE" : "FEMALE",
         birthday: data.dateOfBirth,
-        parentId: data.parentId || undefined,
-        gradeId: data.gradeId ? parseInt(data.gradeId) : undefined,
-        classId: data.classId ? parseInt(data.classId) : undefined,
+        parentId: data.parentId,
+        gradeId: parseInt(data.gradeId),
+        classId: parseInt(data.classId),
       },
     });
   } catch (error) {

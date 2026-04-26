@@ -10,15 +10,17 @@ interface ActionResponse {
 
 export const deleteParent = async (
   currentState: ActionResponse,
-  id: string,
+  id: string | number,
 ): Promise<ActionResponse> => {
+  const parentId = String(id);
+
   try {
     // Delete Clerk user first
     const client = await clerkClient();
-    await client.users.deleteUser(id);
+    await client.users.deleteUser(parentId);
 
     // Delete from database
-    await deleteParentService(id);
+    await deleteParentService(parentId);
 
     revalidatePath("/list/parents");
 
@@ -28,7 +30,7 @@ export const deleteParent = async (
 
     // If Clerk deletion fails, still try to delete from database
     try {
-      await deleteParentService(id);
+      await deleteParentService(parentId);
       revalidatePath("/list/parents");
       return { success: true, error: false };
     } catch (dbError) {

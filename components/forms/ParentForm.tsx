@@ -19,12 +19,19 @@ export default function ParentForm({
   const [profileImage, setProfileImage] = useState<any>();
 
   const actionToExecute = type === "create" ? createParent : updateParent;
+
+  // Create a schema that requires password for create operations
+  const formSchema =
+    type === "create"
+      ? ParentFormSchema.required({ password: true })
+      : ParentFormSchema;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(ParentFormSchema),
+    resolver: zodResolver(formSchema),
     defaultValues: data,
   });
 
@@ -34,6 +41,7 @@ export default function ParentForm({
   });
 
   useEffect(() => {
+    console.log("ParentForm state updated:", state);
     if (state.success) {
       toast.success(
         `Parent ${type === "create" ? "created" : "updated"} successfully`,

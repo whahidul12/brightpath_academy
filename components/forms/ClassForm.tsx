@@ -95,8 +95,10 @@ export default function ClassForm({
             </option>
           ))}
         </select>
-        {errors.supervisorId && (
-          <p className="text-xs text-red-400">{errors.supervisorId.message}</p>
+        {errors.supervisorId?.message && (
+          <p className="text-xs text-red-400">
+            {String(errors.supervisorId.message)}
+          </p>
         )}
       </div>
 
@@ -114,8 +116,10 @@ export default function ClassForm({
             </option>
           ))}
         </select>
-        {errors.gradeId && (
-          <p className="text-xs text-red-400">{errors.gradeId.message}</p>
+        {errors.gradeId?.message && (
+          <p className="text-xs text-red-400">
+            {String(errors.gradeId.message)}
+          </p>
         )}
       </div>
 

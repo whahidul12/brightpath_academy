@@ -28,12 +28,12 @@ export const ParentFormSchema = z.object({
     .min(8, { message: "Password must be at least 8 characters long" })
     .max(50, { message: "Password must be at most 50 characters long" })
     .trim()
-    .optional(),
+    .optional()
+    .or(z.literal("")),
   phone: z
     .string()
     .min(10, { message: "Phone number must be at least 10 characters long" })
-    .trim()
-    .optional(),
+    .trim(),
   address: z
     .string()
     .min(1, { message: "Address must be at least 1 character long" })

@@ -14,9 +14,8 @@ export const updateParentService = async (data: ParentSchema) => {
         name: data.firstName,
         surname: data.lastName,
         email: data.email || undefined,
-        phone: data.phone || undefined,
+        phone: data.phone,
         address: data.address || "",
-        img: data.image || undefined,
       },
     });
   } catch (error) {

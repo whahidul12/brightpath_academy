@@ -13,13 +13,12 @@ export const createParentService = async (
         name: data.firstName,
         surname: data.lastName,
         email: data.email || undefined,
-        phone: data.phone || undefined,
+        phone: data.phone,
         address: data.address || "",
-        img: data.image || undefined,
       },
     });
   } catch (error) {
-    console.error("Error creating parent:", error);
+    console.error("Error creating parent in database:", error);
     throw error;
   }
 };

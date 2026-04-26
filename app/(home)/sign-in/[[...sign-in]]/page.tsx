@@ -32,13 +32,21 @@ const LoginPage = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!clerk.loaded) return;
+    if (!clerk.loaded) {
+      setError("Authentication service is loading. Please wait...");
+      return;
+    }
+
+    if (!clerk.client) {
+      setError("Authentication service unavailable. Please refresh the page.");
+      return;
+    }
 
     setError(null);
     setLoading(true);
 
     try {
-      const result = await clerk.client!.signIn.create({
+      const result = await clerk.client.signIn.create({
         identifier,
         password,
       });
