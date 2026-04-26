@@ -1,4 +1,3 @@
-import FormModal from "@/components/microComponents/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
@@ -8,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
+import FormContainer from "@/components/forms/FormContainer";
 
 const TeacherListPage = async ({
   searchParams,
@@ -33,12 +33,12 @@ const TeacherListPage = async ({
     {
       header: "Subjects",
       accessor: "subjects",
-      className: "hidden md:table-cell",
+      className: "",
     },
     {
       header: "Classes",
       accessor: "classes",
-      className: "hidden md:table-cell",
+      className: "hidden sm:table-cell",
     },
     {
       header: "Phone",
@@ -76,14 +76,16 @@ const TeacherListPage = async ({
           />
           <div className="flex flex-col">
             <h3 className="font-semibold">{item.name}</h3>
-            <p className="text-xs text-gray-500">{item?.email}</p>
+            <p className="hidden text-xs text-gray-500 md:table-cell">
+              {item?.email}
+            </p>
           </div>
         </td>
         <td className="hidden md:table-cell">{item.username}</td>
-        <td className="hidden md:table-cell">
+        <td className="">
           {item.subjects.map((subject) => subject.name).join(",")}
         </td>
-        <td className="hidden md:table-cell">
+        <td className="hidden sm:table-cell">
           {item.classes.map((cls) => cls.name).join(",")}
         </td>
         <td className="hidden lg:table-cell">{item.phone}</td>
@@ -102,8 +104,13 @@ const TeacherListPage = async ({
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-                <FormModal table="teacher" type="update" id={item.id} />
-                <FormModal table="teacher" type="delete" id={item.id} />
+                <FormContainer
+                  table="teacher"
+                  type="update"
+                  id={item.id}
+                  data={item}
+                />
+                <FormContainer table="teacher" type="delete" id={item.id} />
               </>
             )}
           </div>
@@ -170,7 +177,7 @@ const TeacherListPage = async ({
               // <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
               //   <Image src="/icons/create.png" alt="" width={20} height={20} />
               // </button>
-              <FormModal table="teacher" type="create" />
+              <FormContainer table="teacher" type="create" />
             )}
           </div>
         </div>

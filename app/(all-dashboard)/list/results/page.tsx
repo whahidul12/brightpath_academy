@@ -1,4 +1,3 @@
-import FormModal from "@/components/microComponents/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/tableComp/Table";
 import TableSearch from "@/components/tableComp/TableSearch";
@@ -8,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
+import FormContainer from "@/components/forms/FormContainer";
 
 const ResultListPage = async ({
   searchParams,
@@ -95,8 +95,8 @@ const ResultListPage = async ({
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-              <FormModal table="result" type="update" id={item.id} />
-              <FormModal table="result" type="delete" id={item.id} />
+              <FormContainer table="result" type="update" id={item.id} />
+              <FormContainer table="result" type="delete" id={item.id} />
             </>
           )}
         </div>
@@ -223,7 +223,7 @@ const ResultListPage = async ({
               // <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
               //   <Image src="/icons/add.png" alt="" width={20} height={20} />
               // </button>
-              <FormModal table="result" type="create" />
+              <FormContainer table="result" type="create" />
             )}
           </div>
         </div>

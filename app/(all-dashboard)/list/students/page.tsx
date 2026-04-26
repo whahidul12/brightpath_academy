@@ -8,6 +8,7 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "@/src/generated/prisma/client";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
+import FormContainer from "@/components/forms/FormContainer";
 
 const StudentListPage = async ({
   searchParams,
@@ -91,8 +92,8 @@ const StudentListPage = async ({
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-              <FormModal table="student" type="update" id={item.id} />
-              <FormModal table="student" type="delete" id={item.id} />
+              <FormContainer table="student" type="update" id={item.id} />
+              <FormContainer table="student" type="delete" id={item.id} />
             </>
           )}
         </div>
@@ -158,7 +159,7 @@ const StudentListPage = async ({
               // <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
               //   <Image src="/icons/create.png" alt="" width={20} height={20} />
               // </button>
-              <FormModal table="student" type="create" />
+              <FormContainer table="student" type="create" />
             )}
           </div>
         </div>

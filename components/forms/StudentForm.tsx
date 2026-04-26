@@ -1,4 +1,4 @@
-import { TeacherFormSchema } from "@/shared/schemas/TeacherFormSchema";
+import { StudentFormSchema } from "@/shared/schemas/StudentFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { InputField } from "./InputField";
@@ -11,7 +11,7 @@ export default function StudentForm({ type, setIsOpen, data }: FormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(TeacherFormSchema),
+    resolver: zodResolver(StudentFormSchema),
   });
 
   const onSubmit = handleSubmit(
@@ -103,12 +103,10 @@ export default function StudentForm({ type, setIsOpen, data }: FormProps) {
           <label htmlFor="gender">Gender</label>
           <select
             {...register("gender")}
-            defaultValue={data?.gender}
+            defaultValue={data?.gender || ""}
             className="ring-1"
           >
-            <option selected value="default gender">
-              Select One
-            </option>
+            <option value="">Select One</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>

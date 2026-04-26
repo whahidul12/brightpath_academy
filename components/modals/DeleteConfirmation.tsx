@@ -1,12 +1,16 @@
-import { deleteClass } from "@/features/delete/createClass/actions";
+import { deleteClass } from "@/features/delete/deleteClass/actions";
 import { deleteSubject } from "@/features/delete/deleteSubjects/actions";
+import { deleteTeacher } from "@/features/delete/deleteTeacher/actions";
 import { startTransition, useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
-const deleteActionMap = {
-  subject: deleteSubject,
-  class: deleteClass,
-  // teacher: deleteTeacher,
+const deleteActionMap: Record<
+  string,
+  (currentState: any, id: any) => Promise<any>
+> = {
+  subject: deleteSubject as any,
+  class: deleteClass as any,
+  teacher: deleteTeacher as any,
   // student: deleteStudent,
   // exam: deleteExam,
   // // TODO: OTHER DELETE ACTIONS
@@ -47,16 +51,19 @@ export const DeleteConfirmation = ({
 
       if (setIsOpen) setIsOpen(false);
     } else if (state.error) {
-      toast.error(state.error as string, {
-        description:
-          typeof state.error === "string" ? state.error : "Please try again.",
-        duration: 4000,
-        style: {
-          background: "#fef2f2",
-          border: "1px solid #fca5a5",
-          color: "#7f1d1d",
+      toast.error(
+        typeof state.error === "string" ? state.error : "Failed to delete",
+        {
+          description:
+            typeof state.error === "string" ? state.error : "Please try again.",
+          duration: 4000,
+          style: {
+            background: "#fef2f2",
+            border: "1px solid #fca5a5",
+            color: "#7f1d1d",
+          },
         },
-      });
+      );
     }
   }, [state, table, setIsOpen]);
   const handleDelete = () => {

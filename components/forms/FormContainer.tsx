@@ -14,29 +14,41 @@ export default async function FormContainer({
   id?: number | string;
 }) {
   let relatedData = {};
+
   if (type !== "delete") {
-    switch (table) {
-      case "subject":
-        const subjectTeachers = await prisma.teacher.findMany({
-          select: { id: true, name: true, surname: true },
-        });
-        relatedData = JSON.parse(JSON.stringify({ teacher: subjectTeachers }));
-        break;
-      case "class":
-        const classGrades = await prisma.grade.findMany({
-          select: { id: true, level: true },
-        });
-        const classTeachers = await prisma.teacher.findMany({
-          select: { id: true, name: true, surname: true },
-        });
-        relatedData = JSON.parse(
-          JSON.stringify({ grades: classGrades, teachers: classTeachers }),
-        );
-        break;
-      default:
-        break;
+    try {
+      switch (table) {
+        case "subject":
+          const subjectTeachers = await prisma.teacher.findMany({
+            select: { id: true, name: true, surname: true },
+          });
+          relatedData = { teacher: subjectTeachers };
+          break;
+        case "class":
+          const classGrades = await prisma.grade.findMany({
+            select: { id: true, level: true },
+          });
+          const classTeachers = await prisma.teacher.findMany({
+            select: { id: true, name: true, surname: true },
+          });
+          relatedData = { grades: classGrades, teachers: classTeachers };
+          break;
+        case "teacher":
+          const teacherSubjects = await prisma.subject.findMany({
+            select: { id: true, name: true },
+          });
+          relatedData = { subjects: teacherSubjects };
+          break;
+        default:
+          break;
+      }
+    } catch (error) {
+      console.error("Error fetching related data:", error);
+      // Return empty relatedData on error
+      relatedData = {};
     }
   }
+
   return (
     <FormModal
       table={table}

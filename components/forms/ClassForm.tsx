@@ -1,4 +1,5 @@
 "use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useActionState, startTransition, useEffect } from "react";
@@ -17,6 +18,8 @@ export default function ClassForm({
 }: FormProps) {
   const { teachers, grades } = relatedData;
   const actionToExecute = type === "create" ? createClass : updateClass;
+  console.log(">>>>", data);
+
   const {
     register,
     handleSubmit,
@@ -34,31 +37,15 @@ export default function ClassForm({
   useEffect(() => {
     if (state.success) {
       toast.success(
-        `Subject ${type === "create" ? "created" : "updated"} successfully`,
-        {
-          description: `The subject has been ${type === "create" ? "added" : "updated"}.`,
-          duration: 4000,
-          style: {
-            background: "#f0fdf4",
-            border: "1px solid #86efac",
-            color: "#14532d",
-          },
-        },
+        `Class ${type === "create" ? "created" : "updated"} successfully`,
       );
       setIsOpen(false);
     } else if (state.error) {
-      toast.error("Something went wrong", {
-        description:
-          typeof state.error === "string" ? state.error : "Please try again.",
-        duration: 4000,
-        style: {
-          background: "#fef2f2",
-          border: "1px solid #fca5a5",
-          color: "#7f1d1d",
-        },
-      });
+      toast.error(
+        typeof state.error === "string" ? state.error : "Failed to save class",
+      );
     }
-  }, [type, state, setIsOpen]);
+  }, [state, type, setIsOpen]);
 
   const onSubmit = handleSubmit((formData) => {
     startTransition(() => {
@@ -71,86 +58,71 @@ export default function ClassForm({
       <h1 className="text-2xl font-bold">
         {type === "create" ? "Create a new Class" : "Update Class"}
       </h1>
-      <span className="text-xs font-medium">Class Information</span>
+
       <div className="flex flex-wrap justify-between gap-4">
         <InputField
           label="Class Name"
-          name="className"
           type="text"
-          defaultValue={data?.className ?? ""}
+          name="name" // Matches Prisma 'name'
+          defaultValue={data?.name}
           register={register}
-          error={errors.className}
+          error={errors.name}
         />
         <InputField
           label="Capacity"
           name="capacity"
-          type="text"
-          defaultValue={data?.capacity ?? ""}
+          type="number"
+          defaultValue={data?.capacity}
           register={register}
           error={errors.capacity}
         />
-        {data && (
-          <InputField
-            label="ID"
-            name="id"
-            type="text"
-            defaultValue={data?.id ?? ""}
-            register={register}
-            error={errors.id}
-            hidden
-          />
+        {data?.id && (
+          <input type="hidden" {...register("id")} defaultValue={data.id} />
         )}
       </div>
-      <div className="flex w-full flex-col gap-2 md:w-1/4">
-        <label htmlFor="teachers">Superviser</label>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-xs text-gray-400">Supervisor</label>
         <select
-          {...register("superviserId")}
-          defaultValue={data?.teachers}
-          className="ring-1"
+          {...register("supervisorId")}
+          defaultValue={data?.supervisorId}
+          className="rounded-md p-2 text-sm ring-[1.5px] ring-gray-300"
         >
-          <option selected value="default teacer">
-            Select One
-          </option>
-          {teachers?.map(
-            (teach: { id: string; name: string; surname: string }) => (
-              <option key={teach.id} value={teach.id}>
-                {teach.name + " " + teach.surname}
-              </option>
-            ),
-          )}
+          <option value="">Select a Supervisor</option>
+          {teachers?.map((teach: any) => (
+            <option key={teach.id} value={teach.id}>
+              {teach.name} {teach.surname}
+            </option>
+          ))}
         </select>
-        {errors.superviserId?.message && (
-          <p className="text-red-500">
-            {errors.superviserId.message.toString()}
-          </p>
+        {errors.supervisorId && (
+          <p className="text-xs text-red-400">{errors.supervisorId.message}</p>
         )}
       </div>
-      <div className="flex w-full flex-col gap-2 md:w-1/4">
-        <label htmlFor="grades">Grade</label>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-xs text-gray-400">Grade</label>
         <select
           {...register("gradeId")}
           defaultValue={data?.gradeId}
-          className="ring-1"
+          className="rounded-md p-2 text-sm ring-[1.5px] ring-gray-300"
         >
-          <option selected value="default grade">
-            Select One
-          </option>
-          {grades?.map(
-            (grade: { id: string; name: string; surname: string }) => (
-              <option key={grade.id} value={grade.id}>
-                {grade.level}
-              </option>
-            ),
-          )}
+          <option value="">Select a Grade</option>
+          {grades?.map((grade: any) => (
+            <option key={grade.id} value={grade.id}>
+              {grade.level}
+            </option>
+          ))}
         </select>
-        {errors.gradeId?.message && (
-          <p className="text-red-500">{errors.gradeId.message.toString()}</p>
+        {errors.gradeId && (
+          <p className="text-xs text-red-400">{errors.gradeId.message}</p>
         )}
       </div>
+
       <button
         type="submit"
         disabled={isPending}
-        className="bg-blue-500 p-2 text-white disabled:bg-gray-400"
+        className="rounded-md bg-blue-500 p-2 text-white disabled:bg-gray-400"
       >
         {isPending ? "Processing..." : type === "create" ? "Create" : "Update"}
       </button>

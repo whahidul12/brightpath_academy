@@ -2,13 +2,8 @@ import * as z from "zod";
 import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from "@/lib/settings";
 
 export const TeacherFormSchema = z.object({
-  image: z
-    .instanceof(File, { message: "Image is required" })
-    .refine((file) => file.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
-    .refine(
-      (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
-      "Only .jpg, .jpeg, .png and .webp formats are supported.",
-    ),
+  image: z.string().optional(),
+  id: z.string().optional(),
   username: z
     .string()
     .min(3, { message: "Username must be at least 3 characters long" })
@@ -24,20 +19,26 @@ export const TeacherFormSchema = z.object({
     .min(1, { message: "Last name must be at least 1 character long" })
     .max(50)
     .trim(),
-  email: z.email({ message: "Invalid email address" }),
+  email: z
+    .email({ message: "Invalid email address" })
+    .optional()
+    .or(z.literal("")),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters long" })
     .max(50, { message: "Password must be at most 50 characters long" })
-    .trim(),
+    .trim()
+    .optional(),
   phone: z
     .string()
     .min(10, { message: "Phone number must be at least 10 characters long" })
-    .trim(),
+    .trim()
+    .optional(),
   address: z
     .string()
     .min(1, { message: "Address must be at least 1 character long" })
-    .trim(),
+    .trim()
+    .optional(),
   dateOfBirth: z.coerce.date({ message: "Invalid date format" }),
   gender: z.enum(["male", "female"], {
     message: "Please select male or female",
@@ -45,6 +46,7 @@ export const TeacherFormSchema = z.object({
   bloodGroup: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"], {
     message: "Please select a valid blood group",
   }),
+  subject: z.array(z.string()).optional(),
 });
 
 export type TeacherSchema = z.infer<typeof TeacherFormSchema>;

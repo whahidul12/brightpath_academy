@@ -1,15 +1,14 @@
 "use server";
-import { ClassSchema } from "@/shared/schemas/ClassFormSchema";
 import { revalidatePath } from "next/cache";
 import { ActionResponse } from "./types";
 import { deleteClassService } from "./services";
 
 export const deleteClass = async (
   currentState: ActionResponse,
-  data: ClassSchema,
+  id: number,
 ): Promise<ActionResponse> => {
   try {
-    await deleteClassService(data);
+    await deleteClassService(id);
 
     revalidatePath("/list/classes");
 

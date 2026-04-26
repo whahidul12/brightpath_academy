@@ -40,12 +40,11 @@ export default function FormModal({
   const forms: {
     [key: string]: (
       type: "create" | "update",
-      setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, // Add this
-      data?: any,
+      data: any,
+      setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
       relatedData?: any,
     ) => React.JSX.Element;
   } = {
-    // 2. Update the arrow functions to receive and pass the setter
     teacher: (type, data, setIsOpen, relatedData) => (
       <TeacherForm
         type={type}
@@ -81,7 +80,11 @@ export default function FormModal({
   };
   const renderContent = () => {
     if (type === "delete") {
-      return id ? <DeleteConfirmation id={id} table={table} /> : "Missing ID";
+      return id ? (
+        <DeleteConfirmation id={id} table={table} setIsOpen={setIsOpen} />
+      ) : (
+        "Missing ID"
+      );
     }
 
     const Form = forms[table];

@@ -75,11 +75,11 @@ export default function SubjectForm({
       <div className="flex flex-wrap justify-between gap-4">
         <InputField
           label="Subject Name"
-          name="SubjectName"
+          name="name"
           type="text"
           defaultValue={data?.name ?? ""}
           register={register}
-          error={errors.SubjectName}
+          error={errors.name}
         />
         {data && (
           <InputField
