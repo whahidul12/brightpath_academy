@@ -1,6 +1,8 @@
 import { deleteClass } from "@/features/delete/deleteClass/actions";
 import { deleteSubject } from "@/features/delete/deleteSubjects/actions";
 import { deleteTeacher } from "@/features/delete/deleteTeacher/actions";
+import { deleteStudent } from "@/features/delete/deleteStudent/actions";
+import { deleteParent } from "@/features/delete/deleteParent/actions";
 import { startTransition, useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
@@ -11,10 +13,10 @@ const deleteActionMap: Record<
   subject: deleteSubject as any,
   class: deleteClass as any,
   teacher: deleteTeacher as any,
-  // student: deleteStudent,
+  student: deleteStudent as any,
+  parent: deleteParent as any,
   // exam: deleteExam,
   // // TODO: OTHER DELETE ACTIONS
-  // parent: deleteSubject,
   // lesson: deleteSubject,
   // assignment: deleteSubject,
   // result: deleteSubject,

@@ -1,7 +1,6 @@
 import * as z from "zod";
-import { ACCEPTED_IMAGE_TYPES, MAX_FILE_SIZE } from "@/lib/settings";
 
-export const StudentFormSchema = z.object({
+export const ParentFormSchema = z.object({
   id: z.string().optional(),
   image: z.string().optional(),
   username: z
@@ -39,15 +38,6 @@ export const StudentFormSchema = z.object({
     .string()
     .min(1, { message: "Address must be at least 1 character long" })
     .trim(),
-  dateOfBirth: z.coerce.date({ message: "Invalid date format" }),
-  gender: z.enum(["male", "female"], {
-    message: "Please select male or female",
-  }),
-  bloodGroup: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"], {
-    message: "Please select a valid blood group",
-  }),
-  parentId: z.string().optional(),
-  gradeId: z.string().optional(),
-  classId: z.string().optional(),
 });
-export type StudentSchema = z.infer<typeof StudentFormSchema>;
+
+export type ParentSchema = z.infer<typeof ParentFormSchema>;

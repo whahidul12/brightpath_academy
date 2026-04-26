@@ -1,10 +1,10 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { ActionResponse } from "./types";
-import { deleteTeacherService } from "./services";
+import { deleteStudentService } from "./services";
 import { clerkClient } from "@clerk/nextjs/server";
 
-export const deleteTeacher = async (
+export const deleteStudent = async (
   currentState: ActionResponse,
   id: string,
 ): Promise<ActionResponse> => {
@@ -14,23 +14,23 @@ export const deleteTeacher = async (
     await client.users.deleteUser(id);
 
     // Delete from database
-    await deleteTeacherService(id);
+    await deleteStudentService(id);
 
-    revalidatePath("/list/teachers");
+    revalidatePath("/list/students");
 
     return { success: true, error: false };
   } catch (error: any) {
-    console.error("Error deleting teacher:", error);
+    console.error("Error deleting student:", error);
 
     // If Clerk deletion fails, still try to delete from database
     try {
-      await deleteTeacherService(id);
-      revalidatePath("/list/teachers");
+      await deleteStudentService(id);
+      revalidatePath("/list/students");
       return { success: true, error: false };
     } catch (dbError) {
-      console.error("Error deleting teacher from database:", dbError);
+      console.error("Error deleting student from database:", dbError);
     }
 
-    return { success: false, error: "Failed to delete teacher" };
+    return { success: false, error: "Failed to delete student" };
   }
 };

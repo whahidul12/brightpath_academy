@@ -13,6 +13,9 @@ const TeacherForm = dynamic(() => import("../forms/TeacherForm"), {
 const StudentForm = dynamic(() => import("../forms/StudentForm"), {
   loading: () => <span>Loading...</span>,
 });
+const ParentForm = dynamic(() => import("../forms/ParentForm"), {
+  loading: () => <span>Loading...</span>,
+});
 const SubjectForm = dynamic(() => import("../forms/SubjectForm"), {
   loading: () => <span>Loading...</span>,
 });
@@ -55,6 +58,14 @@ export default function FormModal({
     ),
     student: (type, data, setIsOpen, relatedData) => (
       <StudentForm
+        type={type}
+        data={data}
+        setIsOpen={setIsOpen}
+        relatedData={relatedData}
+      />
+    ),
+    parent: (type, data, setIsOpen, relatedData) => (
+      <ParentForm
         type={type}
         data={data}
         setIsOpen={setIsOpen}

@@ -92,7 +92,12 @@ const StudentListPage = async ({
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-              <FormContainer table="student" type="update" id={item.id} />
+              <FormContainer
+                table="student"
+                type="update"
+                id={item.id}
+                data={item}
+              />
               <FormContainer table="student" type="delete" id={item.id} />
             </>
           )}

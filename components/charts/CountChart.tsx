@@ -26,7 +26,7 @@ export default function CountChart({
     <>
       {/* Chart */}
       <div className="relative h-56 w-full min-w-0">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height={224}>
           <RadialBarChart
             cx="50%"
             cy="50%"

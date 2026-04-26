@@ -1,17 +1,17 @@
 "use server";
-import { TeacherSchema } from "@/shared/schemas/TeacherFormSchema";
 import { revalidatePath } from "next/cache";
 import { ActionResponse } from "./types";
-import { updateTeacherService } from "./services";
+import { updateParentService } from "./services";
+import { ParentSchema } from "@/shared/schemas/ParentFormSchema";
 import { clerkClient } from "@clerk/nextjs/server";
 
-export const updateTeacher = async (
+export const updateParent = async (
   currentState: ActionResponse,
-  data: TeacherSchema,
+  data: ParentSchema,
 ): Promise<ActionResponse> => {
   try {
     if (!data.id) {
-      return { success: false, error: "Teacher ID is required" };
+      return { success: false, error: "Parent ID is required" };
     }
 
     // Update Clerk user
@@ -26,23 +26,23 @@ export const updateTeacher = async (
     });
 
     // Update database
-    await updateTeacherService(data);
+    await updateParentService(data);
 
-    revalidatePath("/list/teachers");
+    revalidatePath("/list/parents");
 
     return { success: true, error: false };
   } catch (error: any) {
-    console.error("Error updating teacher:", error);
+    console.error("Error updating parent:", error);
 
     // Handle Clerk-specific errors
     if (error?.errors && Array.isArray(error.errors)) {
       const clerkError = error.errors[0];
       return {
         success: false,
-        error: clerkError?.message || "Failed to update teacher",
+        error: clerkError?.message || "Failed to update parent",
       };
     }
 
-    return { success: false, error: "Failed to update teacher" };
+    return { success: false, error: "Failed to update parent" };
   }
 };

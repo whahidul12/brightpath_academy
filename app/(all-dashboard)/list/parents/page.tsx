@@ -80,7 +80,12 @@ const ParentsListPage = async ({
                 <Image src="/icons/delete.png" alt="" width={20} height={20} />
               </button>
               </Link>*/}
-              <FormContainer table="parent" type="update" id={item.id} />
+              <FormContainer
+                table="parent"
+                type="update"
+                id={item.id}
+                data={item}
+              />
               <FormContainer table="parent" type="delete" id={item.id} />
             </>
           )}
