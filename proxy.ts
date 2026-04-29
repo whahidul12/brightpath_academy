@@ -16,8 +16,17 @@ const matchers = Object.keys(routeAccessMap).map((route) => ({
 
 export default clerkMiddleware(async (auth, req) => {
   const { userId, sessionClaims } = await auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
 
-  // Allow public routes
+  // If user is authenticated and trying to access sign-in, redirect to their dashboard
+  if (userId && isPublicRoute(req)) {
+    const pathname = req.nextUrl.pathname;
+    if (pathname.startsWith("/sign-in") || pathname === "/") {
+      return NextResponse.redirect(new URL(`/dashboard/${role}`, req.url));
+    }
+  }
+
+  // Allow public routes for non-authenticated users
   if (isPublicRoute(req)) {
     return NextResponse.next();
   }
@@ -28,8 +37,6 @@ export default clerkMiddleware(async (auth, req) => {
     signInUrl.searchParams.set("redirect_url", req.url);
     return NextResponse.redirect(signInUrl);
   }
-
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
 
   // Check role-based access for protected routes
   for (const { matcher, allowedRoles } of matchers) {
