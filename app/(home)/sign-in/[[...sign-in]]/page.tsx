@@ -20,6 +20,37 @@ const ROLE_ROUTES: Record<string, string> = {
   parent: "/dashboard/parents",
 };
 
+const DEMO_CREDENTIALS = [
+  {
+    role: "Admin",
+    username: "admin",
+    password: "admin",
+    icon: "👨‍💼",
+    color: "bg-purple-500 hover:bg-purple-600",
+  },
+  {
+    role: "Teacher",
+    username: "teacher",
+    password: "teacher",
+    icon: "👨‍🏫",
+    color: "bg-blue-500 hover:bg-blue-600",
+  },
+  {
+    role: "Student",
+    username: "student",
+    password: "student",
+    icon: "👨‍🎓",
+    color: "bg-green-500 hover:bg-green-600",
+  },
+  {
+    role: "Parent",
+    username: "parent",
+    password: "parent",
+    icon: "👨‍👩‍👧",
+    color: "bg-orange-500 hover:bg-orange-600",
+  },
+];
+
 const LoginPage = () => {
   const clerk = useClerk();
   const router = useRouter();
@@ -28,6 +59,12 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const handleDemoLogin = (username: string, password: string) => {
+    setIdentifier(username);
+    setPassword(password);
+    setError(null);
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,75 +110,147 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="bg-background flex h-screen items-center justify-center">
-      <div className="bg-card text-card-foreground flex flex-col gap-2 rounded-md p-12 shadow-2xl">
-        {/* Brand header */}
-        <div className="flex flex-col items-center gap-2">
-          <Image
-            src={"/branding/brand-logo.png"}
-            alt={"brand-logo"}
-            width={32}
-            height={32}
-            className="w-8 sm:w-10"
-          ></Image>
-          <h1 className="text-card-foreground flex items-center gap-2 text-xl font-bold">
-            BrightPath Academy
-          </h1>
-        </div>
-        <h2 className="text-center text-gray-400">Sign in to your account</h2>
+    <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {/* Background decoration */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-purple-300 opacity-20 blur-3xl dark:bg-purple-600"></div>
+        <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-blue-300 opacity-20 blur-3xl dark:bg-blue-600"></div>
+      </div>
 
-        <form onSubmit={handleSubmit} className="mt-1 flex flex-col gap-2">
-          {/* Username */}
-          <div className="flex flex-col gap-2">
-            <label htmlFor="identifier" className="text-xs text-gray-500">
-              Username
-            </label>
-            <input
-              id="identifier"
-              type="text"
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
-              className="rounded-md p-2 ring-1 ring-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              placeholder="username123"
-              autoComplete="username"
-              required
-              disabled={loading}
-            />
-          </div>
-
-          {/* Password */}
-          <div className="flex flex-col gap-2">
-            <label htmlFor="password" className="text-xs text-gray-500">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="rounded-md p-2 ring-1 ring-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              placeholder="••••••••••••"
-              autoComplete="current-password"
-              required
-              disabled={loading}
-            />
-          </div>
-
-          {/* Error display */}
-          {error && (
-            <p className="mt-1 text-xs text-red-500" role="alert">
-              {error}
+      {/* Login Form */}
+      <div className="relative w-full max-w-md">
+        <div className="rounded-2xl bg-white p-8 shadow-2xl dark:bg-gray-800">
+          {/* Brand header */}
+          <div className="mb-8 flex flex-col items-center gap-3">
+            <div className="rounded-full bg-gradient-to-r from-blue-500 to-purple-500 p-3">
+              <Image
+                src={"/branding/brand-logo.png"}
+                alt={"brand-logo"}
+                width={40}
+                height={40}
+                className="h-10 w-10"
+              />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              BrightPath Academy
+            </h1>
+            <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+              Sign in to your account
             </p>
-          )}
+          </div>
 
-          <button
-            type="submit"
-            disabled={!clerk.loaded || loading}
-            className="my-1 rounded-md bg-blue-500 p-2.5 text-sm text-white transition-colors hover:bg-blue-600 active:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {loading ? "Signing in…" : "Sign In"}
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Demo Credentials Section */}
+            <div className="rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 p-4 dark:from-blue-900/20 dark:to-purple-900/20">
+              <p className="mb-3 text-center text-xs font-medium text-gray-700 dark:text-gray-300">
+                🎯 Demo Credentials - Click to auto-fill
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                {DEMO_CREDENTIALS.map((demo) => (
+                  <button
+                    key={demo.role}
+                    type="button"
+                    onClick={() =>
+                      handleDemoLogin(demo.username, demo.password)
+                    }
+                    disabled={loading}
+                    className={`flex items-center justify-center gap-2 rounded-lg ${demo.color} px-3 py-2 text-sm font-medium text-white shadow-sm transition-all hover:scale-105 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60`}
+                  >
+                    <span>{demo.icon}</span>
+                    <span>{demo.role}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Username */}
+            <div className="space-y-2">
+              <label
+                htmlFor="identifier"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Username
+              </label>
+              <div className="relative">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <span className="text-gray-400">👤</span>
+                </div>
+                <input
+                  id="identifier"
+                  type="text"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 py-3 pr-4 pl-10 text-gray-900 placeholder-gray-400 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500"
+                  placeholder="Enter username"
+                  autoComplete="username"
+                  required
+                  disabled={loading}
+                />
+              </div>
+            </div>
+
+            {/* Password */}
+            <div className="space-y-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Password
+              </label>
+              <div className="relative">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <span className="text-gray-400">🔒</span>
+                </div>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 py-3 pr-4 pl-10 text-gray-900 placeholder-gray-400 transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500"
+                  placeholder="Enter password"
+                  autoComplete="current-password"
+                  required
+                  disabled={loading}
+                />
+              </div>
+            </div>
+
+            {/* Error display */}
+            {error && (
+              <div className="rounded-lg bg-red-50 p-3 dark:bg-red-900/20">
+                <p
+                  className="text-sm text-red-600 dark:text-red-400"
+                  role="alert"
+                >
+                  ⚠️ {error}
+                </p>
+              </div>
+            )}
+
+            {/* Submit button */}
+            <button
+              type="submit"
+              disabled={!clerk.loaded || loading}
+              className="relative w-full overflow-hidden rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 py-3 font-semibold text-white shadow-lg transition-all hover:from-blue-600 hover:to-purple-700 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                  Signing in...
+                </span>
+              ) : (
+                "Sign In"
+              )}
+            </button>
+          </form>
+
+          {/* Footer */}
+          <div className="mt-6 text-center">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Protected by Clerk Authentication
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

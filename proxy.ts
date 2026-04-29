@@ -22,7 +22,10 @@ export default clerkMiddleware(async (auth, req) => {
   if (userId && isPublicRoute(req)) {
     const pathname = req.nextUrl.pathname;
     if (pathname.startsWith("/sign-in") || pathname === "/") {
-      return NextResponse.redirect(new URL(`/dashboard/${role}`, req.url));
+      if (role === "admin") {
+        return NextResponse.redirect(new URL(`/dashboard/${role}`, req.url));
+      }
+      return NextResponse.redirect(new URL(`/dashboard/${role}s`, req.url));
     }
   }
 
