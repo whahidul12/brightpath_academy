@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState, FormEvent } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { FormEvent, useState } from "react";
 import { useClerk } from "@clerk/nextjs";
 import "./style.css";
 
@@ -10,16 +10,10 @@ interface ClerkAPIError {
   message: string;
   code: string;
 }
+
 interface ClerkAPIErrorResponse {
   errors?: ClerkAPIError[];
 }
-
-const ROLE_ROUTES: Record<string, string> = {
-  admin: "/dashboard/admin",
-  teacher: "/dashboard/teachers",
-  student: "/dashboard/students",
-  parent: "/dashboard/parents",
-};
 
 const DEMO_CREDENTIALS = [
   {
@@ -52,14 +46,34 @@ const DEMO_CREDENTIALS = [
   },
 ];
 
+function sanitizeRedirectPath(value: string | null) {
+  if (!value) return null;
+
+  try {
+    const decoded = decodeURIComponent(value);
+
+    if (!decoded.startsWith("/")) return null;
+    if (decoded.startsWith("//")) return null;
+    if (decoded.startsWith("/sign-in")) return null;
+    if (decoded.startsWith("/auth-callback")) return null;
+
+    return decoded;
+  } catch {
+    return null;
+  }
+}
+
 const LoginPage = () => {
   const clerk = useClerk();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const redirectUrl = sanitizeRedirectPath(searchParams.get("redirect_url"));
 
   const handleDemoLogin = (username: string, password: string) => {
     setIdentifier(username);
@@ -75,7 +89,9 @@ const LoginPage = () => {
       return;
     }
 
-    if (!clerk.client) {
+    const signIn = clerk.client?.signIn;
+
+    if (!signIn) {
       setError("Authentication service unavailable. Please refresh the page.");
       return;
     }
@@ -84,26 +100,32 @@ const LoginPage = () => {
     setLoading(true);
 
     try {
-      const result = await clerk.client.signIn.create({
-        identifier,
+      const result = await signIn.create({
+        identifier: identifier.trim(),
         password,
       });
 
       if (result.status === "complete") {
         await clerk.setActive({ session: result.createdSessionId });
-        const role = clerk.user?.publicMetadata?.role as string | undefined;
-        const destination = ROLE_ROUTES[role ?? ""] ?? "/";
-        router.push(destination);
-      } else {
-        setError(
-          `Sign-in requires an additional step (status: ${result.status}). Contact your administrator.`,
-        );
+
+        const callbackUrl = redirectUrl
+          ? `/auth-callback?redirect_url=${encodeURIComponent(redirectUrl)}`
+          : "/auth-callback";
+
+        router.replace(callbackUrl);
+        return;
       }
+
+      setError(
+        `Sign-in requires an additional step (status: ${result.status}). Contact your administrator.`,
+      );
     } catch (err: unknown) {
       const clerkErr = err as ClerkAPIErrorResponse;
+
       const message =
         clerkErr?.errors?.[0]?.message ??
         "Something went wrong. Please try again.";
+
       setError(message);
     } finally {
       setLoading(false);
@@ -112,12 +134,10 @@ const LoginPage = () => {
 
   return (
     <div className="relative container flex min-h-screen min-w-screen items-center justify-center p-4">
-      <div className="absolute top-0 left-0 h-full w-full bg-black/0 backdrop-blur-[3px]"></div>
+      <div className="absolute top-0 left-0 h-full w-full bg-black/0 backdrop-blur-[3px]" />
 
-      {/* Login Form */}
       <div className="relative w-full max-w-md">
         <div className="rounded-2xl bg-white/70 p-8 shadow-2xl dark:bg-gray-800">
-          {/* Brand header */}
           <div className="mb-4 flex flex-col items-center gap-1">
             <div className="rounded-full">
               <Image
@@ -137,10 +157,9 @@ const LoginPage = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Demo Credentials Section */}
             <div className="rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 p-4 dark:from-blue-900/20 dark:to-purple-900/20">
               <p className="mb-3 text-center text-xs font-medium text-gray-700 dark:text-gray-300">
-                🎯 Demo Credentials - Click to auto-fill
+                Demo Credentials - Click to auto-fill
               </p>
               <div className="grid grid-cols-2 gap-2">
                 {DEMO_CREDENTIALS.map((demo) => (
@@ -160,7 +179,6 @@ const LoginPage = () => {
               </div>
             </div>
 
-            {/* Username */}
             <div className="space-y-2">
               <label
                 htmlFor="identifier"
@@ -186,7 +204,6 @@ const LoginPage = () => {
               </div>
             </div>
 
-            {/* Password */}
             <div className="space-y-2">
               <label
                 htmlFor="password"
@@ -212,19 +229,17 @@ const LoginPage = () => {
               </div>
             </div>
 
-            {/* Error display */}
             {error && (
               <div className="rounded-lg bg-red-50 p-3 dark:bg-red-900/20">
                 <p
                   className="text-sm text-red-600 dark:text-red-400"
                   role="alert"
                 >
-                  ⚠️ {error}
+                  {error}
                 </p>
               </div>
             )}
 
-            {/* Submit button */}
             <button
               type="submit"
               disabled={!clerk.loaded || loading}
@@ -232,7 +247,7 @@ const LoginPage = () => {
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
-                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   Signing in...
                 </span>
               ) : (
@@ -240,13 +255,6 @@ const LoginPage = () => {
               )}
             </button>
           </form>
-
-          {/* Footer */}
-          {/*<div className="mt-6 text-center">
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Protected by Clerk Authentication
-            </p>
-          </div>*/}
         </div>
       </div>
     </div>
