@@ -19,15 +19,15 @@ export default clerkMiddleware(async (auth, req) => {
   const role = (sessionClaims?.metadata as { role?: string })?.role;
 
   // If user is authenticated and trying to access sign-in, redirect to their dashboard
-  if (userId && isPublicRoute(req)) {
-    const pathname = req.nextUrl.pathname;
-    if (pathname.startsWith("/sign-in") || pathname === "/") {
-      if (role === "admin") {
-        return NextResponse.redirect(new URL(`/dashboard/${role}`, req.url));
-      }
-      return NextResponse.redirect(new URL(`/dashboard/${role}s`, req.url));
-    }
-  }
+  // if (userId && isPublicRoute(req)) {
+  //   const pathname = req.nextUrl.pathname;
+  //   if (pathname.startsWith("/sign-in") || pathname === "/") {
+  //     if (role === "admin") {
+  //       return NextResponse.redirect(new URL(`/dashboard/${role}`, req.url));
+  //     }
+  //     return NextResponse.redirect(new URL(`/dashboard/${role}s`, req.url));
+  //   }
+  // }
 
   // Allow public routes for non-authenticated users
   if (isPublicRoute(req)) {
@@ -35,11 +35,11 @@ export default clerkMiddleware(async (auth, req) => {
   }
 
   // Redirect to sign-in if not authenticated
-  if (!userId) {
-    const signInUrl = new URL("/sign-in", req.url);
-    signInUrl.searchParams.set("redirect_url", req.url);
-    return NextResponse.redirect(signInUrl);
-  }
+  // if (!userId) {
+  //   const signInUrl = new URL("/sign-in", req.url);
+  //   signInUrl.searchParams.set("redirect_url", req.url);
+  //   return NextResponse.redirect(signInUrl);
+  // }
 
   // Check role-based access for protected routes
   for (const { matcher, allowedRoles } of matchers) {
