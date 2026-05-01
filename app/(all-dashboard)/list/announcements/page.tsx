@@ -146,12 +146,12 @@ const AnnouncementsListPage = async ({
         <div className="flex w-full flex-col items-center gap-4 md:w-auto md:flex-row">
           <TableSearch />
           <div className="flex items-center gap-4 self-end">
-            <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
+            {/*<button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
               <Image src="/icons/filter.png" alt="" width={20} height={20} />
             </button>
             <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
               <Image src="/icons/sort.png" alt="" width={20} height={20} />
-            </button>
+            </button>*/}
             {role === "admin" && (
               // <button className="bg-primary flex h-8 w-8 items-center justify-center rounded-lg">
               //   <Image src="/icons/add.png" alt="" width={20} height={20} />

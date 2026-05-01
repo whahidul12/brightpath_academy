@@ -1,0 +1,9 @@
+.container {
+  background-image: url("../../../../assets/brand/bg-sign-in.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  margin: 0;
+}

@@ -45,7 +45,10 @@ export default clerkMiddleware(async (auth, req) => {
   for (const { matcher, allowedRoles } of matchers) {
     if (matcher(req) && !allowedRoles.includes(role!)) {
       // Redirect to user's default dashboard
-      return NextResponse.redirect(new URL(`/dashboard/${role}`, req.url));
+      if (role === "admin") {
+        return NextResponse.redirect(new URL(`/dashboard/${role}`, req.url));
+      }
+      return NextResponse.redirect(new URL(`/dashboard/${role}s`, req.url));
     }
   }
 

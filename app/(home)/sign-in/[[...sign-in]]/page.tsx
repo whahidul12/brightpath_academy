@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, FormEvent } from "react";
 import { useClerk } from "@clerk/nextjs";
+import "./style.css";
 
 interface ClerkAPIError {
   message: string;
@@ -26,28 +27,28 @@ const DEMO_CREDENTIALS = [
     username: "admin",
     password: "admin",
     icon: "👨‍💼",
-    color: "bg-purple-500 hover:bg-purple-600",
+    color: "bg-primary hover:bg-secondary",
   },
   {
     role: "Teacher",
     username: "teacher",
     password: "teacher",
     icon: "👨‍🏫",
-    color: "bg-blue-500 hover:bg-blue-600",
+    color: "bg-primary hover:bg-secondary",
   },
   {
     role: "Student",
     username: "student",
     password: "student",
     icon: "👨‍🎓",
-    color: "bg-green-500 hover:bg-green-600",
+    color: "bg-primary hover:bg-secondary",
   },
   {
     role: "Parent",
     username: "parent",
     password: "parent",
     icon: "👨‍👩‍👧",
-    color: "bg-orange-500 hover:bg-orange-600",
+    color: "bg-primary hover:bg-secondary",
   },
 ];
 
@@ -110,19 +111,15 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      {/* Background decoration */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-purple-300 opacity-20 blur-3xl dark:bg-purple-600"></div>
-        <div className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-blue-300 opacity-20 blur-3xl dark:bg-blue-600"></div>
-      </div>
+    <div className="relative container flex min-h-screen min-w-screen items-center justify-center p-4">
+      <div className="absolute top-0 left-0 h-full w-full bg-black/0 backdrop-blur-[3px]"></div>
 
       {/* Login Form */}
       <div className="relative w-full max-w-md">
-        <div className="rounded-2xl bg-white p-8 shadow-2xl dark:bg-gray-800">
+        <div className="rounded-2xl bg-white/70 p-8 shadow-2xl dark:bg-gray-800">
           {/* Brand header */}
-          <div className="mb-8 flex flex-col items-center gap-3">
-            <div className="rounded-full bg-gradient-to-r from-blue-500 to-purple-500 p-3">
+          <div className="mb-4 flex flex-col items-center gap-1">
+            <div className="rounded-full">
               <Image
                 src={"/branding/brand-logo.png"}
                 alt={"brand-logo"}
@@ -231,7 +228,7 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={!clerk.loaded || loading}
-              className="relative w-full overflow-hidden rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 py-3 font-semibold text-white shadow-lg transition-all hover:from-blue-600 hover:to-purple-700 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
+              className="bg-primary hover:bg-secondary relative w-full overflow-hidden rounded-lg py-3 font-semibold text-white shadow-lg transition-all hover:cursor-pointer hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -245,11 +242,11 @@ const LoginPage = () => {
           </form>
 
           {/* Footer */}
-          <div className="mt-6 text-center">
+          {/*<div className="mt-6 text-center">
             <p className="text-xs text-gray-500 dark:text-gray-400">
               Protected by Clerk Authentication
             </p>
-          </div>
+          </div>*/}
         </div>
       </div>
     </div>

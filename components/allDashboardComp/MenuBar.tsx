@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import getMenuItems from "@/constants/menuItems";
 
-export default async function MenuBar({ role }: { role?: string | undefined }) {
+export default function MenuBar({ role }: { role?: string | undefined }) {
   const menuItems = getMenuItems(role);
   return (
     <>
