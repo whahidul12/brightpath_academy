@@ -93,103 +93,8 @@ export default function ParentForm({
       </div>
 
       <div className="space-y-8">
-        {/* Section: Authentication */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <div className="md:col-span-1">
-            <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-              <Lock className="h-4 w-4 text-blue-600" />
-              Account Security
-            </h2>
-            <p className="mt-1 text-xs text-slate-500">
-              Credentials used for system access.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:col-span-2">
-            <InputField
-              label="Username"
-              type="text"
-              name="username"
-              register={register}
-              error={errors.username}
-              defaultValue={data?.username}
-            />
-            <InputField
-              label="Email Address"
-              type="email"
-              name="email"
-              register={register}
-              error={errors.email}
-              defaultValue={data?.email}
-            />
-            {type === "create" && (
-              <div className="sm:col-span-2">
-                <InputField
-                  label="Password"
-                  type="password"
-                  name="password"
-                  register={register}
-                  error={errors.password}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-
-        <hr className="border-slate-100" />
-
-        {/* Section: Personal Information */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <div className="md:col-span-1">
-            <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-              <User className="h-4 w-4 text-blue-600" />
-              Contact Details
-            </h2>
-            <p className="mt-1 text-xs text-slate-500">
-              Primary contact information for school-home communication.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:col-span-2">
-            <InputField
-              label="First Name"
-              type="text"
-              name="firstName"
-              register={register}
-              error={errors.firstName}
-              defaultValue={data?.name}
-            />
-            <InputField
-              label="Last Name"
-              type="text"
-              name="lastName"
-              register={register}
-              error={errors.lastName}
-              defaultValue={data?.surname}
-            />
-            <InputField
-              label="Phone Number"
-              type="text"
-              name="phone"
-              register={register}
-              error={errors.phone}
-              defaultValue={data?.phone}
-            />
-            <InputField
-              label="Home Address"
-              type="text"
-              name="address"
-              register={register}
-              error={errors.address}
-              defaultValue={data?.address}
-            />
-          </div>
-        </div>
-
-        <hr className="border-slate-100" />
-
         {/* Section: Media/Upload */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6">
           <div className="md:col-span-1">
             <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
               <UploadCloud className="h-4 w-4 text-blue-600" />
@@ -200,7 +105,26 @@ export default function ParentForm({
             </p>
           </div>
 
-          <div className="md:col-span-2">
+          <div className="col-span-2 flex flex-col items-center rounded-2xl border border-slate-100 bg-white p-6 text-center shadow-sm">
+            <h2 className="mb-4 self-start text-sm font-bold tracking-wider text-slate-400 uppercase">
+              Profile Photo
+            </h2>
+
+            <div className="group relative mb-4 h-32 w-32">
+              <div className="h-full w-full overflow-hidden rounded-full border-4 border-slate-50 ring-1 ring-slate-200">
+                <Image
+                  src={
+                    profileImage?.secure_url ||
+                    data?.img ||
+                    "/icons/noAvatar.png"
+                  }
+                  alt="Profile"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </div>
+
             <CldUploadWidget
               uploadPreset="brightpath_academy"
               onSuccess={(img, { widget }) => {
@@ -209,38 +133,111 @@ export default function ParentForm({
               }}
             >
               {({ open }) => (
-                <div
+                <button
+                  type="button"
                   onClick={() => open()}
-                  className="group flex cursor-pointer items-center gap-6 rounded-xl border-2 border-dashed border-slate-200 p-4 transition-all hover:border-blue-400 hover:bg-blue-50/30"
+                  className="flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600 transition-colors hover:text-blue-700"
                 >
-                  <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-full border-2 border-white bg-slate-100 shadow-sm">
-                    {profileImage ? (
-                      <Image
-                        src={
-                          typeof profileImage === "string"
-                            ? profileImage
-                            : profileImage.secure_url
-                        }
-                        alt="Profile"
-                        fill
-                        className="object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center text-slate-400">
-                        <User className="h-8 w-8" />
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-slate-700 transition-colors group-hover:text-blue-700">
-                      {profileImage ? "Change photo" : "Upload profile picture"}
-                    </p>
-                    <p className="text-xs text-slate-500">JPG, PNG or WebP</p>
-                  </div>
-                </div>
+                  <UploadCloud size={18} />
+                  Change Image
+                </button>
               )}
             </CldUploadWidget>
           </div>
+          {/* Section: Authentication */}
+          <div className="grid grid-cols-1 gap-6">
+            <div className="md:col-span-1">
+              <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                <Lock className="h-4 w-4 text-blue-600" />
+                Account Security
+              </h2>
+              <p className="mt-1 text-xs text-slate-500">
+                Credentials used for system access.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:col-span-2">
+              <InputField
+                label="Username"
+                type="text"
+                name="username"
+                register={register}
+                error={errors.username}
+                defaultValue={data?.username}
+              />
+              <InputField
+                label="Email Address"
+                type="email"
+                name="email"
+                register={register}
+                error={errors.email}
+                defaultValue={data?.email}
+              />
+              {type === "create" && (
+                <div className="sm:col-span-2">
+                  <InputField
+                    label="Password"
+                    type="password"
+                    name="password"
+                    register={register}
+                    error={errors.password}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          <hr className="border-slate-100" />
+
+          {/* Section: Personal Information */}
+          <div className="grid grid-cols-1 gap-6">
+            <div className="md:col-span-1">
+              <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                <User className="h-4 w-4 text-blue-600" />
+                Contact Details
+              </h2>
+              <p className="mt-1 text-xs text-slate-500">
+                Primary contact information for school-home communication.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:col-span-2">
+              <InputField
+                label="First Name"
+                type="text"
+                name="firstName"
+                register={register}
+                error={errors.firstName}
+                defaultValue={data?.name}
+              />
+              <InputField
+                label="Last Name"
+                type="text"
+                name="lastName"
+                register={register}
+                error={errors.lastName}
+                defaultValue={data?.surname}
+              />
+              <InputField
+                label="Phone Number"
+                type="text"
+                name="phone"
+                register={register}
+                error={errors.phone}
+                defaultValue={data?.phone}
+              />
+              <InputField
+                label="Home Address"
+                type="text"
+                name="address"
+                register={register}
+                error={errors.address}
+                defaultValue={data?.address}
+              />
+            </div>
+          </div>
+
+          <hr className="border-slate-100" />
         </div>
       </div>
 

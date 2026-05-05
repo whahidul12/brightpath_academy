@@ -8,6 +8,8 @@ interface InputFieldProps {
   name: string;
   defaultValue?: string;
   hidden?: boolean;
+  placeholder?: string; // Already here, good!
+  className?: string; // Add this to fix the SubjectForm error
 }
 
 export const InputField = ({
@@ -18,9 +20,13 @@ export const InputField = ({
   register,
   error,
   hidden,
+  placeholder, // Destructure this
+  className, // Destructure this
 }: InputFieldProps) => {
   return (
-    <div className={`${hidden ? "hidden" : "flex w-full flex-col gap-1.5"}`}>
+    <div
+      className={`${hidden ? "hidden" : "flex flex-col gap-1.5"} ${className || "w-full"}`}
+    >
       <label
         htmlFor={name}
         className="ml-0.5 text-sm font-semibold text-slate-700"
@@ -31,6 +37,7 @@ export const InputField = ({
         type={type}
         {...register(name)}
         defaultValue={defaultValue}
+        placeholder={placeholder} // Apply it here
         className={`w-full rounded-lg border bg-white px-4 py-2.5 transition-all duration-200 outline-none ${
           error
             ? "border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-500/10"

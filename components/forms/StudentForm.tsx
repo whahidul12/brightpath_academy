@@ -96,6 +96,43 @@ export default function StudentForm({
             : "Update existing student information and settings."}
         </p>
       </div>
+      <div className="col-span-2 flex flex-col items-center rounded-2xl border border-slate-100 bg-white p-6 text-center shadow-sm">
+        <h2 className="mb-4 self-start text-sm font-bold tracking-wider text-slate-400 uppercase">
+          Student Photo
+        </h2>
+
+        <div className="group relative mb-4 h-32 w-32">
+          <div className="h-full w-full overflow-hidden rounded-full border-4 border-slate-50 ring-1 ring-slate-200">
+            <Image
+              src={
+                profileImage?.secure_url || data?.img || "/icons/noAvatar.png"
+              }
+              alt="Profile"
+              fill
+              className="object-cover"
+            />
+          </div>
+        </div>
+
+        <CldUploadWidget
+          uploadPreset="brightpath_academy"
+          onSuccess={(img, { widget }) => {
+            setProfileImage(img.info);
+            widget.close();
+          }}
+        >
+          {({ open }) => (
+            <button
+              type="button"
+              onClick={() => open()}
+              className="flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600 transition-colors hover:text-blue-700"
+            >
+              <UploadCloud size={18} />
+              Change Image
+            </button>
+          )}
+        </CldUploadWidget>
+      </div>
 
       {/* SECTION: AUTHENTICATION */}
       <section className="space-y-4">
@@ -302,62 +339,6 @@ export default function StudentForm({
                 {errors.classId.message.toString()}
               </p>
             )}
-          </div>
-
-          {/* UPLOAD WIDGET */}
-          <div className="mt-4 md:col-span-2 lg:col-span-3">
-            <label className={labelStyles}>Student Photo</label>
-            <CldUploadWidget
-              uploadPreset="brightpath_academy"
-              onSuccess={(img, { widget }) => {
-                setProfileImage(img.info);
-                widget.close();
-              }}
-            >
-              {({ open }) => (
-                <div
-                  onClick={() => open()}
-                  className="group flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50/50 p-8 transition-all hover:border-blue-400 hover:bg-slate-50"
-                >
-                  {profileImage ? (
-                    <div className="flex flex-col items-center gap-4">
-                      <div className="relative h-28 w-28 overflow-hidden rounded-full border-4 border-white shadow-xl">
-                        <Image
-                          src={
-                            typeof profileImage === "string"
-                              ? profileImage
-                              : profileImage.secure_url
-                          }
-                          alt="Preview"
-                          fill
-                          className="object-cover"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
-                          <UploadCloud className="h-6 w-6 text-white" />
-                        </div>
-                      </div>
-                      <span className="text-xs font-medium text-blue-600">
-                        Click to change photo
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="rounded-full bg-white p-3 text-slate-400 shadow-sm transition-all group-hover:scale-110 group-hover:text-blue-600">
-                        <UploadCloud size={28} />
-                      </div>
-                      <div className="text-center">
-                        <p className="text-sm font-semibold text-slate-700">
-                          Upload Student Portrait
-                        </p>
-                        <p className="text-xs text-slate-400">
-                          PNG, JPG or WebP (max 5MB)
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </CldUploadWidget>
           </div>
         </div>
       </section>

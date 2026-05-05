@@ -165,7 +165,7 @@ export default function SubjectForm({
         <button
           type="submit"
           disabled={isPending}
-          className="flex min-w-[120px] items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:scale-95 disabled:cursor-not-allowed disabled:bg-slate-300"
+          className="flex min-w-30 items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:scale-95 disabled:cursor-not-allowed disabled:bg-slate-300"
         >
           {isPending ? (
             <>
