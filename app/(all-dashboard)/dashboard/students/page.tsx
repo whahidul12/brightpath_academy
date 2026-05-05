@@ -3,6 +3,7 @@ import BigCalendarContainer from "@/components/allDashboardComp/BigCalendarConta
 import { DashboardAnnouncementContainer } from "@/components/eventComp/DashboardAnnouncementContainer";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
+import { prisma } from "@/lib/prisma";
 
 export default async function StudentsPage({
   searchParams,
@@ -11,6 +12,11 @@ export default async function StudentsPage({
 }) {
   const { userId, sessionClaims } = await auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const classItem = await prisma.class.findMany({
+    where: {
+      students: { some: { id: userId! } },
+    },
+  });
   return (
     <div className="flex flex-col justify-between gap-4 p-4 xl:flex-row">
       {/*Left Side DashBoard Panel*/}
@@ -24,7 +30,7 @@ export default async function StudentsPage({
             height={24}
           />
         </div>
-        <BigCalendarContainer type="classId" id={userId as string} />
+        <BigCalendarContainer type="classId" id={classItem[0].id} />
       </div>
       {/*Right Side DashBoard Panel*/}
       <div className="md:1/2 flex w-full flex-col gap-4 xl:w-1/3">

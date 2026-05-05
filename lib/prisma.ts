@@ -6,7 +6,7 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 const getClient = () => {
-  const adapter = new PrismaPg({ connectionString: process.env.DIRECT_URL });
+  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL }); // ✅ was DIRECT_URL
   return new PrismaClient({ adapter });
 };
 

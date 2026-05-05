@@ -64,30 +64,30 @@ export default function getMenuItems(role: string | undefined) {
           href: "/list/results",
           visible: ["admin", "teacher", "student", "parent"],
         },
-        {
-          icon: "/icons/attendance.png",
-          label: "Attendance",
-          href: "/list/attendance",
-          visible: ["admin", "teacher", "student", "parent"],
-        },
+        // {
+        //   icon: "/icons/attendance.png",
+        //   label: "Attendance",
+        //   href: "/list/attendance",
+        //   visible: ["admin", "teacher", "student", "parent"],
+        // },
         {
           icon: "/icons/calendar.png",
           label: "Events",
           href: "/list/events",
           visible: ["admin", "teacher", "student", "parent"],
         },
-        {
-          icon: "/icons/message.png",
-          label: "Messages",
-          href: "/list/messages",
-          visible: ["admin", "teacher", "student", "parent"],
-        },
-        {
-          icon: "/icons/announcement.png",
-          label: "Announcements",
-          href: "/list/announcements",
-          visible: ["admin", "teacher", "student", "parent"],
-        },
+        // {
+        //   icon: "/icons/message.png",
+        //   label: "Messages",
+        //   href: "/list/messages",
+        //   visible: ["admin", "teacher", "student", "parent"],
+        // },
+        // {
+        //   icon: "/icons/announcement.png",
+        //   label: "Announcements",
+        //   href: "/list/announcements",
+        //   visible: ["admin", "teacher", "student", "parent"],
+        // },
       ],
     },
     {

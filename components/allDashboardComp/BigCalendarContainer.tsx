@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { BigCalendar } from "../calendars/BigCalendar";
 import { adjustScheduleToCurrentWeek } from "../../lib/utils";
 
-export default async function EventCalendarContainer({
+export default async function BigCalendarContainer({
   type,
   id,
 }: {

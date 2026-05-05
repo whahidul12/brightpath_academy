@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { createTeacher } from "@/features/create/createTeacher/actions";
 import { updateTeacher } from "@/features/update/updateTeacher/actions";
 import Image from "next/image";
+import { Loader2, UploadCloud } from "lucide-react"; // Assuming lucide-react is available
 
 export default function TeacherForm({
   type,
@@ -17,16 +18,17 @@ export default function TeacherForm({
   relatedData,
 }: FormProps) {
   const { subjects } = relatedData ?? {};
-  const [profileImage, setProfileImage] = useState<any>();
+  const [profileImage, setProfileImage] = useState<any>(data?.img || null);
 
   const actionToExecute = type === "create" ? createTeacher : updateTeacher;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(TeacherFormSchema),
-    defaultValues: data, // Better way to handle defaults
+    defaultValues: data,
   });
 
   const [state, formAction, isPending] = useActionState(actionToExecute, {
@@ -44,167 +46,231 @@ export default function TeacherForm({
       toast.error(
         typeof state.error === "string"
           ? state.error
-          : "Failed to save Teacher Details",
+          : "Failed to save details",
       );
     }
   }, [state, type, setIsOpen]);
 
   const onSubmit = handleSubmit((formData) => {
     startTransition(() => {
-      formAction({ ...formData, image: profileImage?.secure_url });
+      formAction({ ...formData, image: profileImage?.secure_url || data?.img });
     });
   });
 
   return (
-    <form className="flex flex-col gap-8" onSubmit={onSubmit}>
-      <h1 className="text-2xl font-bold">
-        {type === "create" ? "Create a new Teacher" : "Update Teacher"}
-      </h1>
-      <span className="text-xs font-medium">Authentication Information</span>
-      <div className="flex flex-wrap justify-between gap-4">
-        <InputField
-          label="Username"
-          type="text"
-          name="username"
-          register={register}
-          error={errors.username}
-          defaultValue={data?.username}
-        />
-        <InputField
-          label="Email"
-          type="email"
-          name="email"
-          register={register}
-          error={errors.email}
-          defaultValue={data?.email}
-        />
-        {type === "create" && (
-          <InputField
-            label="Password"
-            type="password"
-            name="password"
-            register={register}
-            error={errors.password}
-            defaultValue={data?.password}
-          />
-        )}
+    <form className="mx-auto max-w-5xl space-y-8 p-2" onSubmit={onSubmit}>
+      {/* Header Section */}
+      <div className="border-b border-slate-100 pb-5">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-800">
+          {type === "create" ? "Create New Teacher" : "Edit Teacher Profile"}
+        </h1>
+        <p className="mt-1 text-sm text-slate-500">
+          Fill in the information below to {type} the teacher account.
+        </p>
       </div>
-      <span className="text-xs font-medium">Personal Information</span>
-      <div className="flex flex-wrap justify-between gap-4">
-        <InputField
-          label="First Name"
-          type="text"
-          name="firstName"
-          register={register}
-          error={errors.firstName}
-          defaultValue={data?.name}
-        />
-        <InputField
-          label="Last Name"
-          type="text"
-          name="lastName"
-          register={register}
-          error={errors.lastName}
-          defaultValue={data?.surname}
-        />
-        <InputField
-          label="Phone"
-          type="text"
-          name="phone"
-          register={register}
-          error={errors.phone}
-          defaultValue={data?.phone}
-        />
-        <InputField
-          label="Address"
-          type="text"
-          name="address"
-          register={register}
-          error={errors.address}
-          defaultValue={data?.address}
-        />
-        <InputField
-          label="Blood Group"
-          type="text"
-          name="bloodGroup"
-          register={register}
-          error={errors.bloodGroup}
-          defaultValue={data?.bloodType}
-        />
-        <InputField
-          label="Date of Birth"
-          type="date"
-          name="dateOfBirth"
-          register={register}
-          error={errors.dateOfBirth}
-          defaultValue={data?.birthday}
-        />
-        <div className="flex w-full flex-col gap-2 md:w-1/4">
-          <label htmlFor="gender">Gender</label>
-          <select
-            {...register("gender")}
-            defaultValue={data?.sex || ""}
-            className="ring-1"
-          >
-            <option value="">Select One</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-          {errors.gender?.message && (
-            <p className="text-red-500">{errors.gender.message.toString()}</p>
-          )}
-        </div>
-        <div className="flex w-full flex-col gap-2 md:w-1/4">
-          <label htmlFor="subjects">Subjects</label>
-          <select
-            multiple
-            {...register("subject")}
-            defaultValue={data?.subjects}
-            className="ring-1"
-          >
-            {subjects?.map((subject: any) => (
-              <option key={subject.id} value={subject.id}>
-                {subject.name}
-              </option>
-            ))}
-          </select>
-          {errors.subject?.message && (
-            <p className="text-red-500">{errors.subject.message.toString()}</p>
-          )}
-        </div>
-        <CldUploadWidget
-          uploadPreset="brightpath_academy"
-          onSuccess={(img, { widget }) => {
-            setProfileImage(img.info);
-            widget.close();
-          }}
-        >
-          {({ open }) => {
-            return (
-              <div
-                onClick={() => open()}
-                className="flex gap-2 hover:cursor-pointer"
-              >
+
+      <div className="grid grid-cols-1 gap-8">
+        {/* top Column: Profile Image & Actions */}
+        <div className="space-y-6 lg:col-span-1">
+          <div className="flex flex-col items-center rounded-2xl border border-slate-100 bg-white p-6 text-center shadow-sm">
+            <h2 className="mb-4 self-start text-sm font-bold tracking-wider text-slate-400 uppercase">
+              Profile Photo
+            </h2>
+
+            <div className="group relative mb-4 h-32 w-32">
+              <div className="h-full w-full overflow-hidden rounded-full border-4 border-slate-50 ring-1 ring-slate-200">
                 <Image
-                  src="/icons/upload.png"
-                  alt="Upload Image"
-                  width={24}
-                  height={24}
-                  className="h-6 w-6"
+                  src={
+                    profileImage?.secure_url ||
+                    data?.img ||
+                    "/icons/noAvatar.png"
+                  }
+                  alt="Profile"
+                  fill
+                  className="object-cover"
                 />
-                Upload Image
               </div>
-            );
-          }}
-        </CldUploadWidget>
+            </div>
+
+            <CldUploadWidget
+              uploadPreset="brightpath_academy"
+              onSuccess={(img, { widget }) => {
+                setProfileImage(img.info);
+                widget.close();
+              }}
+            >
+              {({ open }) => (
+                <button
+                  type="button"
+                  onClick={() => open()}
+                  className="flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600 transition-colors hover:text-blue-700"
+                >
+                  <UploadCloud size={18} />
+                  Change Image
+                </button>
+              )}
+            </CldUploadWidget>
+          </div>
+        </div>
+        {/* bottom Column: Form Fields */}
+        <div className="space-y-8 md:col-span-2">
+          {/* Section: Authentication */}
+          <section className="space-y-4 rounded-2xl border border-slate-100 bg-slate-50/50 p-6">
+            <h2 className="text-sm font-bold tracking-wider text-slate-400 uppercase">
+              Authentication Details
+            </h2>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <InputField
+                label="Username"
+                name="username"
+                register={register}
+                error={errors.username}
+                type="text"
+              />
+              <InputField
+                label="Email Address"
+                name="email"
+                register={register}
+                error={errors.email}
+                type="email"
+              />
+              {type === "create" && (
+                <InputField
+                  label="Password"
+                  name="password"
+                  register={register}
+                  error={errors.password}
+                  type="password"
+                />
+              )}
+            </div>
+          </section>
+
+          {/* Section: Personal Info */}
+          <section className="space-y-4 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+            <h2 className="text-sm font-bold tracking-wider text-slate-400 uppercase">
+              Personal Information
+            </h2>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <InputField
+                label="First Name"
+                name="firstName"
+                register={register}
+                error={errors.firstName}
+                type="text"
+              />
+              <InputField
+                label="Last Name"
+                name="lastName"
+                register={register}
+                error={errors.lastName}
+                type="text"
+              />
+              <InputField
+                label="Phone Number"
+                name="phone"
+                register={register}
+                error={errors.phone}
+                type="text"
+              />
+              <InputField
+                label="Blood Group"
+                name="bloodGroup"
+                register={register}
+                error={errors.bloodGroup}
+                type="text"
+              />
+              <InputField
+                label="Date of Birth"
+                name="dateOfBirth"
+                register={register}
+                error={errors.dateOfBirth}
+                type="date"
+              />
+              <InputField
+                label="Address"
+                name="address"
+                register={register}
+                error={errors.address}
+                type="text"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 pt-2 md:grid-cols-2">
+              {/* Gender Select */}
+              <div className="flex flex-col gap-1.5">
+                <label className="ml-0.5 text-sm font-semibold text-slate-700">
+                  Gender
+                </label>
+                <select
+                  {...register("gender")}
+                  defaultValue={data?.sex || ""}
+                  className="w-full appearance-none rounded-lg border border-slate-200 bg-white px-4 py-2.5 transition-all outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                >
+                  <option value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+                {errors.gender?.message && (
+                  <p className="text-[12px] text-red-500">
+                    {errors.gender.message.toString()}
+                  </p>
+                )}
+              </div>
+
+              {/* Subjects Multiple Select */}
+              <div className="flex flex-col gap-1.5">
+                <label className="ml-0.5 text-sm font-semibold text-slate-700">
+                  Assigned Subjects
+                </label>
+                <select
+                  multiple
+                  {...register("subject")}
+                  defaultValue={data?.subjects}
+                  className="min-h-[100px] w-full rounded-lg border border-slate-200 bg-white px-4 py-2 transition-all outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                >
+                  {subjects?.map((subject: any) => (
+                    <option key={subject.id} value={subject.id} className="p-1">
+                      {subject.name}
+                    </option>
+                  ))}
+                </select>
+                {errors.subject?.message && (
+                  <p className="text-[12px] text-red-500">
+                    {errors.subject.message.toString()}
+                  </p>
+                )}
+              </div>
+            </div>
+          </section>
+        </div>
+        <div className="flex flex-col gap-3">
+          <button
+            type="submit"
+            disabled={isPending}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 py-3.5 font-bold text-white shadow-lg shadow-slate-200 transition-all hover:bg-slate-800 disabled:bg-slate-400"
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="animate-spin" size={20} />
+                Saving...
+              </>
+            ) : type === "create" ? (
+              "Create Teacher"
+            ) : (
+              "Update Details"
+            )}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsOpen(false)}
+            className="w-full rounded-xl border border-slate-200 bg-white py-3 font-semibold text-slate-600 transition-all hover:bg-slate-50"
+          >
+            Cancel
+          </button>
+        </div>
       </div>
-      <button
-        type="submit"
-        disabled={isPending}
-        className="hover:cursor-pointer"
-      >
-        {type === "create" ? "Create" : "Update"}
-      </button>
     </form>
   );
 }

@@ -1,11 +1,15 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { ModeToggle } from "./ModeToggle";
+import Link from "next/link";
+import { currentUser } from "@clerk/nextjs/server";
 const UserButton = dynamic(() =>
   import("@clerk/nextjs").then((mod) => mod.UserButton),
 );
 
 export default async function Navbar({ role }: { role: string | undefined }) {
+  const user = await currentUser();
+  // const role = (sessionClaims?.metadata as { role?: string })?.role;
   return (
     <div className="flex h-16 items-center justify-end px-4 sm:px-6 lg:justify-between">
       {/*Search Bar */}
@@ -26,7 +30,7 @@ export default async function Navbar({ role }: { role: string | undefined }) {
       {/*ICONS and USER */}
       <div className="flex items-center justify-end gap-6">
         <ModeToggle />
-        <div className="flex items-center justify-center rounded-lg bg-white p-1">
+        {/*<div className="flex items-center justify-center rounded-lg bg-white p-1">
           <Image
             src="/icons/message.png"
             alt="message-icon"
@@ -34,8 +38,11 @@ export default async function Navbar({ role }: { role: string | undefined }) {
             height={20}
             className="w-7 cursor-pointer"
           />
-        </div>
-        <div className="relative flex items-center justify-center rounded-lg bg-white p-1">
+        </div>*/}
+        <Link
+          href="/list/announcements"
+          className="relative flex items-center justify-center rounded-lg bg-white p-1"
+        >
           <Image
             src="/icons/announcement.png"
             alt="announcement-icon"
@@ -46,10 +53,10 @@ export default async function Navbar({ role }: { role: string | undefined }) {
           <div className="bg-primary text-primary-foreground absolute -top-3 -right-3 flex h-6 w-6 items-center justify-center rounded-full text-sm">
             22
           </div>
-        </div>
+        </Link>
 
         <div className="flex flex-col">
-          <span className="">Jhon Doe</span>
+          <span className="">{user?.firstName + " " + user?.lastName}</span>
           <span className="text-shadow-card-foreground text-right text-xs">
             {role}
           </span>

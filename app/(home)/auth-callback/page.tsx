@@ -15,15 +15,12 @@ function getRoleHome(role?: string | null) {
 
 function sanitizeInternalPath(value?: string) {
   if (!value) return null;
-
   try {
     const decoded = decodeURIComponent(value);
-
     if (!decoded.startsWith("/")) return null;
     if (decoded.startsWith("//")) return null;
     if (decoded.startsWith("/sign-in")) return null;
     if (decoded.startsWith("/auth-callback")) return null;
-
     return decoded;
   } catch {
     return null;
@@ -33,7 +30,7 @@ function sanitizeInternalPath(value?: string) {
 export default async function AuthCallbackPage({
   searchParams,
 }: {
-  searchParams?: { redirect_url?: string };
+  searchParams?: Promise<{ redirect_url?: string }>;
 }) {
   const { userId, sessionClaims } = await auth();
 
@@ -42,7 +39,8 @@ export default async function AuthCallbackPage({
   }
 
   const role = (sessionClaims?.metadata as { role?: string })?.role;
-  const redirectUrl = sanitizeInternalPath(searchParams?.redirect_url);
+  const params = await searchParams;
+  const redirectUrl = sanitizeInternalPath(params?.redirect_url);
 
   if (redirectUrl) {
     redirect(redirectUrl);

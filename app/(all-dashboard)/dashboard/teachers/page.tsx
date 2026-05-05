@@ -7,13 +7,14 @@ import Image from "next/image";
 export default async function TeachersPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | undefined };
+  searchParams: Promise<{ [key: string]: string | undefined }>; // ✅ Promise type
 }) {
+  const params = await searchParams; // ✅ await it
   const { userId, sessionClaims } = await auth();
+  console.log("userId:", userId);
   const role = (sessionClaims?.metadata as { role?: string })?.role;
   return (
     <div className="flex flex-col justify-between gap-4 p-4 xl:flex-row">
-      {/*Left Side DashBoard Panel*/}
       <div className="bg-card text-card-foreground flex w-full flex-col gap-4 rounded-lg p-4 pt-0 xl:w-2/3">
         <div className="mt-4 flex items-center justify-between">
           <h1 className="text-2xl font-bold">Schedule</h1>
@@ -26,9 +27,9 @@ export default async function TeachersPage({
         </div>
         <BigCalendarContainer type="teacherId" id={userId as string} />
       </div>
-      {/*Right Side DashBoard Panel*/}
       <div className="md:1/2 flex w-full flex-col gap-4 xl:w-1/3">
-        <EventCalendarContainer searchParams={searchParams} />
+        <EventCalendarContainer searchParams={params} />{" "}
+        {/* ✅ pass awaited params */}
         <DashboardAnnouncementContainer userId={userId} role={role} />
       </div>
     </div>
