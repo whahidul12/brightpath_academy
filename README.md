@@ -1,4 +1,4 @@
-# 🎓 BrightPath Academy - Learning Management System
+# 🎓 BrightPath Academy - Learning Management System (1.0.1)
 
 <div align="center">
 
